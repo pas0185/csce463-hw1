@@ -13,3 +13,10 @@
 
 
 // TODO: reference additional headers your program requires here
+#include <windows.h>
+#include <stdio.h>
+#include <mmsystem.h>
+#include <queue>
+#include <map>
+#include <set>
+#include <string>
