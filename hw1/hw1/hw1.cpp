@@ -3,14 +3,12 @@
 
 #include "stdafx.h"
 
-void parseURL(char* url);
+void parseURLsFromFile(char* fileName);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	for (int i = 0; i < argc; i++)
-	{
-		parseURL(argv[i]);
-		//printf("%s\n", argv[i]);
+	if (argc > 1) {
+		parseURLsFromFile(argv[1]);
 	}
 	
 	printf("Press enter key to continue");

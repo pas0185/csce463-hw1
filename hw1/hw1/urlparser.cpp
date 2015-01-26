@@ -7,6 +7,7 @@
 
 #include "stdafx.h"
 
+#define MAX_URL_LENGTH 1000
 // if no valid scheme found, return NULL
 // otherwise, return the scheme and truncate from the pointer
 char* extractScheme(char* url)
@@ -90,6 +91,19 @@ void parseURL(char* url)
 
 
 	printf("-----------------------\n\n\n");
+}
 
+void parseURLsFromFile(char* fileName)
+{
+	// Based on example from http://www.phanderson.com/files/file_read.html
 
+	FILE* file = fopen(fileName, "r");
+	if (file != NULL) {
+		char line[MAX_URL_LENGTH];
+		while (fgets(line, sizeof(line), file) != NULL) {
+			parseURL(line);
+		}
+	}
+
+	fclose(file);
 }
