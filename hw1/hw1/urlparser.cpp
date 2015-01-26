@@ -10,17 +10,21 @@
 #define MAX_URL_LENGTH 1000
 // if no valid scheme found, return NULL
 // otherwise, return the scheme and truncate from the pointer
-char* extractScheme(char* url)
+char* extractScheme(char** url)
 {
-	char* symbol = strstr(url, "://");
+	char* symbol = strstr(*url, "://");
 	
 	if (symbol != NULL)
 	{
-		int len = strlen(url) - strlen(symbol);
-		char* scheme = url;
-		memcpy(scheme, url, len);
+		int len = strlen(*url) - strlen(symbol);
+		char scheme[MAX_URL_LENGTH];
+		memcpy(scheme, *url, len);
 		scheme[len] = '\0';
 		printf("scheme = %s\n", scheme);
+
+		*url += len + 3;
+
+		printf("During extraction: url = %s\n", *url);
 
 		return scheme;
 	}
@@ -35,9 +39,11 @@ void parseURL(char* url)
 	printf("-----------------------\n");
 	printf("Parsing URL = %s\n", url);
 
-	char* scheme = extractScheme(url);
+	char* scheme = extractScheme(&url);
+	printf("After extraction: url = %s\n", url);
+	//char* fragment = extractFragment(url);
 
-	if (scheme)
+	if (false)//(scheme)
 	{
 		// fragment
 		char* hashtag = strrchr(url, '#');
