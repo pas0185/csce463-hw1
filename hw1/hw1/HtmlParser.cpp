@@ -1,12 +1,16 @@
-// HTMLParserTest.cpp
-// Example program showing how to use the parser
-// CSCE 463 sample code
-//
-#include "Headers.h"
+/*
+* Patrick Sheehan
+* CSCE463 HW1
+* 26 January 2015
+*
+*/
 
-int testHtmlParse()
-{
-	char filename[] = "tamu.html";
+#include "HtmlParser.h"
+
+void HtmlParser::parse(char* filename, char* baseUrl)
+{	
+	// Taken from CPSC 463 homework handout
+
 
 	// open html file
 	HANDLE hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
@@ -15,17 +19,18 @@ int testHtmlParse()
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
 		printf("CreateFile failed with %d\n", GetLastError());
-		return 0;
+		return;
 	}
 
 	// get file size
 	LARGE_INTEGER li;
 	BOOL bRet = GetFileSizeEx(hFile, &li);
+
 	// process errors
 	if (bRet == 0)
 	{
 		printf("GetFileSizeEx error %d\n", GetLastError());
-		return 0;
+		return;
 	}
 
 	// read file into a buffer
@@ -39,16 +44,18 @@ int testHtmlParse()
 	if (bRet == 0 || bytesRead != fileSize)
 	{
 		printf("ReadFile failed with %d\n", GetLastError());
-		return 0;
+		return;
 	}
 
 	// done with the file
 	CloseHandle(hFile);
 
+
+
 	// create new parser object
 	HTMLParserBase *parser = new HTMLParserBase;
 
-	char baseUrl[] = "http://www.tamu.edu";		// where this page came from; needed for construction of relative links
+	//char baseUrl[] = "http://www.tamu.edu";		// where this page came from; needed for construction of relative links
 
 	int nLinks;
 	char *linkBuffer = parser->Parse(fileBuf, fileSize, baseUrl, (int)strlen(baseUrl), &nLinks);
@@ -69,6 +76,4 @@ int testHtmlParse()
 	delete parser;		// this internally deletes linkBuffer
 	delete fileBuf;
 
-	return 0;
 }
-

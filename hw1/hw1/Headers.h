@@ -1,7 +1,9 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
-//
+/*
+* Patrick Sheehan
+* CSCE463 HW1
+* 27 January 2015
+*
+*/
 
 #pragma once
 
@@ -18,3 +20,5 @@
 
 #include "UrlParser.h"
 #include "WebSocket.h"
+#include "HTMLParserBase.h"
+#include "HtmlParser.h"

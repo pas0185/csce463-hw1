@@ -110,7 +110,8 @@ void WebSocket::Read(FILE* fp)
 	{
 		fprintf(fp, "%s", responseBuf);
 	}
-	
+	fclose(fp);
+
 	end = clock();
 	total = (double)(end - start);
 	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), fp->_bufsiz);

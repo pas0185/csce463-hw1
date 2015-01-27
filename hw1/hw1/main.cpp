@@ -31,10 +31,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		socket.Send(request);
 
 		// and to get the resulting HTML file
-		FILE *fp = fopen("test.html", "w+");
+		char *htmlFile = "test.html";
+		FILE *fp = fopen(htmlFile, "w+");
 		socket.Read(fp);
 
 		// parse the HTML file to count number of links
+		HtmlParser htmlParser = HtmlParser();
+		htmlParser.parse(htmlFile, url);
 
 		printf("\n\n\n");
 	}

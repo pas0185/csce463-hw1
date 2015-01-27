@@ -11,8 +11,8 @@
 
 #include "Headers.h"
 
-class WebSocket {
-
+class WebSocket 
+{
 private:
 	SOCKET sock;
 	char* buf;
