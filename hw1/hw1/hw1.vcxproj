@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="hw1.cpp" />
+    <ClCompile Include="requestmaker.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="urlparser.cpp" />
   </ItemGroup>
