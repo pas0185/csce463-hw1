@@ -44,9 +44,6 @@
     <ClCompile Include="WebSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RequestMaker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UrlParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

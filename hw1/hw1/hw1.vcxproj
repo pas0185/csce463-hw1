@@ -92,7 +92,6 @@
     <ClCompile Include="HtmlParser.cpp" />
     <ClCompile Include="HTMLParserTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RequestMaker.cpp" />
     <ClCompile Include="WebSocket.cpp" />
     <ClCompile Include="UrlParser.cpp" />
   </ItemGroup>

@@ -9,10 +9,13 @@
 
 #include "Headers.h"
 
-class UrlParser {
+class UrlParser 
+{
+private:
+	char hostname[256];
 
 public:
-	char hostname[256];
+	char* buildGETRequest(char* host, char* port, char* request);
 	char* parseURLString(char* url);
 	char* getLastHostName();
 };

@@ -7,8 +7,29 @@
 
 #include "UrlParser.h"
 
-// Defined in requestmaker.cpp
-char* buildGETRequest(char* host, char* port, char* request);
+char* UrlParser::buildGETRequest(char* host, char* port, char* request)
+{
+	// Can't do anything without the host name
+	if (host == NULL)
+	{
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		return NULL;
+	}
+
+	// Assign default values if not provided
+	if (request == NULL || request == " ")
+		request = "/";
+
+	if (port == NULL || port == " ")
+		port = "80";
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(port) + strlen(request) + 50;
+	char* GETReq = new char[size];
+	sprintf(GETReq, "GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n", request, host);
+
+	return GETReq;
+}
 
 char* UrlParser::parseURLString(char* url)
 {
@@ -98,3 +119,4 @@ char* UrlParser::getLastHostName()
 
 	return hostname;
 }
+
