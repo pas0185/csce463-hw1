@@ -23,6 +23,8 @@ private:
 public:
 	WebSocket();
 	void Setup(char* hostname);
+	int ReadToBuffer(char** buffer);
+
 	int ReadAndWriteToFile(char* filename);
 	void Send(char* request);
 };

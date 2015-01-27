@@ -95,50 +95,67 @@ void WebSocket::Send(char* request)
 }
 
 int WebSocket::ReadAndWriteToFile(char* filename)
-{	
-	// Receive data from socket
-	printf("\t  Loading... ");
-	start = clock();	// timing loading file
-
+{
 	if (filename == NULL)
 	{
 		printf("An NULL file name was passed to Websocket for writing to");
 		return -1;
 	}
-	
+
 	// Write everything to the file, including header (TODO)
 	FILE *fp = fopen(filename, "w+");
+	int bytesRead = 0, status = -1, num = 0;
+	char *responseBuf, *temp;
+
+	// Receive data from socket
+	printf("\t  Loading... ");
+	start = clock();	// timing loading file
 	
-	int bytesRead = 0;
-	int status = 0;
-	int foo;
-	//char headerBuf[INITIAL_BUF_SIZE];
-	char responseBuf[INITIAL_BUF_SIZE];
-	while (foo = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
+	responseBuf = new char[INITIAL_BUF_SIZE];
+	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
 	{
-		bytesRead += foo;
+		bytesRead += num;
 
 		// if need to resize buffer
 		if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
 		{
+			// Move old array to temp storage
+			temp = new char[bytesRead];
+			memcpy(temp, responseBuf, bytesRead);
 
+			// Double size of buffer
+			//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
+			responseBuf = new char[2 * bytesRead];
+
+			// Copy data over from temp
+			memcpy(responseBuf, temp, bytesRead);
 		}
 
-		fprintf(fp, "%s", responseBuf);
+		//fprintf(fp, "%s", responseBuf);
 
-		if (status < 200)
+		if (status < 0)
 		{
 			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
 		}
 	}
-	end = clock();	// timing loading file
+
+	// Truncate blank space
+	responseBuf[bytesRead] = '\0';
+
+	end = clock();	// timing for loading the file
 	total = (double)(end - start);
-	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), fp->_bufsiz);
+	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
+
+	// Write buffer to file
+	fprintf(fp, "%s", responseBuf);
+	fclose(fp);
+
+	// Clean up resources
+	memset(&responseBuf[0], 0, sizeof(responseBuf));
+	memset(&temp[0], 0, sizeof(temp));
 
 	printf("\t  Verifying header... ");
 	printf("status code %d\n", status);
-
-	fclose(fp);
 
 	return status;
 }
