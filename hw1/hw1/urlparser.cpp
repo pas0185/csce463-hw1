@@ -12,8 +12,12 @@ char* buildGETRequest(char* host, char* port, char* request);
 
 char* parseURLString(char* url)
 {
+	printf("\tParsing URL...");
 	if (url == NULL)
+	{
+		printf("url == NULL, aborting.\n");
 		return NULL;
+	}
 
 	int newLen;
 	char* delim, *host, *port, *request;
@@ -28,7 +32,7 @@ char* parseURLString(char* url)
 		{
 			// Stripping the fragment
 			newLen = strlen(tempUrl) - strlen(delim);
-			tempUrl[newLen + 1] = '\0';
+			tempUrl[newLen] = '\0';
 		}
 
 		// Getting the request
@@ -68,9 +72,9 @@ char* parseURLString(char* url)
 		}
 	}
 
-	printf("host %s, ", host);
-	printf("port %s, ", port);
-	printf("request %s\n", request);
+	printf("host: %s, ", host);
+	printf("port: %s, ", port);
+	printf("request: %s\n", request);
 
 	return buildGETRequest(host, port, request);
 }
