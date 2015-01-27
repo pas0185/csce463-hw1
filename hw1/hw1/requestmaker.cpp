@@ -7,23 +7,26 @@
 
 #include "stdafx.h"
 
-char* GETRequest(char* scheme, char* host, char* port, char* path, char* query, char* fragment)
+char* buildGETRequest(char* host, char* port, char* request)
 {
+	// Can't do anything without the host name
 	if (host == NULL)
+	{
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
 		return NULL;
+	}
 
-	int requestSize = (path != NULL) ? strlen(path) : 0
-					+ (query != NULL) ? strlen(query) : 0;
-	char* request = (char *)malloc(requestSize * sizeof(char));
-	
-	int size = (host != NULL) ? strlen(host) : 0
-		+ requestSize
-		+ 50;
+	// Assign default values if not provided
+	if (request == NULL || request == " ")
+		request = "/";
 
-	char* fullRequest = (char *)malloc(size * sizeof(char));
-	sprintf(fullRequest, 
-		"GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n", 
-		request, host);
+	if (port == NULL || port == " ")
+		port = "80";
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(port) + strlen(request) + 50;
+	char* GETReq = new char[size];
+	sprintf(GETReq, "GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n", request, host);
 						
-	return fullRequest;
+	return GETReq;
 }

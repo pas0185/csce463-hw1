@@ -13,10 +13,13 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	for (int i = 1; i < argc; i++)
 	{
-		// parse url string into an HTTP GET request
 		char* url = argv[i];
-		char* reqest = parseURLString(url);
+		printf("URL: %s\n", url);
 
+		// parse url string into an HTTP GET request
+		char* request = parseURLString(url);
+
+		printf("GET request = %s", request);
 		// create a web client to send our request and get resulting HTML file
 
 
