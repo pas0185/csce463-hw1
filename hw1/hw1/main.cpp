@@ -19,9 +19,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		// parse url string into an HTTP GET request
 		char* request = parseURLString(url);
 
-		//printf("GET request = %s", request);
 		// create a web client to send our request and get resulting HTML file
-
+		//WebSocket socket();
+		//socket.Send(request);
 
 		// parse the HTML file to count number of links
 

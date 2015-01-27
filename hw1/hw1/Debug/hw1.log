@@ -1,33 +1,1129 @@
-﻿Build started 1/27/2015 3:49:29 AM.
+﻿Build started 1/27/2015 4:24:41 AM.
      1>Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt urlparser.cpp
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt HTMLParserTest.cpp WebSocket.cpp htmlparser.cpp main.cpp requestmaker.cpp stdafx.cpp urlparser.cpp
          urlparser.cpp
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(29): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(112) : see declaration of 'strcpy'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(43): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(112) : see declaration of 'strcpy'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(55): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(204) : see declaration of 'strtok'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(67): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(112) : see declaration of 'strcpy'
-       Link:
-         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe" /INCREMENTAL /NOLOGO Ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.lib" /MACHINE:X86 Debug\htmlparser.obj
-         Debug\HTMLParserTest.obj
-         Debug\main.obj
-         Debug\client.obj
-         Debug\requestmaker.obj
-         Debug\Socket.obj
-         Debug\stdafx.obj
-         Debug\urlparser.obj
-     1>HTMLParser_debug_win32.lib(IRLBuffer.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'HTMLParser_debug_win32.lib(IRLBuffer.obj)' or at 'C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\vc120.pdb'; linking object as if no debug info
-     1>HTMLParser_debug_win32.lib(URL.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'HTMLParser_debug_win32.lib(URL.obj)' or at 'C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\vc120.pdb'; linking object as if no debug info
-     1>HTMLParser_debug_win32.lib(HTMLParserBase.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'HTMLParser_debug_win32.lib(HTMLParserBase.obj)' or at 'C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\vc120.pdb'; linking object as if no debug info
-     1>HTMLParser_debug_win32.lib(IRLparser.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'HTMLParser_debug_win32.lib(IRLparser.obj)' or at 'C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\vc120.pdb'; linking object as if no debug info
-     1>HTMLParser_debug_win32.lib(stdafx.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'HTMLParser_debug_win32.lib(stdafx.obj)' or at 'C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\vc120.pdb'; linking object as if no debug info
-         hw1.vcxproj -> C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe
-     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)).
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         stdafx.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         requestmaker.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         main.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         htmlparser.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         WebSocket.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(19): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(19): warning C4183: 'Socket': missing return type; assumed to be a member function returning 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(13): error C2011: 'WebSocket' : 'class' type redefinition
+                 c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(12) : see declaration of 'WebSocket'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(22): error C2027: use of undefined type 'WebSocket'
+                 c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(12) : see declaration of 'WebSocket'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(22): error C2059: syntax error : ')'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(23): error C2143: syntax error : missing ';' before '{'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(23): error C2447: '{' : missing function header (old-style formal list?)
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(33): error C2079: 'wsaData' uses undefined struct 'WSAData'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(37): error C3861: 'WSAStartup': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(38): error C3861: 'WSAGetLastError': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(39): error C3861: 'WSACleanup': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(44): error C3861: 'socket': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(44): error C2440: 'initializing' : cannot convert from 'SOCKET (__stdcall *)(int,int,int)' to 'SOCKET'
+                 There is no context in which this conversion is possible
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(47): error C3861: 'WSAGetLastError': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(48): error C3861: 'WSACleanup': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(56): error C2079: 'server' uses undefined struct 'sockaddr_in'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(59): error C3861: 'inet_addr': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(59): error C2440: 'initializing' : cannot convert from 'unsigned long (__stdcall *)(const char *)' to 'DWORD'
+                 There is no context in which this conversion is possible
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(63): error C2568: '=' : unable to resolve function overload
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847): could be 'hostent *gethostbyname(const char *)'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(63): error C3861: 'gethostbyname': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(69): error C2228: left of '.sin_addr' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(69): error C2027: use of undefined type 'hostent'
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(69): error C2227: left of '->h_addr_list' must point to class/struct/union/generic type
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(69): error C2227: left of '->h_length' must point to class/struct/union/generic type
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(69): error C2660: 'memcpy' : function does not take 1 arguments
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(74): error C2228: left of '.sin_addr' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(74): error C2228: left of '.S_un' must have class/struct/union
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(74): error C2228: left of '.S_addr' must have class/struct/union
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(78): error C2228: left of '.sin_family' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(79): error C2228: left of '.sin_port' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(79): error C3861: 'htons': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(82): error C2446: '==' : no conversion from 'int' to 'int (__stdcall *)(SOCKET,const sockaddr *,int)'
+                 Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(82): error C2040: '==' : 'int (__stdcall *)(SOCKET,const sockaddr *,int)' differs in levels of indirection from 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(82): error C3861: 'connect': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(84): error C3861: 'WSAGetLastError': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(88): error C2228: left of '.sin_addr' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(88): error C2228: left of '.sin_port' must have class/struct/union
+                 type is 'int'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(88): error C3861: 'inet_ntoa': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(88): error C3861: 'htons': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(92): error C2027: use of undefined type 'WebSocket'
+                 c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(12) : see declaration of 'WebSocket'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(96): error C2065: 'sock' : undeclared identifier
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(96): error C3861: 'recv': identifier not found
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(101): warning C4305: 'return' : truncation from 'int' to 'bool'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(104): error C2027: use of undefined type 'WebSocket'
+                 c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.h(12) : see declaration of 'WebSocket'
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(107): error C2065: 'sock' : undeclared identifier
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\websocket.cpp(107): fatal error C1003: error count exceeds 100; stopping compilation
+         HTMLParserTest.cpp
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(100): warning C4005: 'AF_IPX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(452) : see previous definition of 'AF_IPX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(140): warning C4005: 'AF_MAX' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(471) : see previous definition of 'AF_MAX'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(177): warning C4005: 'SO_DONTLINGER' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(394) : see previous definition of 'SO_DONTLINGER'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(221): error C2011: 'sockaddr' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(477) : see declaration of 'sockaddr'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C2059: syntax error : 'constant'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(421): error C3805: 'constant': unexpected token, expected either '}' or a ','
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(556): warning C4005: 'IN_CLASSA' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(279) : see previous definition of 'IN_CLASSA'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(562): warning C4005: 'IN_CLASSB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(285) : see previous definition of 'IN_CLASSB'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(568): warning C4005: 'IN_CLASSC' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(291) : see previous definition of 'IN_CLASSC'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(579): warning C4005: 'INADDR_ANY' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(296) : see previous definition of 'INADDR_ANY'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(581): warning C4005: 'INADDR_BROADCAST' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(298) : see previous definition of 'INADDR_BROADCAST'
+     1>c:\program files\windows kits\8.1\include\shared\ws2def.h(615): error C2011: 'sockaddr_in' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(304) : see declaration of 'sockaddr_in'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(136): error C2011: 'fd_set' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(60) : see declaration of 'fd_set'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(156): warning C4005: 'FD_CLR' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(89) : see previous definition of 'FD_CLR'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(171): warning C4005: 'FD_SET' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(94) : see previous definition of 'FD_SET'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(180): error C2011: 'timeval' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(103) : see declaration of 'timeval'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(236): error C2011: 'hostent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(159) : see declaration of 'hostent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(249): error C2011: 'netent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(172) : see declaration of 'netent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(256): error C2011: 'servent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(179) : see declaration of 'servent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(268): error C2011: 'protoent' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(191) : see declaration of 'protoent'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(364): error C2011: 'WSAData' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(314) : see declaration of 'WSAData'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(462): error C2011: 'sockproto' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(486) : see declaration of 'sockproto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(504): error C2011: 'linger' : 'struct' type redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(523) : see declaration of 'linger'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(517): warning C4005: 'SOMAXCONN' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(536) : see previous definition of 'SOMAXCONN'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(551): warning C4005: 'FD_READ' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(554) : see previous definition of 'FD_READ'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(554): warning C4005: 'FD_WRITE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(555) : see previous definition of 'FD_WRITE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(557): warning C4005: 'FD_OOB' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(556) : see previous definition of 'FD_OOB'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(560): warning C4005: 'FD_ACCEPT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(557) : see previous definition of 'FD_ACCEPT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(563): warning C4005: 'FD_CONNECT' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(558) : see previous definition of 'FD_CONNECT'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(566): warning C4005: 'FD_CLOSE' : macro redefinition
+                 c:\program files\windows kits\8.1\include\um\winsock.h(559) : see previous definition of 'FD_CLOSE'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1650): error C2375: 'accept' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(734) : see declaration of 'accept'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1672): error C2375: 'bind' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(739) : see declaration of 'bind'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1691): error C2375: 'closesocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(744) : see declaration of 'closesocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1710): error C2375: 'connect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(746) : see declaration of 'connect'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1731): error C2375: 'ioctlsocket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(751) : see declaration of 'ioctlsocket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1752): error C2375: 'getpeername' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(756) : see declaration of 'getpeername'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1773): error C2375: 'getsockname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(761) : see declaration of 'getsockname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1796): error C2375: 'getsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(766) : see declaration of 'getsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1817): error C2375: 'htonl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(773) : see declaration of 'htonl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1834): error C2375: 'htons' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(775) : see declaration of 'htons'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1852): error C2375: 'inet_addr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(777) : see declaration of 'inet_addr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1870): error C2375: 'inet_ntoa' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(779) : see declaration of 'inet_ntoa'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1971): error C2375: 'listen' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(781) : see declaration of 'listen'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(1989): error C2375: 'ntohl' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(785) : see declaration of 'ntohl'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2006): error C2375: 'ntohs' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(787) : see declaration of 'ntohs'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2026): error C2375: 'recv' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(789) : see declaration of 'recv'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2051): error C2375: 'recvfrom' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(795) : see declaration of 'recvfrom'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2077): error C2375: 'select' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(803) : see declaration of 'select'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2101): error C2375: 'send' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(810) : see declaration of 'send'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2126): error C2375: 'sendto' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(816) : see declaration of 'sendto'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2152): error C2375: 'setsockopt' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(824) : see declaration of 'setsockopt'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2174): error C2375: 'shutdown' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(831) : see declaration of 'shutdown'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2195): error C2375: 'socket' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(835) : see declaration of 'socket'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2220): error C2375: 'gethostbyaddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(842) : see declaration of 'gethostbyaddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2240): error C2375: 'gethostbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(847) : see declaration of 'gethostbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2258): error C2375: 'gethostname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(849) : see declaration of 'gethostname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2298): error C2375: 'getservbyport' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(853) : see declaration of 'getservbyport'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2317): error C2375: 'getservbyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(857) : see declaration of 'getservbyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2335): error C2375: 'getprotobynumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(861) : see declaration of 'getprotobynumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2352): error C2375: 'getprotobyname' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(863) : see declaration of 'getprotobyname'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2373): error C2375: 'WSAStartup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(867) : see declaration of 'WSAStartup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2392): error C2375: 'WSACleanup' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(871) : see declaration of 'WSACleanup'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2409): error C2375: 'WSASetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(873) : see declaration of 'WSASetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2426): error C2375: 'WSAGetLastError' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(875) : see declaration of 'WSAGetLastError'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2447): error C2375: 'WSAIsBlocking' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(877) : see declaration of 'WSAIsBlocking'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2465): error C2375: 'WSAUnhookBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(879) : see declaration of 'WSAUnhookBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2483): error C2375: 'WSASetBlockingHook' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(881) : see declaration of 'WSASetBlockingHook'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2501): error C2375: 'WSACancelBlockingCall' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(883) : see declaration of 'WSACancelBlockingCall'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2524): error C2375: 'WSAAsyncGetServByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(885) : see declaration of 'WSAAsyncGetServByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2552): error C2375: 'WSAAsyncGetServByPort' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(893) : see declaration of 'WSAAsyncGetServByPort'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2579): error C2375: 'WSAAsyncGetProtoByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(901) : see declaration of 'WSAAsyncGetProtoByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2605): error C2375: 'WSAAsyncGetProtoByNumber' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(908) : see declaration of 'WSAAsyncGetProtoByNumber'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2631): error C2375: 'WSAAsyncGetHostByName' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(915) : see declaration of 'WSAAsyncGetHostByName'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2659): error C2375: 'WSAAsyncGetHostByAddr' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(922) : see declaration of 'WSAAsyncGetHostByAddr'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2683): error C2375: 'WSACancelAsyncRequest' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(931) : see declaration of 'WSACancelAsyncRequest'
+     1>c:\program files\windows kits\8.1\include\um\winsock2.h(2704): error C2375: 'WSAAsyncSelect' : redefinition; different linkage
+                 c:\program files\windows kits\8.1\include\um\winsock.h(933) : see declaration of 'WSAAsyncSelect'
+         Generating Code...
+     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.79
+Time Elapsed 00:00:06.55

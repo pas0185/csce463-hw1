@@ -5,12 +5,8 @@
 
 #pragma once
 
-#include "targetver.h"
-
 #include <stdio.h>
 #include <tchar.h>
-
-// TODO: reference additional headers your program requires here
 #include <windows.h>
 #include <stdio.h>
 #include <mmsystem.h>
@@ -18,3 +14,4 @@
 #include <map>
 #include <set>
 #include <string>
+#include <winsock2.h>

@@ -5,18 +5,17 @@
 *
 */
 
-#include <stdio.h>
-#include <winsock2.h>
-
 #define INITIAL_BUF_SIZE 8000
 
-// Taken from homework handout
-class Socket {
+#include "stdafx.h"
+
+class WebSocket {
 	SOCKET sock;
 	char* buf;
 	int allocatedSize;
 	int curPos;
 
+	void defaultSetup();
 	Socket();
 	bool Read();
 	void Send(char* request);

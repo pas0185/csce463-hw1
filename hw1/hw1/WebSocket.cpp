@@ -5,11 +5,21 @@
 * 
 */
 
-#include "Socket.h"
+#include "WebSocket.h"
 
-void defaultSetup();
+#include <stdio.h>
+#include <winsock2.h>
 
-Socket::Socket()
+class WebSocket {
+	SOCKET sock;
+	char* buf;
+	int allocatedSize;
+	int curPos;
+
+	void defaultSetup();
+};
+
+WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
 	defaultSetup();
@@ -79,7 +89,7 @@ void defaultSetup()
 
 }
 
-bool Socket::Read()
+bool WebSocket::Read()
 {
 	// receive data here
 	char responseBuf[INITIAL_BUF_SIZE];
@@ -91,7 +101,7 @@ bool Socket::Read()
 	return -1;
 }
 
-void Socket::Send(char* request)
+void WebSocket::Send(char* request)
 {
 	// send HTTP requests here
 	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
