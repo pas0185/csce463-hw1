@@ -10,14 +10,20 @@
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
-	DefaultSetup();
 }
 
-void WebSocket::DefaultSetup()
+void WebSocket::Send(char* request)
 {
-	// string pointing to an HTTP server (DNS name or IP)
-	char str[] = "www.tamu.edu";
-	//char str [] = "128.194.135.72";
+	// send HTTP requests here
+	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
+	{
+		printf("Send error: %d\n", WSAGetLastError());
+	}
+}
+
+void WebSocket::Setup(char hostname[])
+{
+	// Below taken from 463 Sample Code - by Dmitri Loguinov
 
 	WSADATA wsaData;
 
@@ -44,12 +50,15 @@ void WebSocket::DefaultSetup()
 	// structure for connecting to server
 	struct sockaddr_in server;
 
+	printf("\tDoing DNS...");
+	
+
 	// first assume that the string is an IP address
-	DWORD IP = inet_addr(str);
+	DWORD IP = inet_addr(hostname);
 	if (IP == INADDR_NONE)
 	{
 		// if not a valid IP, then do a DNS lookup
-		if ((remote = gethostbyname(str)) == NULL)
+		if ((remote = gethostbyname(hostname)) == NULL)
 		{
 			printf("Invalid string: neither FQDN, nor IP address\n");
 			return;
@@ -74,27 +83,22 @@ void WebSocket::DefaultSetup()
 		return;
 	}
 
-	printf("Successfully connected to %s (%s) on port %d\n", str, inet_ntoa(server.sin_addr), htons(server.sin_port));
+	printf("Successfully connected to %s (%s) on port %d\n", hostname, inet_ntoa(server.sin_addr), htons(server.sin_port));
 
 }
 
-bool WebSocket::Read()
+void WebSocket::Read(FILE* fp)
 {
+	if (fp == NULL)
+	{
+		printf("NULL File pointer pass to Read()");
+	}
+
+	
 	// receive data here
 	char responseBuf[INITIAL_BUF_SIZE];
 	while (recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
 	{
-		printf("%s", responseBuf);
-	}
-
-	return -1;
-}
-
-void WebSocket::Send(char* request)
-{
-	// send HTTP requests here
-	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
-	{
-		printf("Send error: %d\n", WSAGetLastError());
+		fprintf(fp, "%s", responseBuf);
 	}
 }

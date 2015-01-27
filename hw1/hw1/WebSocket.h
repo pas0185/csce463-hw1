@@ -12,14 +12,16 @@
 #include "Headers.h"
 
 class WebSocket {
+
+private:
 	SOCKET sock;
 	char* buf;
 	int allocatedSize;
 	int curPos;
-
+	
+public:
 	WebSocket();
-
-	void DefaultSetup();
-	bool Read();
+	void Setup(char hostname[]);
+	void Read(FILE* fp);
 	void Send(char* request);
 };

@@ -10,7 +10,7 @@
 // Defined in requestmaker.cpp
 char* buildGETRequest(char* host, char* port, char* request);
 
-char* parseURLString(char* url)
+char* parseURLString(char* url, char* hostnameOutput)
 {
 	printf("\tParsing URL...");
 	if (url == NULL)
@@ -63,8 +63,13 @@ char* parseURLString(char* url)
 		// Getting the host
 		if (tempUrl != NULL)
 		{
-			host = new char[strlen(tempUrl)];
+			newLen = strlen(tempUrl);
+			host = new char[newLen];
 			strcpy(host, tempUrl);
+
+			hostnameOutput = new char[newLen];
+			strcpy(hostnameOutput, tempUrl);
+			hostnameOutput[newLen] = '\0';
 		}
 		else
 		{
@@ -76,5 +81,5 @@ char* parseURLString(char* url)
 	printf("port: %s, ", port);
 	printf("request: %s\n", request);
 
-	return buildGETRequest(host, port, request);
+	return buildGETRequest("www.tamu.edu", port, request);
 }
