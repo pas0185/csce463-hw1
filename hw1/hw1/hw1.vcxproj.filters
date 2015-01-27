@@ -41,5 +41,8 @@
     <ClCompile Include="requestmaker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

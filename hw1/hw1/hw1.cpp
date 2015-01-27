@@ -4,13 +4,16 @@
 #include "stdafx.h"
 
 void parseURLsFromFile(char* fileName);
+char* dummyGETRequest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	if (argc > 1) {
+	/*if (argc > 1) {
 		parseURLsFromFile(argv[1]);
-	}
+	}*/
 	
+
+
 	printf("Press enter key to continue");
 	scanf("\n");
 	return 0;

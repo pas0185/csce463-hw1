@@ -9,14 +9,16 @@
 
 #define MAX_URL_LENGTH 1000
 
-typedef struct URL {
-	const char* scheme;
-	const char* host;
-	const char* port;
-	const char* path;
-	const char* query;
-	const char* fragment;
-};
+//typedef struct URL {
+//	char* scheme;
+//	char* host;
+//	char* port;
+//	char* path;
+//	char* query;
+//	char* fragment;
+//};
+
+char* GETRequest(char* scheme, char* host, char* port, char* path, char* query, char* fragment);
 
 // searches for the component at the beginning of the url
 // if no valid component found, return NULL
@@ -60,18 +62,26 @@ char* extractFromBack(char** url, char* delimiter)
 
 	return NULL;
 }
+//void parseHost(char** url, char** host)
+//{
+//
+//}
 
-URL parseURLString(char* url)
+void parseURLString(char* url)
 {
 	/* URL format: scheme://host[:port][/path][?query][#fragment] */
 	printf("-----------------------\n");
 	printf("Parsing URL = %s\n\n", url);
-
+	//char* host;
 	char* scheme = extractFromFront(&url, "://");
+	//parseHost(&url, &host);
+
 	char* fragment = extractFromBack(&url, "#");
 	char* query = extractFromBack(&url, "?");
 	char* path = extractFromBack(&url, "/");
 	char* port = extractFromBack(&url, ":");
+
+	
 
 	printf("scheme    = %s\n", scheme);
 	printf("host	  = %s\n", url);
@@ -80,16 +90,19 @@ URL parseURLString(char* url)
 	printf("query	  = %s\n", query);
 	printf("fragment  = %s\n", fragment);
 
+
+	char* request = GETRequest(scheme, url, port, path, query, fragment);
+	printf("%s", request);
+
 	printf("-----------------------\n\n\n");
+	//struct URL u;
+	//u.scheme = scheme;
+	//u.host = url;
+	//u.path = path;
+	//u.query = query;
+	//u.fragment = fragment;
 
-	struct URL u;
-	u.scheme = scheme;
-	u.host = url;
-	u.path = path;
-	u.query = query;
-	u.fragment = fragment;
-
-	return u;
+	//return u;
 }
 
 void parseURLsFromFile(char* fileName)
@@ -99,7 +112,10 @@ void parseURLsFromFile(char* fileName)
 	if (file != NULL) {
 		char line[MAX_URL_LENGTH];
 		while (fgets(line, sizeof(line), file) != NULL) {
-			struct URL url = parseURLString(strtok(line, "\n"));
+			parseURLString(strtok(line, "\n"));
+			//struct URL url =
+			//char* req = GETRequest(url.host, url.path, url.query);
+
 		}
 	}
 

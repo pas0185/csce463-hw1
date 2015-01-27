@@ -1,25 +1,29 @@
-﻿Build started 1/26/2015 6:26:01 PM.
+﻿Build started 1/27/2015 12:15:58 AM.
      1>Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt urlparser.cpp
-         urlparser.cpp
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(19): warning C4091: 'typedef ' : ignored on left of 'URL' when no variable is declared
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(32): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(112) : see declaration of 'strcpy'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(37): warning C4172: returning address of local variable or temporary
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(53): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _strdup. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(245) : see declaration of 'strdup'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(98): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\urlparser.cpp(102): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files\microsoft visual studio 12.0\vc\include\string.h(204) : see declaration of 'strtok'
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt requestmaker.cpp
+         requestmaker.cpp
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\requestmaker.cpp(26): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 12.0\vc\include\stdio.h(356) : see declaration of 'sprintf'
        Link:
          C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.lib" /MACHINE:X86 Debug\hw1.obj
+         Debug\networker.obj
+         Debug\requestmaker.obj
          Debug\stdafx.obj
          Debug\urlparser.obj
-         hw1.vcxproj -> C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe
-     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)).
+     1>networker.obj : error LNK2019: unresolved external symbol _closesocket@4 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _connect@12 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _htons@4 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _inet_addr@4 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _inet_ntoa@4 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _socket@12 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _gethostbyname@4 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _WSAStartup@8 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _WSACleanup@0 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>networker.obj : error LNK2019: unresolved external symbol _WSAGetLastError@0 referenced in function "void __cdecl winsock_test(void)" (?winsock_test@@YAXXZ)
+     1>C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe : fatal error LNK1120: 10 unresolved externals
+     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.43
+Time Elapsed 00:00:01.37
