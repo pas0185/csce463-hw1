@@ -23,11 +23,11 @@ int _tmain(int argc, _TCHAR* argv[])
 		// parse url string into an HTTP GET request
 		UrlParser urlParser = UrlParser();
 		request = urlParser.parseURLString(url);
+		hostname = urlParser.getLastHostName();
 
 		// create a web client to send our request
 		WebSocket socket = WebSocket();
-		
-		socket.Setup(urlParser.getLastHostName());
+		socket.Setup(hostname);
 		socket.Send(request);
 
 		// and to get the resulting HTML file

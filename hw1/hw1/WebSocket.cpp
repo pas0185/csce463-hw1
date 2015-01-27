@@ -6,20 +6,10 @@
 */
 
 #include "WebSocket.h"
-#include <time.h>
 
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
-}
-
-void WebSocket::Send(char* request)
-{
-	// send HTTP requests here
-	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
-	{
-		printf("Send error: %d\n", WSAGetLastError());
-	}
 }
 
 void WebSocket::Setup(char* hostname)
@@ -27,7 +17,6 @@ void WebSocket::Setup(char* hostname)
 	// Below taken from 463 Sample Code - by Dmitri Loguinov
 
 	WSADATA wsaData;
-	clock_t start, end, total;
 
 	//Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -38,7 +27,7 @@ void WebSocket::Setup(char* hostname)
 	}
 
 	// open a TCP socket
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == INVALID_SOCKET)
 	{
 		printf("socket() generated error %d\n", WSAGetLastError());
@@ -52,7 +41,7 @@ void WebSocket::Setup(char* hostname)
 	// structure for connecting to server
 	struct sockaddr_in server;
 
-	printf("\t  Doing DNS...");
+	printf("\t  Doing DNS... ");
 
 	start = clock();
 
@@ -84,7 +73,7 @@ void WebSocket::Setup(char* hostname)
 	server.sin_port = htons(80);		// host-to-network flips the byte order
 
 
-	printf("\t* Connecting on page...");
+	printf("\t* Connecting on page... ");
 	start = clock();
 	// connect to the server on port 80
 	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
@@ -95,6 +84,17 @@ void WebSocket::Setup(char* hostname)
 	end = clock();
 	total = (double)(end - start);
 	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
+}
+
+void WebSocket::Send(char* request)
+{
+	printf("\t  Loading... ");
+	// send HTTP request
+	start = clock();
+	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
+	{
+		printf("Send error: %d\n", WSAGetLastError());
+	}
 }
 
 void WebSocket::Read(FILE* fp)
@@ -110,4 +110,8 @@ void WebSocket::Read(FILE* fp)
 	{
 		fprintf(fp, "%s", responseBuf);
 	}
+	
+	end = clock();
+	total = (double)(end - start);
+	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), fp->_bufsiz);
 }

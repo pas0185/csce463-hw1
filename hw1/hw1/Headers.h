@@ -6,6 +6,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <time.h>
 #include <tchar.h>
 #include <windows.h>
 #include <stdio.h>

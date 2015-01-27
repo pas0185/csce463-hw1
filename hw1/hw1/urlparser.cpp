@@ -63,7 +63,6 @@ char* UrlParser::parseURLString(char* url)
 			newLen = strlen(delim);
 			port = new char[newLen];
 			strcpy(port, delim);
-				//port = strtok(delim, "/?# ");
 			tempUrl[strlen(tempUrl) - newLen - 1] = '\0';
 		}
 		else

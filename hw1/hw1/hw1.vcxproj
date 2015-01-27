@@ -82,11 +82,13 @@
     <Text Include="URL-input-100.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HTMLParserBase.h" />
     <ClInclude Include="UrlParser.h" />
     <ClInclude Include="WebSocket.h" />
     <ClInclude Include="Headers.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HTMLParserTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestMaker.cpp" />
     <ClCompile Include="WebSocket.cpp" />

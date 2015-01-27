@@ -18,7 +18,8 @@ private:
 	char* buf;
 	int allocatedSize;
 	int curPos;
-	
+	clock_t start, end, total;
+
 public:
 	WebSocket();
 	void Setup(char hostname[]);
