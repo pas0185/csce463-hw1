@@ -7,24 +7,13 @@
 
 #include "WebSocket.h"
 
-#include <stdio.h>
-#include <winsock2.h>
-
-class WebSocket {
-	SOCKET sock;
-	char* buf;
-	int allocatedSize;
-	int curPos;
-
-	void defaultSetup();
-};
-
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
-	defaultSetup();
+	DefaultSetup();
 }
-void defaultSetup()
+
+void WebSocket::DefaultSetup()
 {
 	// string pointing to an HTTP server (DNS name or IP)
 	char str[] = "www.tamu.edu";

@@ -82,19 +82,14 @@
     <Text Include="URL-input-100.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HTMLParserBase.h" />
     <ClInclude Include="WebSocket.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Headers.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="htmlparser.cpp" />
-    <ClCompile Include="HTMLParserTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="client.cpp" />
-    <ClCompile Include="requestmaker.cpp" />
+    <ClCompile Include="RequestMaker.cpp" />
     <ClCompile Include="WebSocket.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="urlparser.cpp" />
+    <ClCompile Include="UrlParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

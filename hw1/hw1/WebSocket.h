@@ -5,9 +5,11 @@
 *
 */
 
+#pragma once
+
 #define INITIAL_BUF_SIZE 8000
 
-#include "stdafx.h"
+#include "Headers.h"
 
 class WebSocket {
 	SOCKET sock;
@@ -15,8 +17,9 @@ class WebSocket {
 	int allocatedSize;
 	int curPos;
 
-	void defaultSetup();
-	Socket();
+	WebSocket();
+
+	void DefaultSetup();
 	bool Read();
 	void Send(char* request);
 };
