@@ -4,7 +4,6 @@
 #include "Headers.h"
 
 int HTMLParserTest();
-char* parseURLString(char* url, char* hostnameOutput);
 void parseURLsFromFile(char* fileName);
 void winsock_test(char* requestBuf);
 void htmlParserTest();
@@ -13,16 +12,17 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	for (int i = 1; i < argc; i++)
 	{
-		char* url = argv[i], *request;
+		char* url = argv[i], *request, *hostname;
 		printf("URL: %s\n", url);
 
-		char* hostname = new char[strlen(url)];
 		// parse url string into an HTTP GET request
-		request = parseURLString(url, hostname);
+		UrlParser urlParser = UrlParser();
+		request = urlParser.parseURLString(url);
 
 		// create a web client to send our request
 		WebSocket socket = WebSocket();
-		socket.Setup(hostname);
+		
+		socket.Setup(urlParser.getLastHostName());
 		socket.Send(request);
 
 		// and to get the resulting HTML file

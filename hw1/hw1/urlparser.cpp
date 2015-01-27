@@ -5,12 +5,12 @@
  *
  */
 
-#include "Headers.h"
+#include "UrlParser.h"
 
 // Defined in requestmaker.cpp
 char* buildGETRequest(char* host, char* port, char* request);
 
-char* parseURLString(char* url, char* hostnameOutput)
+char* UrlParser::parseURLString(char* url)
 {
 	printf("\tParsing URL...");
 	if (url == NULL)
@@ -66,10 +66,7 @@ char* parseURLString(char* url, char* hostnameOutput)
 			newLen = strlen(tempUrl);
 			host = new char[newLen];
 			strcpy(host, tempUrl);
-
-			hostnameOutput = new char[newLen];
-			strcpy(hostnameOutput, tempUrl);
-			hostnameOutput[newLen] = '\0';
+			strcpy(hostname, tempUrl);
 		}
 		else
 		{
@@ -81,5 +78,13 @@ char* parseURLString(char* url, char* hostnameOutput)
 	printf("port: %s, ", port);
 	printf("request: %s\n", request);
 
-	return buildGETRequest("www.tamu.edu", port, request);
+	return buildGETRequest(host, port, request);
+}
+
+char* UrlParser::getLastHostName()
+{
+	if (hostname == NULL)
+		return NULL;
+
+	return hostname;
 }

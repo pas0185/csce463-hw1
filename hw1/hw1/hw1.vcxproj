@@ -82,6 +82,7 @@
     <Text Include="URL-input-100.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UrlParser.h" />
     <ClInclude Include="WebSocket.h" />
     <ClInclude Include="Headers.h" />
   </ItemGroup>

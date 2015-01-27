@@ -15,4 +15,5 @@
 #include <set>
 #include <string>
 
+#include "UrlParser.h"
 #include "WebSocket.h"

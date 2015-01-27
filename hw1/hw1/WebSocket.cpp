@@ -21,10 +21,10 @@ void WebSocket::Send(char* request)
 	}
 }
 
-void WebSocket::Setup(char hostname[])
+void WebSocket::Setup(char* hostname)
 {
 	// Below taken from 463 Sample Code - by Dmitri Loguinov
-
+	//char str[] = "www.tamu.edu";
 	WSADATA wsaData;
 
 	//Initialize WinSock; once per program run
