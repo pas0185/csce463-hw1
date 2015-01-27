@@ -12,7 +12,7 @@ char* buildGETRequest(char* host, char* port, char* request);
 
 char* UrlParser::parseURLString(char* url)
 {
-	printf("\tParsing URL...");
+	printf("\t  Parsing URL...");
 	if (url == NULL)
 	{
 		printf("url == NULL, aborting.\n");
@@ -28,9 +28,9 @@ char* UrlParser::parseURLString(char* url)
 		// Stripping the scheme
 		strcpy(tempUrl, delim + 3);
 
+		// Stripping the fragment
 		if ((delim = strstr(tempUrl, "#")) != NULL)
 		{
-			// Stripping the fragment
 			newLen = strlen(tempUrl) - strlen(delim);
 			tempUrl[newLen] = '\0';
 		}
@@ -43,6 +43,14 @@ char* UrlParser::parseURLString(char* url)
 			strcpy(request, delim);
 			tempUrl[newLen] = '\0';
 		}
+		else if ((delim = strstr(tempUrl, "?")) != NULL)
+		{
+			newLen = strlen(tempUrl) - strlen(delim);
+			request = new char[strlen(delim) + 1];
+			sprintf(request, "/%s", delim);
+			//strcpy(request, delim);
+			tempUrl[newLen] = '\0';
+		}
 		else
 		{
 			request = "/";
@@ -51,9 +59,12 @@ char* UrlParser::parseURLString(char* url)
 		// Getting the port
 		if ((delim = strstr(tempUrl, ":")) != NULL)
 		{
-			newLen = strlen(tempUrl) - strlen(delim);
-			port = strtok(delim, "/?# ");
-			tempUrl[newLen + 1] = '\0';
+			delim++;
+			newLen = strlen(delim);
+			port = new char[newLen];
+			strcpy(port, delim);
+				//port = strtok(delim, "/?# ");
+			tempUrl[strlen(tempUrl) - newLen - 1] = '\0';
 		}
 		else
 		{

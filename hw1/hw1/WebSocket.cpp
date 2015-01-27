@@ -27,6 +27,7 @@ void WebSocket::Setup(char* hostname)
 	// Below taken from 463 Sample Code - by Dmitri Loguinov
 
 	WSADATA wsaData;
+	clock_t start, end, total;
 
 	//Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -51,11 +52,9 @@ void WebSocket::Setup(char* hostname)
 	// structure for connecting to server
 	struct sockaddr_in server;
 
-	printf("\tDoing DNS...");
+	printf("\t  Doing DNS...");
 
-	clock_t start = clock();
-
-
+	start = clock();
 
 	// first assume that the string is an IP address
 	DWORD IP = inet_addr(hostname);
@@ -76,23 +75,26 @@ void WebSocket::Setup(char* hostname)
 		server.sin_addr.S_un.S_addr = IP;
 	}
 
-	clock_t end = clock();
-	clock_t total = (double)(end - start);
-	printf("done in %d ticks\n", total);
+	end = clock();
+	total = (double)(end - start);
+	printf("done in %d ms, found %s\n", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server.sin_addr));
 
 	// setup the port # and protocol type
 	server.sin_family = AF_INET;
 	server.sin_port = htons(80);		// host-to-network flips the byte order
 
+
+	printf("\t* Connecting on page...");
+	start = clock();
 	// connect to the server on port 80
 	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 	{
 		printf("Connection error: %d\n", WSAGetLastError());
 		return;
 	}
-
-	printf("Successfully connected to %s (%s) on port %d\n", hostname, inet_ntoa(server.sin_addr), htons(server.sin_port));
-
+	end = clock();
+	total = (double)(end - start);
+	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 }
 
 void WebSocket::Read(FILE* fp)
@@ -102,7 +104,6 @@ void WebSocket::Read(FILE* fp)
 		printf("NULL File pointer pass to Read()");
 	}
 
-	
 	// receive data here
 	char responseBuf[INITIAL_BUF_SIZE];
 	while (recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
