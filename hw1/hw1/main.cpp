@@ -5,6 +5,7 @@
 
 void parseURLsFromFile(char* fileName);
 char* dummyGETRequest();
+void winsock_test(char* requestBuf);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -12,8 +13,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		parseURLsFromFile(argv[1]);
 	}*/
 	
-
-
+	char req[] = "GET /courses/ HTTP/1.0\r\nHost: irl.cs.tamu.edu\r\nConnection: close\r\n\r\n";
+	winsock_test(req);
 	printf("Press enter key to continue");
 	scanf("\n");
 	return 0;
