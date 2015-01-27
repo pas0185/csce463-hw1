@@ -16,6 +16,7 @@ void winsock_test(char* requestBuf)
 	char str[] = "www.tamu.edu";
 	//char str [] = "128.194.135.72";
 
+
 	WSADATA wsaData;
 
 	//Initialize WinSock; once per program run
@@ -92,100 +93,3 @@ void winsock_test(char* requestBuf)
 	// call cleanup when done with everything and ready to exit program
 	WSACleanup();
 }
-
-//int socketTest()
-//{	// Guidelines and sample code based off of lecture slides at:
-//	// http://irl.cse.tamu.edu/courses/463/1-22-15.pdf
-//	
-//
-//	DWORD dwError;
-//	char **pAlias;
-//	int i = 0;
-//	struct in_addr addr;
-//
-//	// WILL BE PARAMETERS
-//	char ipAddrNumbers[] = "128.194.135.72";
-//	char ipAddrName[] = "www.tamu.edu";
-//	// ******************
-//
-//
-//
-//	// Open a socket
-//	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-//	if (sock == INVALID_SOCKET)
-//	{
-//		printf("socket() error %d\n", WSAGetLastError());
-//		WSACleanup();
-//		return 1;
-//	}
-//
-//	// Get IP address of server in URL
-//	long address;
-//	if ((address = inet_addr(ipAddrNumbers)) == INADDR_NONE)
-//	{
-//		struct hostent* remoteHost = gethostbyname(ipAddrName); 
-//		
-//		// From MSDN:
-//		if (remoteHost == NULL) {
-//			dwError = WSAGetLastError();
-//			if (dwError != 0) {
-//				if (dwError == WSAHOST_NOT_FOUND) {
-//					printf("Host not found\n");
-//					return 1;
-//				}
-//				else if (dwError == WSANO_DATA) {
-//					printf("No data record found\n");
-//					return 1;
-//				}
-//				else {
-//					printf("Function failed with error: %ld\n", dwError);
-//					return 1;
-//				}
-//			}
-//		}
-//		else {
-//			printf("Function returned:\n");
-//			printf("\tOfficial name: %s\n", remoteHost->h_name);
-//			for (pAlias = remoteHost->h_aliases; *pAlias != 0; pAlias++) {
-//				printf("\tAlternate name #%d: %s\n", ++i, *pAlias);
-//			}
-//			printf("\tAddress type: ");
-//			switch (remoteHost->h_addrtype) {
-//			case AF_INET:
-//				printf("AF_INET\n");
-//				break;
-//			case AF_NETBIOS:
-//				printf("AF_NETBIOS\n");
-//				break;
-//			default:
-//				printf(" %d\n", remoteHost->h_addrtype);
-//				break;
-//			}
-//			printf("\tAddress length: %d\n", remoteHost->h_length);
-//
-//			i = 0;
-//			if (remoteHost->h_addrtype == AF_INET)
-//			{
-//				while (remoteHost->h_addr_list[i] != 0) {
-//					addr.s_addr = *(u_long *)remoteHost->h_addr_list[i++];
-//					printf("\tIP Address #%d: %s\n", i, inet_ntoa(addr));
-//				}
-//			}
-//			else if (remoteHost->h_addrtype == AF_NETBIOS)
-//			{
-//				printf("NETBIOS address was returned\n");
-//			}
-//		}
-//	}
-//
-//	// Initiate connection on correct port
-//
-//	// Send request conforming to correct protocol
-//
-//	// Receive response
-//
-//	// Close socket
-//	closesocket(sock);
-//
-//	return 1;
-//}

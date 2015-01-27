@@ -1,23 +1,18 @@
-﻿Build started 1/27/2015 1:31:16 AM.
+﻿Build started 1/27/2015 2:12:12 AM.
      1>Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt client.cpp
-         client.cpp
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\client.cpp(45): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-                 c:\program files\windows kits\8.1\include\um\winsock2.h(1850) : see declaration of 'inet_addr'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\client.cpp(49): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-                 c:\program files\windows kits\8.1\include\um\winsock2.h(2238) : see declaration of 'gethostbyname'
-     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\client.cpp(74): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-                 c:\program files\windows kits\8.1\include\um\winsock2.h(1868) : see declaration of 'inet_ntoa'
-       Link:
-         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe" /INCREMENTAL /NOLOGO Ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.lib" /MACHINE:X86 Debug\main.obj
-         Debug\client.obj
-         Debug\requestmaker.obj
-         Debug\stdafx.obj
-         Debug\urlparser.obj
-         hw1.vcxproj -> C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\Debug\hw1.exe
-     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)).
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt htmlparser.cpp main.cpp
+         main.cpp
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\main.cpp(24): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 12.0\vc\include\stdio.h(283) : see declaration of 'scanf'
+         htmlparser.cpp
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\htmlparser.cpp(15): error C2065: 'htmlCode' : undeclared identifier
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\htmlparser.cpp(15): error C2065: 'codeSize' : undeclared identifier
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\htmlparser.cpp(30): error C2065: 'fileBuf' : undeclared identifier
+     1>c:\users\patrick\documents\github\csce463-hw1\hw1\hw1\htmlparser.cpp(30): error C2541: 'delete' : cannot delete objects that are not pointers
+         Generating Code...
+     1>Done Building Project "C:\Users\Patrick\Documents\GitHub\CSCE463-hw1\hw1\hw1\hw1.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:01.34
+Time Elapsed 00:00:02.02
