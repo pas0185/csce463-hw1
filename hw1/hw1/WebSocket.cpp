@@ -42,8 +42,7 @@ void WebSocket::Setup(char* hostname)
 	struct sockaddr_in server;
 
 	printf("\t  Doing DNS... ");
-
-	start = clock();
+	start = clock();	// timing DNS lookup
 
 	// first assume that the string is an IP address
 	DWORD IP = inet_addr(hostname);
@@ -64,7 +63,7 @@ void WebSocket::Setup(char* hostname)
 		server.sin_addr.S_un.S_addr = IP;
 	}
 
-	end = clock();
+	end = clock();	// timing DNS lookup
 	total = (double)(end - start);
 	printf("done in %d ms, found %s\n", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server.sin_addr));
 
@@ -74,23 +73,21 @@ void WebSocket::Setup(char* hostname)
 
 
 	printf("\t* Connecting on page... ");
-	start = clock();
+	start = clock();	// timing socket connection
 	// connect to the server on port 80
 	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 	{
 		printf("Connection error: %d\n", WSAGetLastError());
 		return;
 	}
-	end = clock();
+	end = clock();	// timing socket connection
 	total = (double)(end - start);
 	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 }
 
 void WebSocket::Send(char* request)
 {
-	printf("\t  Loading... ");
 	// send HTTP request
-	start = clock();
 	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
 	{
 		printf("Send error: %d\n", WSAGetLastError());
@@ -100,6 +97,8 @@ void WebSocket::Send(char* request)
 int WebSocket::ReadAndWriteToFile(char* filename)
 {	
 	// Receive data from socket
+	printf("\t  Loading... ");
+	start = clock();	// timing loading file
 
 	if (filename == NULL)
 	{
@@ -110,11 +109,21 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 	// Write everything to the file, including header (TODO)
 	FILE *fp = fopen(filename, "w+");
 	
+	int bytesRead = 0;
 	int status = 0;
-	char headerBuf[INITIAL_BUF_SIZE];
+	int foo;
+	//char headerBuf[INITIAL_BUF_SIZE];
 	char responseBuf[INITIAL_BUF_SIZE];
-	while (recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
+	while (foo = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
 	{
+		bytesRead += foo;
+
+		// if need to resize buffer
+		if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
+		{
+
+		}
+
 		fprintf(fp, "%s", responseBuf);
 
 		if (status < 200)
@@ -122,12 +131,11 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
 		}
 	}
-	end = clock();
+	end = clock();	// timing loading file
 	total = (double)(end - start);
 	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), fp->_bufsiz);
 
 	printf("\t  Verifying header... ");
-	//fscanf(fp, "HTTP/1.0 %d ", status);
 	printf("status code %d\n", status);
 
 	fclose(fp);

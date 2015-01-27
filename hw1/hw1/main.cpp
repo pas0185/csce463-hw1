@@ -43,11 +43,13 @@ int _tmain(int argc, _TCHAR* argv[])
 			htmlParser.parse(htmlFileName, url);
 		}
 
-		printf("\n\n----------------------------\n");
-		printf("HTTP/1.0 %d OK", statusCode);
+		printf("\n----------------------------\n");
+		printf("HTTP/1.0 %d", statusCode);
+
+		printf("\n\n\n");
 	}
 
-	printf("Press enter key to continue");
+	printf("\n\nPress enter key to continue");
 	scanf("\n");
 	return 0;
 }

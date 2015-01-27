@@ -9,9 +9,11 @@
 
 #include "Headers.h"
 
+
 class UrlParser 
 {
 private:
+	const char* useragent = "snailCrawlerPatrick/1.0";
 	char hostname[256];
 
 public:

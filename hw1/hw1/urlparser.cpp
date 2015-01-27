@@ -24,9 +24,9 @@ char* UrlParser::buildGETRequest(char* host, char* port, char* request)
 		port = "80";
 
 	// Build formatted request string
-	int size = strlen(host) + strlen(port) + strlen(request) + 50;
+	int size = strlen(host) + strlen(port) + strlen(request) + strlen(useragent) + 50;
 	char* GETReq = new char[size];
-	sprintf(GETReq, "GET %s HTTP/1.0\r\nHost: %s\r\nConnection: close\r\n\r\n", request, host);
+	sprintf(GETReq, "GET %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", request, useragent, host);
 
 	return GETReq;
 }
