@@ -41,7 +41,7 @@ char* UrlParser::parseURLString(char* url)
 			newLen = strlen(tempUrl) - strlen(delim);
 			request = new char[strlen(delim)];
 			strcpy(request, delim);
-			tempUrl[newLen + 1] = '\0';
+			tempUrl[newLen] = '\0';
 		}
 		else
 		{

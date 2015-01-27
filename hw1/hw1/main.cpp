@@ -10,6 +10,11 @@ void htmlParserTest();
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if (argc < 2)
+	{
+		printf("No input file found in arguments. Please try again using the sytax:\n\thw1.exe <URL>\n");
+		return 0;
+	}
 	for (int i = 1; i < argc; i++)
 	{
 		char* url = argv[i], *request, *hostname;

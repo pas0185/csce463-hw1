@@ -6,6 +6,7 @@
 */
 
 #include "WebSocket.h"
+#include <time.h>
 
 WebSocket::WebSocket()
 {
@@ -24,7 +25,7 @@ void WebSocket::Send(char* request)
 void WebSocket::Setup(char* hostname)
 {
 	// Below taken from 463 Sample Code - by Dmitri Loguinov
-	//char str[] = "www.tamu.edu";
+
 	WSADATA wsaData;
 
 	//Initialize WinSock; once per program run
@@ -51,7 +52,10 @@ void WebSocket::Setup(char* hostname)
 	struct sockaddr_in server;
 
 	printf("\tDoing DNS...");
-	
+
+	clock_t start = clock();
+
+
 
 	// first assume that the string is an IP address
 	DWORD IP = inet_addr(hostname);
@@ -71,6 +75,10 @@ void WebSocket::Setup(char* hostname)
 		// if a valid IP, directly drop its binary version into sin_addr
 		server.sin_addr.S_un.S_addr = IP;
 	}
+
+	clock_t end = clock();
+	clock_t total = (double)(end - start);
+	printf("done in %d ticks\n", total);
 
 	// setup the port # and protocol type
 	server.sin_family = AF_INET;
