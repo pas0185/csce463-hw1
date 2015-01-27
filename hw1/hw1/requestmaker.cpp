@@ -27,8 +27,3 @@ char* GETRequest(char* scheme, char* host, char* port, char* path, char* query, 
 						
 	return fullRequest;
 }
-
-char* dummyGETRequest()
-{
-	return GETRequest("http", "irl.cs.tamu.edu", "", "/courses/", "", "");
-}

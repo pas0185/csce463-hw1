@@ -1,21 +1,24 @@
 /*
 * Patrick Sheehan
 * CSCE463 HW1
-* 26 January 2015
-*
+* 27 January 2015
+* 
 */
 
-#include <stdio.h>
-#include <winsock2.h>
+#include "Socket.h"
 
-#define RESPONSE_BUFFER_LENGTH 1000
+void defaultSetup();
 
-void winsock_test(char* requestBuf)
+Socket::Socket()
+{
+	buf = new char[INITIAL_BUF_SIZE];
+	defaultSetup();
+}
+void defaultSetup()
 {
 	// string pointing to an HTTP server (DNS name or IP)
 	char str[] = "www.tamu.edu";
 	//char str [] = "128.194.135.72";
-
 
 	WSADATA wsaData;
 
@@ -74,22 +77,25 @@ void winsock_test(char* requestBuf)
 
 	printf("Successfully connected to %s (%s) on port %d\n", str, inet_ntoa(server.sin_addr), htons(server.sin_port));
 
-	// send HTTP requests here
-	if (send(sock, requestBuf, strlen(requestBuf), 0) == SOCKET_ERROR)
-	{
-		printf("Send error: %d\n", WSAGetLastError());
-	}
+}
 
+bool Socket::Read()
+{
 	// receive data here
-	char responseBuf[RESPONSE_BUFFER_LENGTH];
-	while (recv(sock, responseBuf, RESPONSE_BUFFER_LENGTH, 0) > 0)
+	char responseBuf[INITIAL_BUF_SIZE];
+	while (recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
 	{
 		printf("%s", responseBuf);
 	}
 
-	// close the socket to this server; open again for the next one
-	closesocket(sock);
+	return -1;
+}
 
-	// call cleanup when done with everything and ready to exit program
-	WSACleanup();
+void Socket::Send(char* request)
+{
+	// send HTTP requests here
+	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
+	{
+		printf("Send error: %d\n", WSAGetLastError());
+	}
 }

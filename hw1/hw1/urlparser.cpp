@@ -9,15 +9,6 @@
 
 #define MAX_URL_LENGTH 1000
 
-//typedef struct URL {
-//	char* scheme;
-//	char* host;
-//	char* port;
-//	char* path;
-//	char* query;
-//	char* fragment;
-//};
-
 char* GETRequest(char* scheme, char* host, char* port, char* path, char* query, char* fragment);
 
 // searches for the component at the beginning of the url
@@ -67,7 +58,7 @@ char* extractFromBack(char** url, char* delimiter)
 //
 //}
 
-void parseURLString(char* url)
+char* parseURLString(char* url)
 {
 	/* URL format: scheme://host[:port][/path][?query][#fragment] */
 	printf("-----------------------\n");
@@ -95,14 +86,8 @@ void parseURLString(char* url)
 	printf("%s", request);
 
 	printf("-----------------------\n\n\n");
-	//struct URL u;
-	//u.scheme = scheme;
-	//u.host = url;
-	//u.path = path;
-	//u.query = query;
-	//u.fragment = fragment;
-
-	//return u;
+	
+	return GETRequest(scheme, url, port, path, query, fragment);
 }
 
 void parseURLsFromFile(char* fileName)
