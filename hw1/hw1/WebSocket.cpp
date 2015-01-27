@@ -97,22 +97,40 @@ void WebSocket::Send(char* request)
 	}
 }
 
-void WebSocket::Read(FILE* fp)
-{
-	if (fp == NULL)
-	{
-		printf("NULL File pointer pass to Read()");
-	}
+int WebSocket::ReadAndWriteToFile(char* filename)
+{	
+	// Receive data from socket
 
-	// receive data here
+	if (filename == NULL)
+	{
+		printf("An NULL file name was passed to Websocket for writing to");
+		return -1;
+	}
+	
+	// Write everything to the file, including header (TODO)
+	FILE *fp = fopen(filename, "w+");
+	
+	int status = 0;
+	char headerBuf[INITIAL_BUF_SIZE];
 	char responseBuf[INITIAL_BUF_SIZE];
 	while (recv(sock, responseBuf, INITIAL_BUF_SIZE, 0) > 0)
 	{
 		fprintf(fp, "%s", responseBuf);
-	}
-	fclose(fp);
 
+		if (status < 200)
+		{
+			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
+		}
+	}
 	end = clock();
 	total = (double)(end - start);
 	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), fp->_bufsiz);
+
+	printf("\t  Verifying header... ");
+	//fscanf(fp, "HTTP/1.0 %d ", status);
+	printf("status code %d\n", status);
+
+	fclose(fp);
+
+	return status;
 }

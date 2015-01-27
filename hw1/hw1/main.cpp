@@ -31,15 +31,20 @@ int _tmain(int argc, _TCHAR* argv[])
 		socket.Send(request);
 
 		// and to get the resulting HTML file
-		char *htmlFile = "test.html";
-		FILE *fp = fopen(htmlFile, "w+");
-		socket.Read(fp);
+		char *htmlFileName = "test.html";
+		int statusCode = socket.ReadAndWriteToFile(htmlFileName);
 
-		// parse the HTML file to count number of links
-		HtmlParser htmlParser = HtmlParser();
-		htmlParser.parse(htmlFile, url);
+		// TODO: just pass whole buffer instead of saving as a file first
 
-		printf("\n\n\n");
+		if (200 < statusCode && statusCode < 300)
+		{
+			// parse the HTML file to count number of links
+			HtmlParser htmlParser = HtmlParser();
+			htmlParser.parse(htmlFileName, url);
+		}
+
+		printf("\n\n----------------------------\n");
+		printf("HTTP/1.0 %d OK", statusCode);
 	}
 
 	printf("Press enter key to continue");

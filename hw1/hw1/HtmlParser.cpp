@@ -7,10 +7,10 @@
 
 #include "HtmlParser.h"
 
+
 void HtmlParser::parse(char* filename, char* baseUrl)
 {	
 	// Taken from CPSC 463 homework handout
-
 
 	// open html file
 	HANDLE hFile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
@@ -50,12 +50,11 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	// done with the file
 	CloseHandle(hFile);
 
-
-
+	clock_t start, end, total;
+	printf("\t+ Parsing page... ");
+	start = clock();
 	// create new parser object
 	HTMLParserBase *parser = new HTMLParserBase;
-
-	//char baseUrl[] = "http://www.tamu.edu";		// where this page came from; needed for construction of relative links
 
 	int nLinks;
 	char *linkBuffer = parser->Parse(fileBuf, fileSize, baseUrl, (int)strlen(baseUrl), &nLinks);
@@ -63,8 +62,10 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	// check for errors indicated by negative values
 	if (nLinks < 0)
 		nLinks = 0;
+	end = clock();
+	total = (double)(end - start);
 
-	printf("Found %d links:\n", nLinks);
+	printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
 
 	// print each URL; these are NULL-separated C strings
 	for (int i = 0; i < nLinks; i++)
