@@ -72,15 +72,27 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		else
 		{
-			cout << "Invalid input for number of threads to spawn" << endl;
-			cout << "Please provide input of the form:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>" << endl;
-			return 0;
+			numThreads = 0;
+			cout << "Error parsing number of threads" << endl;
 		}
 
 		// Second param
 		string inputFile = argv[2];
 
 		cout << "Provided input file: " << inputFile << endl;
+
+
+		if (numThreads != 1)
+		{
+			cout << "Invalid input for number of threads to spawn" << endl;
+			cout << "\tExpected: 1, but found " << numThreads << endl;
+			cout << "Please provide input of the form:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>" << endl;
+			return 0;
+		}
+
+		FileParser fp = new FileParser();
+		fp.parseFile(inputFile, numThreads);
+
 	}
 	
 
