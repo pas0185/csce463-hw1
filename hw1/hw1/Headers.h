@@ -17,8 +17,12 @@
 #include <map>
 #include <set>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 #include "UrlParser.h"
 #include "WebSocket.h"
 #include "HTMLParserBase.h"
 #include "HtmlParser.h"
+
+using namespace std;

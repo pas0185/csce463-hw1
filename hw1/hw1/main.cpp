@@ -15,17 +15,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf("No input file found in arguments. Please try again using the sytax:\n\thw1.exe <URL>\n");
 		return 0;
 	}
-	
-	int statusCode;
-	char *url, *request, *hostname, *htmlFileName;
-	UrlParser urlParser = UrlParser();
-	WebSocket socket = WebSocket();
-	HtmlParser htmlParser = HtmlParser();
-
-	for (int i = 1; i < argc; i++)
+	else if (argc == 2)
 	{
-		url = new char[strlen(argv[i])];
-		strcpy(url, argv[i]);
+		// > hw1.exe <URL>
+
+		// part 1 functionality
+		int statusCode;
+		char *url, *request, *hostname, *htmlFileName;
+		UrlParser urlParser = UrlParser();
+		WebSocket socket = WebSocket();
+		HtmlParser htmlParser = HtmlParser();
+
+		url = new char[strlen(argv[1])];
+		strcpy(url, argv[1]);
 		printf("URL: %s\n", url);
 
 		// parse url string into an HTTP GET request
@@ -52,9 +54,38 @@ int _tmain(int argc, _TCHAR* argv[])
 		printf("HTTP/1.0 %d", statusCode);
 
 		printf("\n\n\n");
+		
+
 	}
+	else if (argc == 3)
+	{
+		// part 2 functionality
+
+		// > hw1.exe <NUM-THREADS> <URL-INPUT.TXT>
+
+		// First param
+		istringstream in(argv[1]);
+		int numThreads;
+		if (in >> numThreads && in.eof())
+		{
+			cout << "Number of threads to spawn: " << numThreads << endl;
+		}
+		else
+		{
+			cout << "Invalid input for number of threads to spawn" << endl;
+			cout << "Please provide input of the form:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>" << endl;
+			return 0;
+		}
+
+		// Second param
+		string inputFile = argv[2];
+
+		cout << "Provided input file: " << inputFile << endl;
+	}
+	
 
 	printf("\n\nPress enter key to continue");
 	scanf("\n");
+	
 	return 0;
 }
