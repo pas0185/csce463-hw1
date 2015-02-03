@@ -5,9 +5,59 @@
  *
  */
 
-#include "UrlParser.h"
+#include "URLParser.h"
+#include "WebSocket.h"
 
-char* UrlParser::buildGETRequest(char* host, char* port, char* request)
+using namespace std;
+
+void URLParser::parse(string url)
+{
+	// Parse the url into its components
+	// TODO: code here similiar to existing parseURLString()
+	// TODO: plenty of error checking and information to user
+	string testHost = "symantec.com";
+	
+	// Establish socket connection
+	WebSocket socket = WebSocket();
+
+	// Pass hostname to WebSocket
+	// socket.Setup(....
+
+	// TODO: check if host is unique
+
+	// TODO: DNS lookup (get IP address from hostname)
+
+	// TODO: check IP is unique
+	
+	// Build HEAD request
+
+	// Check HTTP code of HEAD response
+	bool hasValidHeader = true;
+	if (hasValidHeader) {
+		// read robots.txt
+
+		// read page statistics
+	}
+	else {
+		// TODO: print full message and stop reading this URL
+		cout << "Invalid header" << endl;
+	}
+
+
+	// Build GET request
+
+	// Check HTTP code of GET response
+	bool hasValidBody = true;
+	if (hasValidBody) {
+		// Parse the page
+	}
+	else {
+		// TODO: explain why GET request failed
+		cout << "Invalid page" << endl;
+	}
+}
+
+char* URLParser::buildGETRequest(char* host, char* port, char* request)
 {
 	// Can't do anything without the host name
 	if (host == NULL)
@@ -31,7 +81,7 @@ char* UrlParser::buildGETRequest(char* host, char* port, char* request)
 	return GETReq;
 }
 
-char* UrlParser::parseURLString(char* url)
+char* URLParser::parseURLString(char* url)
 {
 	printf("\t  Parsing URL...");
 	if (url == NULL)
@@ -112,7 +162,7 @@ char* UrlParser::parseURLString(char* url)
 	return buildGETRequest(host, port, request);
 }
 
-char* UrlParser::getLastHostName()
+char* URLParser::getLastHostName()
 {
 	if (hostname == NULL)
 		return NULL;

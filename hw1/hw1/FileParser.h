@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Headers.h"
+#include <iostream>
 
 class FileParser
 {
@@ -8,7 +8,6 @@ public:
 	FileParser();
 	~FileParser();
 
-	void parseFile(string inFile, int threadCount);
-
+	static void parse(std::string inFile, int threadCount);
 };
 

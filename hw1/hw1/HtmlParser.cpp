@@ -7,7 +7,6 @@
 
 #include "HtmlParser.h"
 
-
 void HtmlParser::parse(char* filename, char* baseUrl)
 {	
 	// Taken from CPSC 463 homework handout

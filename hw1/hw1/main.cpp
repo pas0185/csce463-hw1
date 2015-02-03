@@ -22,7 +22,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		// part 1 functionality
 		int statusCode;
 		char *url, *request, *hostname, *htmlFileName;
-		UrlParser urlParser = UrlParser();
+		URLParser urlParser = URLParser();
 		WebSocket socket = WebSocket();
 		HtmlParser htmlParser = HtmlParser();
 
@@ -90,11 +90,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			return 0;
 		}
 
-		FileParser fp = new FileParser();
-		fp.parseFile(inputFile, numThreads);
+		FileParser fileParser = FileParser();
+		fileParser.parse(inputFile, numThreads);
 
 	}
-	
 
 	printf("\n\nPress enter key to continue");
 	scanf("\n");

@@ -6,10 +6,9 @@
 
 #pragma once
 
-#include "Headers.h"
+#include <iostream>
 
-
-class UrlParser 
+class URLParser 
 {
 private:
 	const char* useragent = "snailCrawlerPatrick/1.0";
@@ -19,4 +18,8 @@ public:
 	char* buildGETRequest(char* host, char* port, char* request);
 	char* parseURLString(char* url);
 	char* getLastHostName();
+
+	// new in part 2
+	static void parse(std::string url);
+
 };
