@@ -11,27 +11,25 @@
 
 using namespace std;
 
-
-const char* getRequest(const char* type, const char* host, int port, const char* request)
+const char* getRequest(const char* type, const char* host, int port, const char* subrequest)
 {
-	//char* GETRequest[1024];
-
-	// Can't do anything without the host name
+	// Hostname is crucial
 	if (host == NULL) {
 		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
 		return NULL;
 	}
 
-	// Assign default value if not provided
-	if (request == NULL || request == " ")
-		request = "/";
+	// Assign default value if no subrequest provided
+	if (subrequest == NULL || subrequest == " ") {
+		subrequest = "/";
+	}
 
 	// Build formatted request string
-	int size = strlen(host) + strlen(request) + strlen(useragent) + 50;
-	char* GETRequest = new char[size];
-	sprintf(GETRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, request, useragent, host);
+	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
+	char* FULLRequest = new char[size];
+	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, request, useragent, host);
 
-	return GETRequest;
+	return FULLRequest;
 }
 
 const char* getHostname(const char* url)
@@ -56,13 +54,51 @@ const char* getHostname(const char* url)
 
 	return NULL;
 }
-const char*
-int DNSLookup(const char* hostname)
+
+const char* getSubrequest(const char* url)
 {
-	// Check if we've already done this look up
-	// TODO: gethostbyname() here
-	return 1234;
+
 }
+int getPort(const char* url)
+{
+	const char* delim;
+	char* portString;
+	int port;
+
+	if ((delim = strrchr(url, ':')) != NULL)
+	{
+		strcpy(portString, delim + 1);
+		int i;
+		for (i = 0; i < strlen(portString); i++)
+		{
+			if (!isdigit(portString[i]))
+			{
+				portString[i] = '\0';
+			}
+		}
+
+		istringstream in(portString);
+		if (in >> port && in.eof())
+		{
+
+		}
+		else
+		{
+			port = 80;
+		}
+
+	}
+
+	printf("port: %d", port);
+	return 80;
+}
+
+//int DNSLookup(const char* hostname)
+//{
+//	// Check if we've already done this look up
+//	// TODO: gethostbyname() here
+//	return 1234;
+//}
 
 void URLParser::parse(const char* url)
 {
