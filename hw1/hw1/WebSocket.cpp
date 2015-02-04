@@ -102,12 +102,92 @@ void WebSocket::Send(const char* request)
 
 void WebSocket::ReadHEADResponse()
 {
+	// Check HTTP code of HEAD response
+	bool hasValidHeader = true;
+	if (hasValidHeader) {
+		// read robots.txt
+
+		// read page statistics
+	}
+	else {
+		// TODO: print full message and stop reading this URL
+		cout << "Invalid header" << endl;
+	}
+	
+	
+	//int bytesRead = 0, status = -1, num = 0;
+	//char *responseBuf, *temp;
+
+	//// Receive data from socket
+	//printf("\t  Loading... ");
+	//start = clock();	// timing loading file
+
+	//responseBuf = new char[INITIAL_BUF_SIZE];
+	//while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
+	//{
+	//	bytesRead += num;
+
+	//	// if need to resize buffer
+	//	if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
+	//	{
+	//		// Move old array to temp storage
+	//		temp = new char[bytesRead];
+	//		memcpy(temp, responseBuf, bytesRead);
+
+	//		// Double size of buffer
+	//		//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
+	//		responseBuf = new char[2 * bytesRead];
+
+	//		// Copy data over from temp
+	//		memcpy(responseBuf, temp, bytesRead);
+	//	}
+
+	//	//fprintf(fp, "%s", responseBuf);
+
+	//	if (status < 0)
+	//	{
+	//		sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
+	//	}
+	//}
+
+	//// Truncate blank space
+	//responseBuf[bytesRead] = '\0';
+
+	//end = clock();	// timing for loading the file
+	//total = (double)(end - start);
+	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
+
+	//// Write buffer to file
+	//fprintf(fp, "%s", responseBuf);
+	//fclose(fp);
+
+	//// Clean up resources
+	//memset(&responseBuf[0], 0, sizeof(responseBuf));
+	//memset(&temp[0], 0, sizeof(temp));
+
+	//printf("\t  Verifying header... ");
+	//printf("status code %d\n", status);
+
+	//return status;
+
+
+
 
 }
 void WebSocket::ReadGETResponse()
 {
-
+	// On success, request the html page and parse it
+	bool hasValidBody = true;
+	if (hasValidBody) {
+		// Parse the page
+		//HtmlParser::parse(...)
+	}
+	else {
+		// TODO: explain why GET request failed
+		cout << "Invalid page" << endl;
+	}
 }
+
 int WebSocket::ReadAndWriteToFile(char* filename)
 {
 	if (filename == NULL)

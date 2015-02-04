@@ -113,13 +113,6 @@ int getPort(const char* url)
 	return port;
 }
 
-//int DNSLookup(const char* hostname)
-//{
-//	// Check if we've already done this look up
-//	// TODO: gethostbyname() here
-//	return 1234;
-//}
-
 void URLParser::parse(const char* url)
 {
 	printf("\nURL: %s\n\tParsing URL...", url);
@@ -140,45 +133,16 @@ void URLParser::parse(const char* url)
 	// Create WebSocket
 	WebSocket webSocket = WebSocket(hostname);
 
-				// TODO: move to WebSocket
-				//Perform DNS Lookup to get IP address
-				//int IPAddress = DNSLookup(hostname);
-
-
 	// Use a HEAD request to get page statistics and check robots.txt
 	const char* HEADRequest = getRequest("HEAD", hostname, port, subrequest);
 	webSocket.Send(HEADRequest);
 	webSocket.ReadHEADResponse();
-
-				// Check HTTP code of HEAD response
-				bool hasValidHeader = true;
-				if (hasValidHeader) {
-					// read robots.txt
-
-					// read page statistics
-				}
-				else {
-					// TODO: print full message and stop reading this URL
-					cout << "Invalid header" << endl;
-				}
-
-
 
 	// Build GET request
 	const char* GETRequest = getRequest("GET", hostname, port, subrequest);
 	webSocket.Send(GETRequest);
 	webSocket.ReadGETResponse();
 
-				// On success, request the html page and parse it
-				bool hasValidBody = true;
-				if (hasValidBody) {
-					// Parse the page
-					//HtmlParser::parse(...)
-				}
-				else {
-					// TODO: explain why GET request failed
-					cout << "Invalid page" << endl;
-				}
 
 	printf("\n");
 }

@@ -26,6 +26,10 @@
 // new in part 2
 #include <iostream>
 #include <sstream>
+#include <istream>
+#include <fstream>
 #include "FileParser.h"
+
+#define TESTING 1 // 0
 
 using namespace std;

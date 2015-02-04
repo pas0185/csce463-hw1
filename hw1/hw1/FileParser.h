@@ -1,9 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <istream>
-#include <sstream>
-#include <fstream>
+#include "Headers.h"
 
 class FileParser
 {

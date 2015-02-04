@@ -34,6 +34,9 @@ void FileParser::parse(std::string filename, int threadCount)
 	{
 		// Parse each URL
 		URLParser::parse(url.c_str());
+
+		if (TESTING)
+			return;
 	}
 
 	return;
