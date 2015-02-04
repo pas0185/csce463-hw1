@@ -3,6 +3,7 @@
 * CSCE463 HW1
 * 27 January 2015
 * 
+* References: 463 Sample Code by Dmitri Loguinov
 */
 
 #include "WebSocket.h"
@@ -12,10 +13,15 @@ WebSocket::WebSocket()
 	buf = new char[INITIAL_BUF_SIZE];
 }
 
+WebSocket::WebSocket(const char* hostname)
+{
+	buf = new char[INITIAL_BUF_SIZE];
+
+	Setup((char*)hostname);
+}
+
 void WebSocket::Setup(char* hostname)
 {
-	// Below taken from 463 Sample Code - by Dmitri Loguinov
-
 	WSADATA wsaData;
 
 	//Initialize WinSock; once per program run
@@ -94,6 +100,8 @@ void WebSocket::Send(const char* request)
 	}
 }
 
+void WebSocket::ReadHEADResponse();
+void WebSocket::ReadGETResponse();
 int WebSocket::ReadAndWriteToFile(char* filename)
 {
 	if (filename == NULL)
