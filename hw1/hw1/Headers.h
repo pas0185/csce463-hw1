@@ -23,8 +23,6 @@
 #include "HTMLParserBase.h"
 #include "HtmlParser.h"
 
-const char* useragent = "snailCrawlerPatrick/1.0";
-
 // new in part 2
 #include <iostream>
 #include <sstream>

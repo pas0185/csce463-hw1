@@ -7,6 +7,8 @@
 #pragma once
 
 #include <iostream>
+#define useragent "snailCrawlerPatrick/1.0"
+
 
 class URLParser 
 {
@@ -18,5 +20,6 @@ public:
 	// OLD
 	char* buildGETRequest(char* host, char* port, char* request);
 	char* parseURLString(char* url);
-	char* getLastHostName();
+	static const char* getHostname(const char* url);
+
 };

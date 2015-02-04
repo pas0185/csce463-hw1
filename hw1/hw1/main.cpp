@@ -32,7 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		// parse url string into an HTTP GET request
 		request = urlParser.parseURLString(url);
-		hostname = urlParser.getLastHostName();
+		hostname = (char*)urlParser.getHostname(url);
 
 		// create a web client to send our request
 		socket.Setup(hostname);

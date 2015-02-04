@@ -27,12 +27,12 @@ const char* getRequest(const char* type, const char* host, int port, const char*
 	// Build formatted request string
 	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
 	char* FULLRequest = new char[size];
-	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, request, useragent, host);
+	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, subrequest, useragent, host);
 
 	return FULLRequest;
 }
 
-const char* getHostname(const char* url)
+const char* URLParser::getHostname(const char* url)
 {
 	const char* delim;
 	char* hostname = new char[strlen(url)];
@@ -55,42 +55,62 @@ const char* getHostname(const char* url)
 	return NULL;
 }
 
-const char* getSubrequest(const char* url)
+const char* getSubrequest(const char* url, const char* hostname)
 {
+	// TODO: safely parse the subrequest
 
+	return "/";
+
+	//char* delim;
+	//char* subrequest = new char[strlen(url)];
+
+	//if ((delim = strstr(url, hostname)) != NULL)
+	//{
+	//	strcpy(subrequest, delim + strlen(hostname));
+
+	//	char* end;
+	//	if ((end = strstr(url, "/")) != NULL)
+	//	{
+
+	//	}
+	//	else
+	//	{
+	//		subrequest = "/";
+	//	}
+
+
+	//	return subrequest;
+	//}
+
+	//return NULL;
 }
+
 int getPort(const char* url)
 {
-	const char* delim;
-	char* portString;
-	int port;
+	const char* colon;
 
-	if ((delim = strrchr(url, ':')) != NULL)
+	char* portString;
+	int port = 80;
+
+	if ((colon = strrchr(url, ':')) != NULL)
 	{
-		strcpy(portString, delim + 1);
-		int i;
-		for (i = 0; i < strlen(portString); i++)
+		for (int len = 0; len < strlen(colon); len++)
 		{
-			if (!isdigit(portString[i]))
+			if (!isdigit(colon[len]))
 			{
-				portString[i] = '\0';
+				portString = new char[len];
+				strncpy(portString, colon + 1, len);
+				istringstream in(portString);
+				if (in >> port && in.eof())
+				{
+					break;
+				}
 			}
 		}
-
-		istringstream in(portString);
-		if (in >> port && in.eof())
-		{
-
-		}
-		else
-		{
-			port = 80;
-		}
-
 	}
 
 	printf("port: %d", port);
-	return 80;
+	return port;
 }
 
 //int DNSLookup(const char* hostname)
@@ -114,7 +134,7 @@ void URLParser::parse(const char* url)
 		return;
 	}
 
-	subrequest = getSubrequest(url);
+	subrequest = getSubrequest(url, hostname);
 	port = getPort(url);
 
 	// Create WebSocket
@@ -122,8 +142,7 @@ void URLParser::parse(const char* url)
 
 				// TODO: move to WebSocket
 				//Perform DNS Lookup to get IP address
-				int IPAddress = DNSLookup(hostname);
-				// ****
+				//int IPAddress = DNSLookup(hostname);
 
 
 	// Use a HEAD request to get page statistics and check robots.txt
@@ -163,9 +182,6 @@ void URLParser::parse(const char* url)
 
 	printf("\n");
 }
-
-
-
 
 char* URLParser::buildGETRequest(char* host, char* port, char* request)
 {
@@ -257,7 +273,6 @@ char* URLParser::parseURLString(char* url)
 			newLen = strlen(tempUrl);
 			host = new char[newLen];
 			strcpy(host, tempUrl);
-			strcpy(hostname, tempUrl);
 		}
 		else
 		{
@@ -271,12 +286,3 @@ char* URLParser::parseURLString(char* url)
 
 	return buildGETRequest(host, port, request);
 }
-
-char* URLParser::getLastHostName()
-{
-	if (hostname == NULL)
-		return NULL;
-
-	return hostname;
-}
-
