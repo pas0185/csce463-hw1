@@ -23,12 +23,11 @@ private:
 
 public:
 	WebSocket();
-	WebSocket(const char* hostname);
+	WebSocket(char* hostname);
 	void Setup(char* hostname);
 	int ReadToBuffer(char** buffer);
 
 	int ReadAndWriteToFile(char* filename);
-
 
 
 	void Send(const char* request);

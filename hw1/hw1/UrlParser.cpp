@@ -14,7 +14,8 @@ using namespace std;
 
 const char* getHostname(const char* url)
 {
-	char* delim, *hostname = new char[strlen(url)];
+	const char* delim;
+	char* hostname = new char[strlen(url)];
 
 	if ((delim = strstr(url, "://")) != NULL)
 	{
@@ -45,8 +46,9 @@ void URLParser::parse(const char* url)
 
 	// extract host name from URL
 	const char* hostname;
-	if ((hostname = getHostname(url)) != NULL) {
-
+	if ((hostname = getHostname(url)) == NULL) {
+		printf("failed to retrieve host, exiting now\n\n");
+		return;
 	}
 
 	// Create WebSocket

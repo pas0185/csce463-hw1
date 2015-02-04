@@ -85,7 +85,7 @@ void WebSocket::Setup(char* hostname)
 	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 }
 
-void WebSocket::Send(char* request)
+void WebSocket::Send(const char* request)
 {
 	// send HTTP request
 	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
