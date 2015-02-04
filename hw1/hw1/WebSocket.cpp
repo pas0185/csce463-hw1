@@ -13,11 +13,38 @@ WebSocket::WebSocket()
 	buf = new char[INITIAL_BUF_SIZE];
 }
 
-WebSocket::WebSocket(const char* hostname)
+WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 {
 	buf = new char[INITIAL_BUF_SIZE];
 
 	Setup((char*)hostname);
+
+	// Use a HEAD request to get page statistics and check robots.txt
+	const char* HEADRequest = buildRequest("HEAD", hostname, port, subrequest);
+	Send(HEADRequest);
+	ReadAndWriteToFile("HEADREQUEST-TEST.html");
+	//ReadHEADResponse();
+}
+
+const char* WebSocket::buildRequest(const char* type, const char* host, int port, const char* subrequest)
+{
+	// Hostname is crucial
+	if (host == NULL) {
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		return NULL;
+	}
+
+	// Assign default value if no subrequest provided
+	if (subrequest == NULL || subrequest == " ") {
+		subrequest = "/";
+	}
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
+	char* FULLRequest = new char[size];
+	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, subrequest, useragent, host);
+
+	return FULLRequest;
 }
 
 void WebSocket::Setup(char* hostname)
@@ -47,7 +74,8 @@ void WebSocket::Setup(char* hostname)
 	// structure for connecting to server
 	struct sockaddr_in server;
 
-	printf("\t  Doing DNS... ");
+	printf("\n\tChecking host uniqueness... TODO");
+	printf("\n\tDoing DNS... ");
 	start = clock();	// timing DNS lookup
 
 	// first assume that the string is an IP address
@@ -71,14 +99,35 @@ void WebSocket::Setup(char* hostname)
 
 	end = clock();	// timing DNS lookup
 	total = (double)(end - start);
-	printf("done in %d ms, found %s\n", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server.sin_addr));
+	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server.sin_addr));
 
 	// setup the port # and protocol type
 	server.sin_family = AF_INET;
 	server.sin_port = htons(80);		// host-to-network flips the byte order
 
 
-	printf("\t* Connecting on page... ");
+// ************************
+	printf("\n\tChecking IP uniqueness...");
+		printf("TODO");
+	//checkUniqueneIP(server.sin_addr);
+
+	printf("\n\tConnecting on robots...");
+		printf("TODO");
+	//connectOnRobots();
+
+	
+	printf("\n\tLoading...");
+		printf("TODO");
+
+
+	printf("\n\tVerifying header...");
+	printf("TODO");
+
+
+
+// ************************
+
+	printf("\n\t* Connecting on page... ");
 	start = clock();	// timing socket connection
 	// connect to the server on port 80
 	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
@@ -102,19 +151,6 @@ void WebSocket::Send(const char* request)
 
 void WebSocket::ReadHEADResponse()
 {
-	// Check HTTP code of HEAD response
-	bool hasValidHeader = true;
-	if (hasValidHeader) {
-		// read robots.txt
-
-		// read page statistics
-	}
-	else {
-		// TODO: print full message and stop reading this URL
-		cout << "Invalid header" << endl;
-	}
-	
-	
 	//int bytesRead = 0, status = -1, num = 0;
 	//char *responseBuf, *temp;
 

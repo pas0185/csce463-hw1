@@ -11,27 +11,6 @@
 
 using namespace std;
 
-const char* getRequest(const char* type, const char* host, int port, const char* subrequest)
-{
-	// Hostname is crucial
-	if (host == NULL) {
-		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
-		return NULL;
-	}
-
-	// Assign default value if no subrequest provided
-	if (subrequest == NULL || subrequest == " ") {
-		subrequest = "/";
-	}
-
-	// Build formatted request string
-	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
-	char* FULLRequest = new char[size];
-	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, subrequest, useragent, host);
-
-	return FULLRequest;
-}
-
 const char* URLParser::getHostname(const char* url)
 {
 	const char* delim;
@@ -131,17 +110,14 @@ void URLParser::parse(const char* url)
 	port = getPort(url);
 
 	// Create WebSocket
-	WebSocket webSocket = WebSocket(hostname);
+	WebSocket webSocket = WebSocket(hostname, port, subrequest);
 
-	// Use a HEAD request to get page statistics and check robots.txt
-	const char* HEADRequest = getRequest("HEAD", hostname, port, subrequest);
-	webSocket.Send(HEADRequest);
-	webSocket.ReadHEADResponse();
-
+	
+	// TODO: move to websocket also
 	// Build GET request
-	const char* GETRequest = getRequest("GET", hostname, port, subrequest);
-	webSocket.Send(GETRequest);
-	webSocket.ReadGETResponse();
+	//const char* GETRequest = getRequest("GET", hostname, port, subrequest);
+	//webSocket.Send(GETRequest);
+	//webSocket.ReadGETResponse();
 
 
 	printf("\n");

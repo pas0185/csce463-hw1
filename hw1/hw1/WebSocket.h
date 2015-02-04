@@ -20,10 +20,11 @@ private:
 	int allocatedSize;
 	int curPos;
 	clock_t start, end, total;
+	const char* buildRequest(const char* type, const char* host, int port, const char* subrequest);
 
 public:
 	WebSocket();
-	WebSocket(const char* hostname);
+	WebSocket(const char* hostname, int port, const char* subrequest);
 	void Setup(char* hostname);
 	int ReadToBuffer(char** buffer);
 
