@@ -20,7 +20,11 @@ private:
 	int allocatedSize;
 	int curPos;
 	clock_t start, end, total;
+
+	unordered_map <string, DWORD> hostnameMap;
 	const char* buildRequest(const char* type, const char* host, int port, const char* subrequest);
+	void assignIPAddress(char* hostname, sockaddr_in* server);
+	void performDNSLookup(char* hostname, sockaddr_in* server);
 
 public:
 	WebSocket();

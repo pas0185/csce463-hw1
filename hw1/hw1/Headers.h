@@ -28,6 +28,7 @@
 #include <sstream>
 #include <istream>
 #include <fstream>
+#include <unordered_map>
 #include "FileParser.h"
 
 #define TESTING 1 // 0

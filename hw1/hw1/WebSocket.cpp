@@ -47,6 +47,59 @@ const char* WebSocket::buildRequest(const char* type, const char* host, int port
 	return FULLRequest;
 }
 
+void WebSocket::performDNSLookup(char* hostname, struct sockaddr_in* server)
+{
+	// structure used in DNS lookups
+	struct hostent *remote;
+	clock_t start, end;
+
+	printf("\n\tDoing DNS... ");
+
+	start = clock();	// timing DNS lookup
+
+
+	// first assume that the string is an IP address
+	DWORD IP = inet_addr(hostname);
+	if (IP == INADDR_NONE)
+	{
+		// if not a valid IP, then do a DNS lookup
+		if ((remote = gethostbyname(hostname)) == NULL)
+		{
+			printf("Invalid string: neither FQDN, nor IP address\n");
+			return;
+		}
+		else // take the first IP address and copy into sin_addr
+			memcpy((char *)&(server->sin_addr), remote->h_addr, remote->h_length);
+	}
+	else
+	{
+		// if a valid IP, directly drop its binary version into sin_addr
+		server->sin_addr.S_un.S_addr = IP;
+	}
+
+	end = clock();	// timing DNS lookup
+	double total = (double)(end - start);
+	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server->sin_addr));
+}
+void WebSocket::assignIPAddress(char* hostname, sockaddr_in* server)
+{
+	// Referenced CSCE 463 HW1p2 packet
+
+	printf("\n\tChecking host uniqueness... ");
+	
+	DWORD IP;
+	int prevSize = hostnameSet.size();
+	hostnameSet.insert(hostname);
+	if (hostnameSet.size() > prevSize) {
+		// this hostname is unique, perform DNS lookup
+		performDNSLookup(hostname, server);
+
+	}
+	else {
+		// TODO: Check for a cached one
+	}
+}
+
 void WebSocket::Setup(char* hostname)
 {
 	WSADATA wsaData;
@@ -68,38 +121,11 @@ void WebSocket::Setup(char* hostname)
 		return;
 	}
 
-	// structure used in DNS lookups
-	struct hostent *remote;
 
 	// structure for connecting to server
 	struct sockaddr_in server;
 
-	printf("\n\tChecking host uniqueness... TODO");
-	printf("\n\tDoing DNS... ");
-	start = clock();	// timing DNS lookup
-
-	// first assume that the string is an IP address
-	DWORD IP = inet_addr(hostname);
-	if (IP == INADDR_NONE)
-	{
-		// if not a valid IP, then do a DNS lookup
-		if ((remote = gethostbyname(hostname)) == NULL)
-		{
-			printf("Invalid string: neither FQDN, nor IP address\n");
-			return;
-		}
-		else // take the first IP address and copy into sin_addr
-			memcpy((char *)&(server.sin_addr), remote->h_addr, remote->h_length);
-	}
-	else
-	{
-		// if a valid IP, directly drop its binary version into sin_addr
-		server.sin_addr.S_un.S_addr = IP;
-	}
-
-	end = clock();	// timing DNS lookup
-	total = (double)(end - start);
-	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server.sin_addr));
+	assignIPAddress(hostname, &server);
 
 	// setup the port # and protocol type
 	server.sin_family = AF_INET;
@@ -110,6 +136,7 @@ void WebSocket::Setup(char* hostname)
 	printf("\n\tChecking IP uniqueness...");
 		printf("TODO");
 	//checkUniqueneIP(server.sin_addr);
+
 
 	printf("\n\tConnecting on robots...");
 		printf("TODO");
