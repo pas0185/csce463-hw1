@@ -13,6 +13,7 @@
 
 class WebSocket 
 {
+
 private:
 	SOCKET sock;
 	char* buf;
@@ -22,9 +23,13 @@ private:
 
 public:
 	WebSocket();
+	WebSocket(const char* hostname);
 	void Setup(char* hostname);
 	int ReadToBuffer(char** buffer);
 
 	int ReadAndWriteToFile(char* filename);
-	void Send(char* request);
+
+
+
+	void Send(const char* request);
 };
