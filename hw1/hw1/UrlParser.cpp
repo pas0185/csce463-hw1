@@ -12,6 +12,28 @@
 using namespace std;
 
 
+const char* getRequest(const char* type, const char* host, int port, const char* request)
+{
+	//char* GETRequest[1024];
+
+	// Can't do anything without the host name
+	if (host == NULL) {
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		return NULL;
+	}
+
+	// Assign default value if not provided
+	if (request == NULL || request == " ")
+		request = "/";
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(request) + strlen(useragent) + 50;
+	char* GETRequest = new char[size];
+	sprintf(GETRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, request, useragent, host);
+
+	return GETRequest;
+}
+
 const char* getHostname(const char* url)
 {
 	const char* delim;
@@ -34,34 +56,42 @@ const char* getHostname(const char* url)
 
 	return NULL;
 }
+const char*
 int DNSLookup(const char* hostname)
 {
 	// Check if we've already done this look up
 	// TODO: gethostbyname() here
 	return 1234;
 }
+
 void URLParser::parse(const char* url)
 {
 	printf("\nURL: %s\n\tParsing URL...", url);
 
 	// extract host name from URL
 	const char* hostname;
+	const char* subrequest;
+	int port;
+
 	if ((hostname = getHostname(url)) == NULL) {
 		printf("failed to retrieve host, exiting now\n\n");
 		return;
 	}
 
+	subrequest = getSubrequest(url);
+	port = getPort(url);
+
 	// Create WebSocket
 	WebSocket webSocket = WebSocket(hostname);
 
-	// TODO: move to WebSocket
-	//Perform DNS Lookup to get IP address
-	int IPAddress = DNSLookup(hostname);
-	// ****
+				// TODO: move to WebSocket
+				//Perform DNS Lookup to get IP address
+				int IPAddress = DNSLookup(hostname);
+				// ****
 
 
 	// Use a HEAD request to get page statistics and check robots.txt
-	const char* HEADRequest = getHEADRequest();
+	const char* HEADRequest = getRequest("HEAD", hostname, port, subrequest);
 	webSocket.Send(HEADRequest);
 	webSocket.ReadHEADResponse();
 
@@ -80,7 +110,7 @@ void URLParser::parse(const char* url)
 
 
 	// Build GET request
-	const char* GETRequest = getGETRequest();
+	const char* GETRequest = getRequest("GET", hostname, port, subrequest);
 	webSocket.Send(GETRequest);
 	webSocket.ReadGETResponse();
 

@@ -100,8 +100,14 @@ void WebSocket::Send(const char* request)
 	}
 }
 
-void WebSocket::ReadHEADResponse();
-void WebSocket::ReadGETResponse();
+void WebSocket::ReadHEADResponse()
+{
+
+}
+void WebSocket::ReadGETResponse()
+{
+
+}
 int WebSocket::ReadAndWriteToFile(char* filename)
 {
 	if (filename == NULL)
