@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <istream>
+#include <sstream>
+#include <fstream>
 
 class FileParser
 {

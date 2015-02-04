@@ -7,18 +7,97 @@
 
 #include "URLParser.h"
 #include "WebSocket.h"
+#include "HtmlParser.h"
 
 using namespace std;
 
-void URLParser::parse(string url)
+void URLParser::parse(const char* url)
 {
+	printf("\nURL: %s\n\tParsing URL...", url);
+
 	// Parse the url into its components
 	// TODO: code here similiar to existing parseURLString()
 	// TODO: plenty of error checking and information to user
-	string testHost = "symantec.com";
-	
+	int newLen;
+	char* delim, *host, *port, *request;
+	char* tempUrl = new char[strlen(url)];
+
+	//if ((delim = (char*)strstr(url, "://")) != NULL)
+	//{
+	//	// Stripping the scheme
+	//	strcpy(tempUrl, delim + 3);
+
+	//	// Stripping the fragment
+	//	if ((delim = strstr(tempUrl, "#")) != NULL)
+	//	{
+	//		newLen = strlen(tempUrl) - strlen(delim);
+	//		tempUrl[newLen] = '\0';
+	//	}
+
+	//	// Getting the request
+	//	if ((delim = strstr(tempUrl, "/")) != NULL)
+	//	{
+	//		newLen = strlen(tempUrl) - strlen(delim);
+	//		request = new char[strlen(delim)];
+	//		strcpy(request, delim);
+	//		tempUrl[newLen] = '\0';
+	//	}
+	//	else if ((delim = strstr(tempUrl, "?")) != NULL)
+	//	{
+	//		newLen = strlen(tempUrl) - strlen(delim);
+	//		request = new char[strlen(delim) + 1];
+	//		sprintf(request, "/%s", delim);
+	//		//strcpy(request, delim);
+	//		tempUrl[newLen] = '\0';
+	//	}
+	//	else
+	//	{
+	//		request = "/";
+	//	}
+
+	//	// Getting the port
+	//	if ((delim = strstr(tempUrl, ":")) != NULL)
+	//	{
+	//		delim++;
+	//		newLen = strlen(delim);
+	//		port = new char[newLen];
+	//		strcpy(port, delim);
+	//		tempUrl[strlen(tempUrl) - newLen - 1] = '\0';
+	//	}
+	//	else
+	//	{
+	//		port = "80";
+	//	}
+
+	//	// Getting the host
+	//	if (tempUrl != NULL)
+	//	{
+	//		newLen = strlen(tempUrl);
+	//		host = new char[newLen];
+	//		strcpy(host, tempUrl);
+
+	//		//strcpy(hostname, tempUrl);
+	//	}
+	//	else
+	//	{
+	//		return;
+	//	}
+	//}
+
+	//printf("host: %s, ", host);
+	//printf("port: %s, ", port);
+	//printf("request: %s\n", request);
+
+
+
+
+
+
+
+
+
+
 	// Establish socket connection
-	WebSocket socket = WebSocket();
 
 	// Pass hostname to WebSocket
 	// socket.Setup(....
@@ -50,11 +129,14 @@ void URLParser::parse(string url)
 	bool hasValidBody = true;
 	if (hasValidBody) {
 		// Parse the page
+		//HtmlParser::parse(...)
 	}
 	else {
 		// TODO: explain why GET request failed
 		cout << "Invalid page" << endl;
 	}
+
+	printf("\n");
 }
 
 char* URLParser::buildGETRequest(char* host, char* port, char* request)

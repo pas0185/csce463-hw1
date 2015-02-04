@@ -20,6 +20,6 @@ public:
 	char* getLastHostName();
 
 	// new in part 2
-	static void parse(std::string url);
+	static void parse(const char* url);
 
 };
