@@ -19,12 +19,14 @@ private:
 	char* buf;
 	int allocatedSize;
 	int curPos;
-	clock_t start, end, total;
 
-	unordered_map <string, DWORD> hostnameMap;
+	//map<string, in_addr> hostnameMap;
+	//unordered_map <string, in_addr> hostnameMap;
 	const char* buildRequest(const char* type, const char* host, int port, const char* subrequest);
-	void assignIPAddress(char* hostname, sockaddr_in* server);
-	void performDNSLookup(char* hostname, sockaddr_in* server);
+	in_addr getIPAddress(char* hostname);
+	in_addr DNSLookup(char* hostname);
+
+	
 
 public:
 	WebSocket();

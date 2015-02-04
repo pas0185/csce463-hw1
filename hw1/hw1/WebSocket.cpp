@@ -47,62 +47,89 @@ const char* WebSocket::buildRequest(const char* type, const char* host, int port
 	return FULLRequest;
 }
 
-void WebSocket::performDNSLookup(char* hostname, struct sockaddr_in* server)
+//void WebSocket::performDNSLookup(char* hostname, struct sockaddr_in* server)
+//{
+//	// structure used in DNS lookups
+//	struct hostent *remote;
+//	clock_t start, end;
+//
+//	printf("\n\tDoing DNS... ");
+//
+//	start = clock();	// timing DNS lookup
+//
+//
+//	// first assume that the string is an IP address
+//	DWORD IP = inet_addr(hostname);
+//	if (IP == INADDR_NONE)
+//	{
+//		// if not a valid IP, then do a DNS lookup
+//		if ((remote = gethostbyname(hostname)) == NULL)
+//		{
+//			printf("Invalid string: neither FQDN, nor IP address\n");
+//			return;
+//		}
+//		else // take the first IP address and copy into sin_addr
+//			memcpy((char *)&(server->sin_addr), remote->h_addr, remote->h_length);
+//	}
+//	else
+//	{
+//		// if a valid IP, directly drop its binary version into sin_addr
+//		server->sin_addr.S_un.S_addr = IP;
+//	}
+//
+//	end = clock();	// timing DNS lookup
+//	double total = (double)(end - start);
+//	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server->sin_addr));
+//}
+
+in_addr WebSocket::DNSLookup(char* hostname)
 {
 	// structure used in DNS lookups
 	struct hostent *remote;
 	clock_t start, end;
-
+	in_addr IP;
 	printf("\n\tDoing DNS... ");
 
 	start = clock();	// timing DNS lookup
-
-
-	// first assume that the string is an IP address
-	DWORD IP = inet_addr(hostname);
-	if (IP == INADDR_NONE)
-	{
-		// if not a valid IP, then do a DNS lookup
-		if ((remote = gethostbyname(hostname)) == NULL)
-		{
-			printf("Invalid string: neither FQDN, nor IP address\n");
-			return;
-		}
-		else // take the first IP address and copy into sin_addr
-			memcpy((char *)&(server->sin_addr), remote->h_addr, remote->h_length);
-	}
-	else
-	{
-		// if a valid IP, directly drop its binary version into sin_addr
-		server->sin_addr.S_un.S_addr = IP;
+	if ((remote = gethostbyname(hostname)) != NULL) {
+		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+		end = clock();	// timing DNS lookup
+		double total = 1000.0 * (end - start) / CLOCKS_PER_SEC;
+		printf("done in %lf.2 ms, found %s", total, inet_ntoa(IP));
+		return IP;
 	}
 
-	end = clock();	// timing DNS lookup
-	double total = (double)(end - start);
-	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server->sin_addr));
+	printf("failed");
+
 }
-void WebSocket::assignIPAddress(char* hostname, sockaddr_in* server)
+
+in_addr WebSocket::getIPAddress(char* hostname)
 {
 	// Referenced CSCE 463 HW1p2 packet
 
 	printf("\n\tChecking host uniqueness... ");
 	
-	DWORD IP;
-	int prevSize = hostnameSet.size();
-	hostnameSet.insert(hostname);
-	if (hostnameSet.size() > prevSize) {
-		// this hostname is unique, perform DNS lookup
-		performDNSLookup(hostname, server);
-
+	in_addr IP;
+	// Check for a cached IP address
+	//map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+	//if (got == hostnameMap.end()) {
+	if (true) {
+		// IP has not been found yet
+		printf("passed");
+		IP = DNSLookup(hostname);
 	}
 	else {
-		// TODO: Check for a cached one
+		printf("failed (host isn't unique)");
+		//IP = got->second;
 	}
+
+	return IP;
 }
 
 void WebSocket::Setup(char* hostname)
 {
 	WSADATA wsaData;
+	clock_t start, end;
 
 	//Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -124,8 +151,7 @@ void WebSocket::Setup(char* hostname)
 
 	// structure for connecting to server
 	struct sockaddr_in server;
-
-	assignIPAddress(hostname, &server);
+	server.sin_addr = getIPAddress(hostname);
 
 	// setup the port # and protocol type
 	server.sin_family = AF_INET;
@@ -163,7 +189,7 @@ void WebSocket::Setup(char* hostname)
 		return;
 	}
 	end = clock();	// timing socket connection
-	total = (double)(end - start);
+	double total = (double)(end - start);
 	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 }
 
@@ -258,6 +284,9 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 		printf("An NULL file name was passed to Websocket for writing to");
 		return -1;
 	}
+
+
+	clock_t start, end, total;
 
 	// Write everything to the file, including header (TODO)
 	FILE *fp = fopen(filename, "w+");
