@@ -94,7 +94,8 @@ int getPort(const char* url)
 
 void URLParser::parse(const char* url)
 {
-	printf("\nURL: %s\n\tParsing URL...", url);
+	printf("\nURL: %s\n", url);
+	printf("        Parsing URL... ");
 
 	// extract host name from URL
 	const char* hostname;
@@ -109,6 +110,8 @@ void URLParser::parse(const char* url)
 	subrequest = getSubrequest(url, hostname);
 	port = getPort(url);
 
+	printf("\n");
+
 	// Create WebSocket
 	WebSocket webSocket = WebSocket(hostname, port, subrequest);
 
@@ -120,7 +123,6 @@ void URLParser::parse(const char* url)
 	//webSocket.ReadGETResponse();
 
 
-	printf("\n");
 }
 
 char* URLParser::buildGETRequest(char* host, char* port, char* request)
@@ -149,7 +151,8 @@ char* URLParser::buildGETRequest(char* host, char* port, char* request)
 
 char* URLParser::parseURLString(char* url)
 {
-	printf("\t  Parsing URL...");
+
+	printf("        Parsing URL...");
 	if (url == NULL)
 	{
 		printf("url == NULL, aborting.\n");

@@ -44,6 +44,6 @@ public:
 
 	int ReadAndWriteToFile(char* filename);
 
-
+	void printStatusBeginning(const char* format);
 	void printStatusBeginning(const char* format, char special);
 };

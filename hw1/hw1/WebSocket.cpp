@@ -141,7 +141,7 @@ in_addr WebSocket::getIPAddress(char* hostname)
 {
 	// Referenced CSCE 463 HW1p2 packet
 
-	printf("\n\tChecking host uniqueness... ");
+	printStatusBeginning("Checking host uniqueness... ");
 
 	in_addr IP;
 	// Check for a cached IP address
@@ -149,12 +149,13 @@ in_addr WebSocket::getIPAddress(char* hostname)
 	if (got != hostnameMap.end()) {
 		// Found cached IP matching the host
 		IP = got->second;
+		printf("passed\n");
 	}
 	else {
+		printf("failed\n");
 		IP = DNSLookup(hostname);
 	}
 
-	printf("passed\n");
 
 	// TODO: check IP uniqueness
 	//printf("failed");
@@ -168,14 +169,14 @@ in_addr WebSocket::DNSLookup(char* hostname)
 	struct hostent *remote;
 	clock_t start, end;
 	in_addr IP;
-	printf("     Doing DNS... ");
+	printStatusBeginning("Doing DNS... ");
 
 	start = clock();	// timing DNS lookup
 	if ((remote = gethostbyname(hostname)) != NULL) {
 		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
 		end = clock();	// timing DNS lookup
 		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
-		printf("done in %d ms, found %s", total, inet_ntoa(IP));
+		printf("done in %d ms, found %s\n", total, inet_ntoa(IP));
 		return IP;
 	}
 
@@ -197,7 +198,6 @@ bool WebSocket::checkRobots(char* hostname)
 
 	int status = ReadToBuffer(&buffer);
 
-	printf("Robots status: %d", status);
 	if (status >= 400) {
 		// Assume (only) a 4xx status is a green light to start crawling
 
@@ -353,7 +353,11 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 
 void WebSocket::printStatusBeginning(const char* format, char special)
 {
-	printf("\n      %c %s", special, format);
+	printf("      %c %s", special, format);
+}
+void WebSocket::printStatusBeginning(const char* format)
+{
+	printf("        %s", format);
 }
 int WebSocket::msTime(clock_t start, clock_t end)
 {
