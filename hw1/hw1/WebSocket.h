@@ -24,16 +24,19 @@ private:
 
 	
 public:
+	void DownloadFunction(char* connectingOn, char* request);
+
+
 	WebSocket();
 	WebSocket(const char* hostname, int port, const char* subrequest);
 	void Setup(char* hostname);				// Called by constructor
 	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
 		in_addr DNSLookup(char* hostname);		// Called if needed
 
-	bool checkRobots(char* hostname, int port);
+	bool checkRobots(char* hostname);
 		void checkIPUniqueness(in_addr IP);
 
-	const char* buildRequest(const char* type, const char* host, int port, const char* subrequest);
+	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	void Send(const char* request);
 	int ReadToBuffer(char** buffer);

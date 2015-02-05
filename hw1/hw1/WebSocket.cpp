@@ -9,18 +9,25 @@
 #include "WebSocket.h"
 
 
-void DownloadFunction(char* connectOn)
+void WebSocket::DownloadFunction(char* connectingOn, char* request)
 {
 	clock_t start, end;
 	int ms, byteCount, statusCode;
 
 	// ******** CONNECTION ******** //
-	printf("Connecting on %s... ", connectOn);	// robots, page, etc
+	printf("Connecting on %s... ", connectingOn);	// robots, page, etc
 	start = clock();
 
 
-	// TODO
 
+	// *************
+	// READ PPTS, LEARN WINSOCK, ETC
+	// *************
+
+
+
+	Send(request);
+	
 	end = clock();
 	ms = msTime(start, end);
 	printf("done in %d ms\n", ms);
@@ -69,13 +76,13 @@ WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 	//ReadHEADResponse();
 }
 
-void WebSocket::Setup(char* hostname)
+void WebSocket::Setup(char* hostname) // , int port
 {
 	WSADATA wsaData;
 	clock_t start, end;
 	int port = 80;
 
-	//Initialize WinSock; once per program run
+	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0) {
 		printf("WSAStartup error %d\n", WSAGetLastError());
@@ -92,40 +99,46 @@ void WebSocket::Setup(char* hostname)
 		return;
 	}
 
+	// Get IP address 
 	in_addr IP = getIPAddress(hostname);
-
-	// structure for connecting to server
-	struct sockaddr_in server;
-	server.sin_family = AF_INET;
-	server.sin_port = htons(80);
-
 
 	// TODO:
 	checkIPUniqueness(IP);
 
 
-	bool crawlingAllowed = checkRobots(hostname, port);
+	// structure for connecting to server
+	struct sockaddr_in server;
+	server.sin_addr = IP;
+	server.sin_family = AF_INET;
+	server.sin_port = htons(port);
 
-	if (crawlingAllowed) {
+	// Connect socket to server on correct port
+	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
+	{
+		printf("Connection error: %d\n", WSAGetLastError());
+		return;
+	}
 
+
+	// ************
+	// Done setting up by now, move code below somewhere else
+	// ************
+
+	// Check robots.txt to see if crawling is allowed
+	if (checkRobots(hostname)) {
 
 		// GET request for page, then parse it
-		printf("\n\tVerifying header...");
-		printf("TODO");
+		//printf("\n\tVerifying header...");
+		//printf("TODO");
 
 
 
-		printf("\n\t* Connecting on page... ");
-		start = clock();	// timing socket connection
-		// connect to the server on port 80
-		if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
-		{
-			printf("Connection error: %d\n", WSAGetLastError());
-			return;
-		}
-		end = clock();	// timing socket connection
-		double total = (double)(end - start);
-		printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
+		//printf("\n\t* Connecting on page... ");
+		//start = clock();	// timing socket connection
+		//// connect to the server on port 80
+		//end = clock();	// timing socket connection
+		//double total = (double)(end - start);
+		//printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 
 
 	}
@@ -144,16 +157,21 @@ in_addr WebSocket::getIPAddress(char* hostname)
 	in_addr IP;
 	// Check for a cached IP address
 	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-	if (got == hostnameMap.end()) {
-		// IP has not been found yet
-		printf("passed (hostname is unique)");
-		IP = DNSLookup(hostname);
-	}
-	else {
-		printf("failed (hostname isn't unique)");
+	if (got != hostnameMap.end()) {
+		// Found cached IP matching the host
+		printf("passed\n");
 		IP = got->second;
+		return IP;
 	}
 
+	IP = DNSLookup(hostname);
+
+	else {
+		printf("failed (hostname isn't unique)");
+	}
+
+
+	// TODO: check IP uniqueness
 	return IP;
 }
 
@@ -163,7 +181,7 @@ in_addr WebSocket::DNSLookup(char* hostname)
 	struct hostent *remote;
 	clock_t start, end;
 	in_addr IP;
-	printf("\n\tDoing DNS... ");
+	printf("     Doing DNS... ");
 
 	start = clock();	// timing DNS lookup
 	if ((remote = gethostbyname(hostname)) != NULL) {
@@ -174,11 +192,10 @@ in_addr WebSocket::DNSLookup(char* hostname)
 		return IP;
 	}
 
-	printf("failed");
-
+	printf("failed\n");
 }
 
-bool WebSocket::checkRobots(char* hostname, int port)
+bool WebSocket::checkRobots(char* hostname)
 {
 	// use HEAD request
 	// if the code is 4xx, you're good; unrestricted web crawling
@@ -186,7 +203,7 @@ bool WebSocket::checkRobots(char* hostname, int port)
 	printf("\n\tConnecting on robots...");
 	clock_t start, end;
 
-	const char* request = buildRequest("HEAD", hostname, port, "/robots.txt");
+	const char* request = buildRequest("HEAD", hostname, "/robots.txt");
 
 	char* buffer;
 
@@ -213,7 +230,7 @@ void WebSocket::checkIPUniqueness(in_addr IP)
 	printf("TODO");
 }
 
-const char* WebSocket::buildRequest(const char* type, const char* host, int port, const char* subrequest)
+const char* WebSocket::buildRequest(const char* type, const char* host, const char* subrequest)
 {
 	// Hostname is crucial
 	if (host == NULL) {
