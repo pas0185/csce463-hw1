@@ -63,12 +63,6 @@ WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 	buf = new char[INITIAL_BUF_SIZE];
 
 	Setup((char*)hostname, port);
-
-	// Use a HEAD request to get page statistics and check robots.txt
-	/*const char* HEADRequest = buildRequest("HEAD", hostname, port, subrequest);
-	Send(HEADRequest);
-	ReadAndWriteToFile("HEADREQUEST-TEST.html");*/
-	//ReadHEADResponse();
 }
 
 void WebSocket::Setup(char* hostname, int port)
@@ -111,30 +105,6 @@ void WebSocket::Setup(char* hostname, int port)
 		printf("Connection error: %d\n", WSAGetLastError());
 		return;
 	}
-
-
-	// ************
-	// Done setting up by now, move code below somewhere else
-	// ************
-
-	// Check robots.txt to see if crawling is allowed
-	if (checkRobots(hostname)) {
-
-		// GET request for page, then parse it
-		//printf("\n\tVerifying header...");
-		//printf("TODO");
-
-
-
-		//printf("\n\t* Connecting on page... ");
-		//start = clock();	// timing socket connection
-		//// connect to the server on port 80
-		//end = clock();	// timing socket connection
-		//double total = (double)(end - start);
-		//printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
-
-
-	}
 }
 
 in_addr WebSocket::getIPAddress(char* hostname)
@@ -149,13 +119,12 @@ in_addr WebSocket::getIPAddress(char* hostname)
 	if (got != hostnameMap.end()) {
 		// Found cached IP matching the host
 		IP = got->second;
-		printf("passed\n");
+		printf("found existing\n");
 	}
 	else {
-		printf("failed\n");
+		printf("passed\n");
 		IP = DNSLookup(hostname);
 	}
-
 
 	// TODO: check IP uniqueness
 	//printf("failed");
@@ -183,14 +152,13 @@ in_addr WebSocket::DNSLookup(char* hostname)
 	printf("failed\n");
 }
 
-bool WebSocket::checkRobots(char* hostname)
+bool WebSocket::checkRobots(const char* hostname)
 {
 	clock_t start, end;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
 	char* buffer;
 
-	printStatusBeginning("Connecting on robots...", ' ');
-
+	printStatusBeginning("Connecting on robots...");
 	start = clock();
 	Send(robotRequest);
 	end = clock();
@@ -202,6 +170,26 @@ bool WebSocket::checkRobots(char* hostname)
 		// Assume (only) a 4xx status is a green light to start crawling
 
 		return true;
+	}
+
+	return false;
+}
+bool WebSocket::connectToPage(const char* hostname, const char* request)
+{
+	clock_t start, end;
+	char* buffer;
+	const char* pageRequest = buildRequest("GET", hostname, request);
+	
+	printStatusBeginning("Connecting on page... ", '*');
+	start = clock();
+	Send(pageRequest);
+	end = clock();
+	printf("done in %d ms\n", msTime(start, end));
+
+	int status = ReadToBuffer(&buffer);
+	if (200 <= status && status < 300) {
+		// Successfully retrieved page
+
 	}
 
 	return false;
@@ -224,14 +212,15 @@ void WebSocket::Send(const char* request)
 
 int WebSocket::ReadToBuffer(char** buffer)
 {
+	// Receive data from socket and write it to the buffer 
+
 	clock_t start, end;
 
 	int bytesRead = 0, status = -1, num = 0;
 	char *responseBuf;
 	char *temp;
 
-	// Receive data from socket
-	//printf("\t  Loading... ");
+	printStatusBeginning("Loading... ");
 	start = clock();	// timing loading file
 
 	responseBuf = new char[INITIAL_BUF_SIZE];
@@ -247,12 +236,12 @@ int WebSocket::ReadToBuffer(char** buffer)
 			memcpy(temp, responseBuf, bytesRead);
 
 			// Double size of buffer
-			//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
 			responseBuf = new char[2 * bytesRead];
 
 			// Copy data over from temp
 			memcpy(responseBuf, temp, bytesRead);
 			
+			// clear temp's memory
 			memset(&temp[0], 0, sizeof(temp));
 		}
 
@@ -272,7 +261,7 @@ int WebSocket::ReadToBuffer(char** buffer)
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
-	printf("\t  Verifying header... ");
+	printStatusBeginning("Verifying header... ");
 	printf("status code %d\n", status);
 
 	return status;

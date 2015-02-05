@@ -115,14 +115,11 @@ void URLParser::parse(const char* url)
 	// Create WebSocket
 	WebSocket webSocket = WebSocket(hostname, port, subrequest);
 
-	
-	// TODO: move to websocket also
-	// Build GET request
-	//const char* GETRequest = getRequest("GET", hostname, port, subrequest);
-	//webSocket.Send(GETRequest);
-	//webSocket.ReadGETResponse();
+	// Check robots.txt to see if crawling is allowed
+	if (webSocket.checkRobots(hostname)) {
 
-
+		webSocket.connectToPage(hostname, subrequest);
+	}
 }
 
 char* URLParser::buildGETRequest(char* host, char* port, char* request)
