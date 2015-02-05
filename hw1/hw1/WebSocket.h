@@ -32,7 +32,7 @@ public:
 	WebSocket(const char* hostname, int port, const char* subrequest);
 	void Setup(char* hostname, int port);	// Called by constructor
 	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
-	in_addr DNSLookup(char* hostname);		// Called if needed
+	hostent* DNSLookup(char* hostname);		// Called if needed
 
 	bool checkRobots(const char* hostname);
 	void checkIPUniqueness(in_addr IP);

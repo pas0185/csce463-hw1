@@ -86,15 +86,36 @@ void WebSocket::Setup(char* hostname, int port)
 		return;
 	}
 
-	// Get IP address 
-	in_addr IP = getIPAddress(hostname);
+	printStatusBeginning("Checking host uniqueness... ");
+
+	in_addr IP;
+	struct hostent *remote;
+
+	// Check for a cached IP address
+	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+	if (got != hostnameMap.end()) {
+		// Found cached IP matching the host
+		IP = got->second;
+		printf("found existing\n");
+	}
+	else {
+		printf("passed\n");
+		remote = DNSLookup(hostname);
+		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+	}
+
+
+
+	//getIPAddress(hostname, &remote);
+	//in_addr IP = getIPAddress(hostname);
 
 	// TODO:
-	checkIPUniqueness(IP);
+	//checkIPUniqueness(IP);
 
 
 	// structure for connecting to server
 	struct sockaddr_in server;
+
 	server.sin_addr = IP;
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
@@ -107,32 +128,31 @@ void WebSocket::Setup(char* hostname, int port)
 	}
 }
 
-in_addr WebSocket::getIPAddress(char* hostname)
-{
-	// Referenced CSCE 463 HW1p2 packet
+//hostent* WebSocket::getIPAddress(char* hostname)
+//{
+//	// Referenced CSCE 463 HW1p2 packet
+//
+//	printStatusBeginning("Checking host uniqueness... ");
+//	struct hostent *remote;
+//
+//	in_addr IP;
+//	// Check for a cached IP address
+//	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+//	if (got != hostnameMap.end()) {
+//		// Found cached IP matching the host
+//		IP = got->second;
+//		printf("found existing\n");
+//	}
+//
+//
+//	printf("passed\n");
+//	return DNSLookup(hostname);
+//
+//	// TODO: check IP uniqueness
+//	//printf("failed");
+//}
 
-	printStatusBeginning("Checking host uniqueness... ");
-
-	in_addr IP;
-	// Check for a cached IP address
-	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-	if (got != hostnameMap.end()) {
-		// Found cached IP matching the host
-		IP = got->second;
-		printf("found existing\n");
-	}
-	else {
-		printf("passed\n");
-		IP = DNSLookup(hostname);
-	}
-
-	// TODO: check IP uniqueness
-	//printf("failed");
-
-	return IP;
-}
-
-in_addr WebSocket::DNSLookup(char* hostname)
+hostent* WebSocket::DNSLookup(char* hostname)
 {
 	// structure used in DNS lookups
 	struct hostent *remote;
@@ -145,11 +165,13 @@ in_addr WebSocket::DNSLookup(char* hostname)
 		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
 		end = clock();	// timing DNS lookup
 		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
-		printf("done in %d ms, found %s\n", total, inet_ntoa(IP));
-		return IP;
+		printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
 	}
-
-	printf("failed\n");
+	else {
+		printf("failed\n");
+	}
+	
+	return remote;
 }
 
 bool WebSocket::checkRobots(const char* hostname)
@@ -197,7 +219,8 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 		return file;
 	}
 
-	printf("")
+	// TODO: explain detail reason
+	printf("failed");
 	return NULL;
 }
 
