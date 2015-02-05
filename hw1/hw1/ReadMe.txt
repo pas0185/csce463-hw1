@@ -1,4 +1,4 @@
-27 January 2015
+5 February 2015
 Patrick Sheehan
 CSCE 463 HW#1
 github.com/pas0185/csce463-hw1
@@ -31,4 +31,16 @@ The three subtasks for this assignment were:
 
 3) The HtmlParser uses an existing library to parse the retrieved HTML pages and 
 	count the number of hyperlinks on the page
+
+
+**Part 2**
+
+Downloading multiple URLs from an input file using a single thread. 
+
+Usage:
+	> hw1.exe URL-input.txt
+
+Here we've expanded the reach of our webcrawler.
+We now check a host's robots.txt file before deciding whether or not to GET the entire page
+We also maintain the IP addresses that have already been looked up through a DNS, to reduce redundancies
 

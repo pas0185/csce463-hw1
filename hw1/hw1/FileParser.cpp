@@ -24,8 +24,13 @@ FileParser::~FileParser()
 
 void FileParser::parse(std::string filename, int threadCount)
 {
-	ifstream infile(filename);
+	ifstream infile(filename, std::ifstream::ate | std::ifstream::binary);
 	string url;
+
+	int filesize = infile.tellg();
+
+	printf("Main thread: read file with size %d\n", filesize);
+	infile = ifstream(filename);
 
 	// TODO faster: read file into one buffer and separate on '\n'
 

@@ -81,26 +81,8 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 
 void HtmlParser::parse(FILE* file, char* baseUrl)
 {
-	// Taken from CPSC 463 homework handout
+	// Based off CPSC 463 homework handout
 
-	// read file into a buffer
-	//int fileSize = file->_bufsiz; //(DWORD)li.QuadPart;			// assumes file size is below 2GB; otherwise, an __int64 is needed
-	//DWORD bytesRead;
-	//// allocate buffer
-	//char *fileBuf = new char[fileSize];
-	//// read into the buffer
-	//BOOL bRet = ReadFile(hFile, fileBuf, fileSize, &bytesRead, NULL);
-	//// process errors
-	//if (bRet == 0 || bytesRead != fileSize)
-	//{
-	//	printf("ReadFile failed with %d\n", GetLastError());
-	//	return;
-	//}
-
-	//// done with the file
-	//CloseHandle(hFile);
-
-	
 	clock_t start, end, total;
 	printf("      + Parsing page... ");
 	start = clock();

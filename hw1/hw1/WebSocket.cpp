@@ -8,51 +8,6 @@
 
 #include "WebSocket.h"
 
-void WebSocket::DownloadFunction(char* connectingOn, char* request)
-{
-	clock_t start, end;
-	int ms, byteCount, statusCode;
-
-	// ******** CONNECTION ******** //
-	printf("Connecting on %s... ", connectingOn);	// robots, page, etc
-	start = clock();
-
-
-
-	// *************
-	// READ PPTS, LEARN WINSOCK, ETC
-	// *************
-
-
-
-	Send(request);
-
-	end = clock();
-	ms = msTime(start, end);
-	printf("done in %d ms\n", ms);
-	// ***************************** //
-
-	// ******** DOWNLOADING ******** //
-	printf("Loading... ");
-	start = clock();
-
-	// TODO
-
-	end = clock();
-	ms = msTime(start, end);
-	printf("done in %d ms with %d bytes\n", ms, byteCount);
-	// *************************** //
-
-	// ******** VERIFYING ******** //
-	printf("Verifying header... ");
-
-	// TODO
-
-	printf("status code %d", statusCode);
-	// *************************** //
-
-}
-
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
@@ -100,18 +55,14 @@ void WebSocket::Setup(char* hostname, int port)
 	}
 	else {
 		printf("passed\n");
-		remote = DNSLookup(hostname);
-		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+		if ((remote = DNSLookup(hostname)) != NULL) {
+			memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+		}
+		else {
+			printf("failed\n");
+			return;
+		}
 	}
-
-
-
-	//getIPAddress(hostname, &remote);
-	//in_addr IP = getIPAddress(hostname);
-
-	// TODO:
-	//checkIPUniqueness(IP);
-
 
 	// structure for connecting to server
 	struct sockaddr_in server;
@@ -128,29 +79,46 @@ void WebSocket::Setup(char* hostname, int port)
 	}
 }
 
-//hostent* WebSocket::getIPAddress(char* hostname)
-//{
-//	// Referenced CSCE 463 HW1p2 packet
-//
-//	printStatusBeginning("Checking host uniqueness... ");
-//	struct hostent *remote;
-//
-//	in_addr IP;
-//	// Check for a cached IP address
-//	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-//	if (got != hostnameMap.end()) {
-//		// Found cached IP matching the host
-//		IP = got->second;
-//		printf("found existing\n");
-//	}
-//
-//
-//	printf("passed\n");
-//	return DNSLookup(hostname);
-//
-//	// TODO: check IP uniqueness
-//	//printf("failed");
-//}
+void WebSocket::DownloadFunction(char* connectingOn, char* request)
+{
+	// My plan is to finish this function to make usage more universal
+
+	clock_t start, end;
+	int ms, byteCount, statusCode;
+
+	// ******** CONNECTION ******** //
+	printf("Connecting on %s... ", connectingOn);	// robots, page, etc
+	start = clock();
+
+	// TODO
+
+	Send(request);
+
+	end = clock();
+	ms = msTime(start, end);
+	printf("done in %d ms\n", ms);
+	// ***************************** //
+
+	// ******** DOWNLOADING ******** //
+	printf("Loading... ");
+	start = clock();
+
+	// TODO
+
+	end = clock();
+	ms = msTime(start, end);
+	printf("done in %d ms with %d bytes\n", ms, byteCount);
+	// *************************** //
+
+	// ******** VERIFYING ******** //
+	printf("Verifying header... ");
+
+	// TODO
+
+	printf("status code %d", statusCode);
+	// *************************** //
+
+}
 
 hostent* WebSocket::DNSLookup(char* hostname)
 {
@@ -196,6 +164,7 @@ bool WebSocket::checkRobots(const char* hostname)
 
 	return false;
 }
+
 FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 {
 	clock_t start, end;
@@ -226,7 +195,7 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 
 void WebSocket::checkIPUniqueness(in_addr IP)
 {
-	printStatusBeginning("Checking IP uniqueness... ", ' ');
+	printStatusBeginning("Checking IP uniqueness... ");
 	printf("TODO\n");
 }
 
@@ -366,22 +335,24 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 	return status;
 }
 
-
 // Helper Methods
 
 void WebSocket::printStatusBeginning(const char* format, char special)
 {
 	printf("      %c %s", special, format);
 }
+
 void WebSocket::printStatusBeginning(const char* format)
 {
 	printf("        %s", format);
 }
+
 int WebSocket::msTime(clock_t start, clock_t end)
 {
 	double seconds = ((double)(end - start)) / CLOCKS_PER_SEC;
 	return (int)(1000 * seconds);
 }
+
 const char* WebSocket::buildRequest(const char* type, const char* host, const char* subrequest)
 {
 	// Hostname is crucial

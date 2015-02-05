@@ -78,7 +78,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		// Second param
 		string inputFile = argv[2];
-
 		cout << "Provided input file: " << inputFile << endl;
 
 

@@ -1,3 +1,10 @@
+/*
+* Patrick Sheehan
+* CSCE463 HW1
+* 5 February 2015
+*
+*/
+
 #pragma once
 
 #include "Headers.h"

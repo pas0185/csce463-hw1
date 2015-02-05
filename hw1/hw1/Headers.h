@@ -31,6 +31,6 @@
 #include "FileParser.h"
 #include "HtmlParser.h"
 
-#define TESTING 0 // 0
+#define TESTING false // true - simplify some operations
 
 using namespace std;
