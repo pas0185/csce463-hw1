@@ -8,7 +8,6 @@
 
 #include "WebSocket.h"
 
-
 void WebSocket::DownloadFunction(char* connectingOn, char* request)
 {
 	clock_t start, end;
@@ -27,7 +26,7 @@ void WebSocket::DownloadFunction(char* connectingOn, char* request)
 
 
 	Send(request);
-	
+
 	end = clock();
 	ms = msTime(start, end);
 	printf("done in %d ms\n", ms);
@@ -54,10 +53,6 @@ void WebSocket::DownloadFunction(char* connectingOn, char* request)
 
 }
 
-
-
-
-
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
@@ -67,7 +62,7 @@ WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 {
 	buf = new char[INITIAL_BUF_SIZE];
 
-	Setup((char*)hostname);
+	Setup((char*)hostname, port);
 
 	// Use a HEAD request to get page statistics and check robots.txt
 	/*const char* HEADRequest = buildRequest("HEAD", hostname, port, subrequest);
@@ -76,11 +71,9 @@ WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 	//ReadHEADResponse();
 }
 
-void WebSocket::Setup(char* hostname) // , int port
+void WebSocket::Setup(char* hostname, int port)
 {
 	WSADATA wsaData;
-	clock_t start, end;
-	int port = 80;
 
 	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -143,11 +136,7 @@ void WebSocket::Setup(char* hostname) // , int port
 
 	}
 }
-int msTime(clock_t start, clock_t end)
-{
-	double seconds = ((double)(end - start)) / CLOCKS_PER_SEC;
-	return (int)(1000 * seconds);
-}
+
 in_addr WebSocket::getIPAddress(char* hostname)
 {
 	// Referenced CSCE 463 HW1p2 packet
@@ -159,19 +148,17 @@ in_addr WebSocket::getIPAddress(char* hostname)
 	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
 	if (got != hostnameMap.end()) {
 		// Found cached IP matching the host
-		printf("passed\n");
 		IP = got->second;
-		return IP;
 	}
-
-	IP = DNSLookup(hostname);
-
 	else {
-		printf("failed (hostname isn't unique)");
+		IP = DNSLookup(hostname);
 	}
 
+	printf("passed\n");
 
 	// TODO: check IP uniqueness
+	//printf("failed");
+
 	return IP;
 }
 
@@ -197,63 +184,33 @@ in_addr WebSocket::DNSLookup(char* hostname)
 
 bool WebSocket::checkRobots(char* hostname)
 {
-	// use HEAD request
-	// if the code is 4xx, you're good; unrestricted web crawling
-	// anything else, FAILURE
-	printf("\n\tConnecting on robots...");
 	clock_t start, end;
-
-	const char* request = buildRequest("HEAD", hostname, "/robots.txt");
-
+	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
 	char* buffer;
 
+	printStatusBeginning("Connecting on robots...", ' ');
+
 	start = clock();
-	Send(request);
+	Send(robotRequest);
 	end = clock();
-	double total = end - start;
-	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
+	printf("done in %d ms\n", msTime(start, end));
 
 	int status = ReadToBuffer(&buffer);
-	printf("\n\tRobots http status: %d\n", status);
+
+	printf("Robots status: %d", status);
 	if (status >= 400) {
-		// web crawling allowed for this host
+		// Assume (only) a 4xx status is a green light to start crawling
 
 		return true;
 	}
 
-	return true; // false
+	return false;
 }
 
 void WebSocket::checkIPUniqueness(in_addr IP)
 {
-	printf("\n\tChecking IP uniqueness...");
-	printf("TODO");
-}
-
-const char* WebSocket::buildRequest(const char* type, const char* host, const char* subrequest)
-{
-	// Hostname is crucial
-	if (host == NULL) {
-		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
-		return NULL;
-	}
-
-	// Assign default value if no subrequest provided
-	if (subrequest == NULL || subrequest == " ") {
-		subrequest = "/";
-	}
-
-	// Build formatted request string
-	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
-	char* FULLRequest = new char[size];
-	sprintf(FULLRequest, 
-		"%s %s HTTP/1.0\r\n"
-		"Host: %s\r\n"
-		"User-agent: %s\r\n"
-		"Connection: close\r\n\r\n", 
-		type, subrequest, host, useragent);
-
-	return FULLRequest;
+	printStatusBeginning("Checking IP uniqueness... ", ' ');
+	printf("TODO\n");
 }
 
 void WebSocket::Send(const char* request)
@@ -389,4 +346,42 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 	printf("status code %d\n", status);
 
 	return status;
+}
+
+
+// Helper Methods
+
+void WebSocket::printStatusBeginning(const char* format, char special)
+{
+	printf("\n      %c %s", special, format);
+}
+int WebSocket::msTime(clock_t start, clock_t end)
+{
+	double seconds = ((double)(end - start)) / CLOCKS_PER_SEC;
+	return (int)(1000 * seconds);
+}
+const char* WebSocket::buildRequest(const char* type, const char* host, const char* subrequest)
+{
+	// Hostname is crucial
+	if (host == NULL) {
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		return NULL;
+	}
+
+	// Assign default value if no subrequest provided
+	if (subrequest == NULL || subrequest == " ") {
+		subrequest = "/";
+	}
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
+	char* FULLRequest = new char[size];
+	sprintf(FULLRequest,
+		"%s %s HTTP/1.0\r\n"
+		"Host: %s\r\n"
+		"User-agent: %s\r\n"
+		"Connection: close\r\n\r\n",
+		type, subrequest, host, useragent);
+
+	return FULLRequest;
 }

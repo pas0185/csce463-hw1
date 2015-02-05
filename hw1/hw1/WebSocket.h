@@ -22,6 +22,7 @@ private:
 
 	std::map<std::string, in_addr> hostnameMap;
 
+	int msTime(clock_t start, clock_t end);
 	
 public:
 	void DownloadFunction(char* connectingOn, char* request);
@@ -29,7 +30,7 @@ public:
 
 	WebSocket();
 	WebSocket(const char* hostname, int port, const char* subrequest);
-	void Setup(char* hostname);				// Called by constructor
+	void Setup(char* hostname, int port);	// Called by constructor
 	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
 		in_addr DNSLookup(char* hostname);		// Called if needed
 
@@ -42,4 +43,7 @@ public:
 	int ReadToBuffer(char** buffer);
 
 	int ReadAndWriteToFile(char* filename);
+
+
+	void printStatusBeginning(const char* format, char special);
 };

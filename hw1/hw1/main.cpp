@@ -35,7 +35,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		hostname = (char*)urlParser.getHostname(url);
 
 		// create a web client to send our request
-		socket.Setup(hostname);
+		socket.Setup(hostname, 80);
 		socket.Send(request);
 
 		// and to get the resulting HTML file
