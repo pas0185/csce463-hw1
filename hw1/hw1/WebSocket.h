@@ -20,8 +20,7 @@ private:
 	int allocatedSize;
 	int curPos;
 
-	//map<string, in_addr> hostnameMap;
-	//unordered_map <string, in_addr> hostnameMap;
+	std::map<std::string, in_addr> hostnameMap;
 	const char* buildRequest(const char* type, const char* host, int port, const char* subrequest);
 	in_addr getIPAddress(char* hostname);
 	in_addr DNSLookup(char* hostname);

@@ -111,16 +111,15 @@ in_addr WebSocket::getIPAddress(char* hostname)
 	
 	in_addr IP;
 	// Check for a cached IP address
-	//map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-	//if (got == hostnameMap.end()) {
-	if (true) {
+	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+	if (got == hostnameMap.end()) {
 		// IP has not been found yet
-		printf("passed");
+		printf("passed (hostname is unique)");
 		IP = DNSLookup(hostname);
 	}
 	else {
-		printf("failed (host isn't unique)");
-		//IP = got->second;
+		printf("failed (hostname isn't unique)");
+		IP = got->second;
 	}
 
 	return IP;
