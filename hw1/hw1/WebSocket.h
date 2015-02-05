@@ -38,8 +38,5 @@ public:
 	void Send(const char* request);
 	int ReadToBuffer(char** buffer);
 
-
-
-
 	int ReadAndWriteToFile(char* filename);
 };

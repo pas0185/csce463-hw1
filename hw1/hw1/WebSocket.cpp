@@ -8,6 +8,49 @@
 
 #include "WebSocket.h"
 
+
+void DownloadFunction(char* connectOn)
+{
+	clock_t start, end;
+	int ms, byteCount, statusCode;
+
+	// ******** CONNECTION ******** //
+	printf("Connecting on %s... ", connectOn);	// robots, page, etc
+	start = clock();
+
+
+	// TODO
+
+	end = clock();
+	ms = msTime(start, end);
+	printf("done in %d ms\n", ms);
+	// ***************************** //
+
+	// ******** DOWNLOADING ******** //
+	printf("Loading... ");
+	start = clock();
+
+	// TODO
+
+	end = clock();
+	ms = msTime(start, end);
+	printf("done in %d ms with %d bytes\n", ms, byteCount);
+	// *************************** //
+
+	// ******** VERIFYING ******** //
+	printf("Verifying header... ");
+
+	// TODO
+
+	printf("status code %d", statusCode);
+	// *************************** //
+
+}
+
+
+
+
+
 WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
@@ -65,6 +108,7 @@ void WebSocket::Setup(char* hostname)
 
 	if (crawlingAllowed) {
 
+
 		// GET request for page, then parse it
 		printf("\n\tVerifying header...");
 		printf("TODO");
@@ -86,7 +130,11 @@ void WebSocket::Setup(char* hostname)
 
 	}
 }
-
+int msTime(clock_t start, clock_t end)
+{
+	double seconds = ((double)(end - start)) / CLOCKS_PER_SEC;
+	return (int)(1000 * seconds);
+}
 in_addr WebSocket::getIPAddress(char* hostname)
 {
 	// Referenced CSCE 463 HW1p2 packet
