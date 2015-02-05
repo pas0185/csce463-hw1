@@ -20,115 +20,17 @@ WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
 	Setup((char*)hostname);
 
 	// Use a HEAD request to get page statistics and check robots.txt
-	const char* HEADRequest = buildRequest("HEAD", hostname, port, subrequest);
+	/*const char* HEADRequest = buildRequest("HEAD", hostname, port, subrequest);
 	Send(HEADRequest);
-	ReadAndWriteToFile("HEADREQUEST-TEST.html");
+	ReadAndWriteToFile("HEADREQUEST-TEST.html");*/
 	//ReadHEADResponse();
-}
-
-const char* WebSocket::buildRequest(const char* type, const char* host, int port, const char* subrequest)
-{
-	// Hostname is crucial
-	if (host == NULL) {
-		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
-		return NULL;
-	}
-
-	// Assign default value if no subrequest provided
-	if (subrequest == NULL || subrequest == " ") {
-		subrequest = "/";
-	}
-
-	// Build formatted request string
-	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
-	char* FULLRequest = new char[size];
-	sprintf(FULLRequest, "%s %s HTTP/1.0\r\nUser-agent: %s\r\nHost: %s\r\nConnection: close\r\n\r\n\0", type, subrequest, useragent, host);
-
-	return FULLRequest;
-}
-
-//void WebSocket::performDNSLookup(char* hostname, struct sockaddr_in* server)
-//{
-//	// structure used in DNS lookups
-//	struct hostent *remote;
-//	clock_t start, end;
-//
-//	printf("\n\tDoing DNS... ");
-//
-//	start = clock();	// timing DNS lookup
-//
-//
-//	// first assume that the string is an IP address
-//	DWORD IP = inet_addr(hostname);
-//	if (IP == INADDR_NONE)
-//	{
-//		// if not a valid IP, then do a DNS lookup
-//		if ((remote = gethostbyname(hostname)) == NULL)
-//		{
-//			printf("Invalid string: neither FQDN, nor IP address\n");
-//			return;
-//		}
-//		else // take the first IP address and copy into sin_addr
-//			memcpy((char *)&(server->sin_addr), remote->h_addr, remote->h_length);
-//	}
-//	else
-//	{
-//		// if a valid IP, directly drop its binary version into sin_addr
-//		server->sin_addr.S_un.S_addr = IP;
-//	}
-//
-//	end = clock();	// timing DNS lookup
-//	double total = (double)(end - start);
-//	printf("done in %d ms, found %s", (1000 * total / CLOCKS_PER_SEC), inet_ntoa(server->sin_addr));
-//}
-
-in_addr WebSocket::DNSLookup(char* hostname)
-{
-	// structure used in DNS lookups
-	struct hostent *remote;
-	clock_t start, end;
-	in_addr IP;
-	printf("\n\tDoing DNS... ");
-
-	start = clock();	// timing DNS lookup
-	if ((remote = gethostbyname(hostname)) != NULL) {
-		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
-		end = clock();	// timing DNS lookup
-		double total = 1000.0 * (end - start) / CLOCKS_PER_SEC;
-		printf("done in %lf.2 ms, found %s", total, inet_ntoa(IP));
-		return IP;
-	}
-
-	printf("failed");
-
-}
-
-in_addr WebSocket::getIPAddress(char* hostname)
-{
-	// Referenced CSCE 463 HW1p2 packet
-
-	printf("\n\tChecking host uniqueness... ");
-	
-	in_addr IP;
-	// Check for a cached IP address
-	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-	if (got == hostnameMap.end()) {
-		// IP has not been found yet
-		printf("passed (hostname is unique)");
-		IP = DNSLookup(hostname);
-	}
-	else {
-		printf("failed (hostname isn't unique)");
-		IP = got->second;
-	}
-
-	return IP;
 }
 
 void WebSocket::Setup(char* hostname)
 {
 	WSADATA wsaData;
 	clock_t start, end;
+	int port = 80;
 
 	//Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -147,49 +49,146 @@ void WebSocket::Setup(char* hostname)
 		return;
 	}
 
+	in_addr IP = getIPAddress(hostname);
 
 	// structure for connecting to server
 	struct sockaddr_in server;
-	server.sin_addr = getIPAddress(hostname);
-
-	// setup the port # and protocol type
 	server.sin_family = AF_INET;
-	server.sin_port = htons(80);		// host-to-network flips the byte order
+	server.sin_port = htons(80);
 
 
-// ************************
-	printf("\n\tChecking IP uniqueness...");
-		printf("TODO");
-	//checkUniqueneIP(server.sin_addr);
+	// TODO:
+	checkIPUniqueness(IP);
 
 
-	printf("\n\tConnecting on robots...");
-		printf("TODO");
-	//connectOnRobots();
+	bool crawlingAllowed = checkRobots(hostname, port);
 
-	
-	printf("\n\tLoading...");
+	if (crawlingAllowed) {
+
+		// GET request for page, then parse it
+		printf("\n\tVerifying header...");
 		printf("TODO");
 
 
-	printf("\n\tVerifying header...");
-	printf("TODO");
+
+		printf("\n\t* Connecting on page... ");
+		start = clock();	// timing socket connection
+		// connect to the server on port 80
+		if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
+		{
+			printf("Connection error: %d\n", WSAGetLastError());
+			return;
+		}
+		end = clock();	// timing socket connection
+		double total = (double)(end - start);
+		printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
 
 
-
-// ************************
-
-	printf("\n\t* Connecting on page... ");
-	start = clock();	// timing socket connection
-	// connect to the server on port 80
-	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
-	{
-		printf("Connection error: %d\n", WSAGetLastError());
-		return;
 	}
-	end = clock();	// timing socket connection
-	double total = (double)(end - start);
+}
+
+in_addr WebSocket::getIPAddress(char* hostname)
+{
+	// Referenced CSCE 463 HW1p2 packet
+
+	printf("\n\tChecking host uniqueness... ");
+
+	in_addr IP;
+	// Check for a cached IP address
+	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+	if (got == hostnameMap.end()) {
+		// IP has not been found yet
+		printf("passed (hostname is unique)");
+		IP = DNSLookup(hostname);
+	}
+	else {
+		printf("failed (hostname isn't unique)");
+		IP = got->second;
+	}
+
+	return IP;
+}
+
+in_addr WebSocket::DNSLookup(char* hostname)
+{
+	// structure used in DNS lookups
+	struct hostent *remote;
+	clock_t start, end;
+	in_addr IP;
+	printf("\n\tDoing DNS... ");
+
+	start = clock();	// timing DNS lookup
+	if ((remote = gethostbyname(hostname)) != NULL) {
+		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+		end = clock();	// timing DNS lookup
+		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
+		printf("done in %d ms, found %s", total, inet_ntoa(IP));
+		return IP;
+	}
+
+	printf("failed");
+
+}
+
+bool WebSocket::checkRobots(char* hostname, int port)
+{
+	// use HEAD request
+	// if the code is 4xx, you're good; unrestricted web crawling
+	// anything else, FAILURE
+	printf("\n\tConnecting on robots...");
+	clock_t start, end;
+
+	const char* request = buildRequest("HEAD", hostname, port, "/robots.txt");
+
+	char* buffer;
+
+	start = clock();
+	Send(request);
+	end = clock();
+	double total = end - start;
 	printf("done in %d ms\n", (1000 * total / CLOCKS_PER_SEC));
+
+	int status = ReadToBuffer(&buffer);
+	printf("\n\tRobots http status: %d\n", status);
+	if (status >= 400) {
+		// web crawling allowed for this host
+
+		return true;
+	}
+
+	return true; // false
+}
+
+void WebSocket::checkIPUniqueness(in_addr IP)
+{
+	printf("\n\tChecking IP uniqueness...");
+	printf("TODO");
+}
+
+const char* WebSocket::buildRequest(const char* type, const char* host, int port, const char* subrequest)
+{
+	// Hostname is crucial
+	if (host == NULL) {
+		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		return NULL;
+	}
+
+	// Assign default value if no subrequest provided
+	if (subrequest == NULL || subrequest == " ") {
+		subrequest = "/";
+	}
+
+	// Build formatted request string
+	int size = strlen(host) + strlen(subrequest) + strlen(useragent) + 50;
+	char* FULLRequest = new char[size];
+	sprintf(FULLRequest, 
+		"%s %s HTTP/1.0\r\n"
+		"Host: %s\r\n"
+		"User-agent: %s\r\n"
+		"Connection: close\r\n\r\n", 
+		type, subrequest, host, useragent);
+
+	return FULLRequest;
 }
 
 void WebSocket::Send(const char* request)
@@ -201,79 +200,60 @@ void WebSocket::Send(const char* request)
 	}
 }
 
-void WebSocket::ReadHEADResponse()
+int WebSocket::ReadToBuffer(char** buffer)
 {
-	//int bytesRead = 0, status = -1, num = 0;
-	//char *responseBuf, *temp;
+	clock_t start, end;
 
-	//// Receive data from socket
+	int bytesRead = 0, status = -1, num = 0;
+	char *responseBuf;
+	char *temp;
+
+	// Receive data from socket
 	//printf("\t  Loading... ");
-	//start = clock();	// timing loading file
+	start = clock();	// timing loading file
 
-	//responseBuf = new char[INITIAL_BUF_SIZE];
-	//while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
-	//{
-	//	bytesRead += num;
+	responseBuf = new char[INITIAL_BUF_SIZE];
+	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
+	{
+		bytesRead += num;
 
-	//	// if need to resize buffer
-	//	if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
-	//	{
-	//		// Move old array to temp storage
-	//		temp = new char[bytesRead];
-	//		memcpy(temp, responseBuf, bytesRead);
+		// if need to resize buffer
+		if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
+		{
+			// Move old array to temp storage
+			temp = new char[bytesRead];
+			memcpy(temp, responseBuf, bytesRead);
 
-	//		// Double size of buffer
-	//		//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
-	//		responseBuf = new char[2 * bytesRead];
+			// Double size of buffer
+			//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
+			responseBuf = new char[2 * bytesRead];
 
-	//		// Copy data over from temp
-	//		memcpy(responseBuf, temp, bytesRead);
-	//	}
+			// Copy data over from temp
+			memcpy(responseBuf, temp, bytesRead);
+			
+			memset(&temp[0], 0, sizeof(temp));
+		}
 
-	//	//fprintf(fp, "%s", responseBuf);
-
-	//	if (status < 0)
-	//	{
-	//		sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
-	//	}
-	//}
-
-	//// Truncate blank space
-	//responseBuf[bytesRead] = '\0';
-
-	//end = clock();	// timing for loading the file
-	//total = (double)(end - start);
-	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
-
-	//// Write buffer to file
-	//fprintf(fp, "%s", responseBuf);
-	//fclose(fp);
-
-	//// Clean up resources
-	//memset(&responseBuf[0], 0, sizeof(responseBuf));
-	//memset(&temp[0], 0, sizeof(temp));
-
-	//printf("\t  Verifying header... ");
-	//printf("status code %d\n", status);
-
-	//return status;
-
-
-
-
-}
-void WebSocket::ReadGETResponse()
-{
-	// On success, request the html page and parse it
-	bool hasValidBody = true;
-	if (hasValidBody) {
-		// Parse the page
-		//HtmlParser::parse(...)
+		if (status < 0)
+		{
+			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
+		}
 	}
-	else {
-		// TODO: explain why GET request failed
-		cout << "Invalid page" << endl;
-	}
+
+	// Truncate blank space
+	responseBuf[bytesRead] = '\0';
+
+	end = clock();	// timing for loading the file
+	double total = (double)(end - start);
+	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
+
+	// Clean up resources
+	memset(&responseBuf[0], 0, sizeof(responseBuf));
+
+	printf("\t  Verifying header... ");
+	printf("status code %d\n", status);
+
+	return status;
 }
 
 int WebSocket::ReadAndWriteToFile(char* filename)
@@ -283,7 +263,6 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 		printf("An NULL file name was passed to Websocket for writing to");
 		return -1;
 	}
-
 
 	clock_t start, end, total;
 
@@ -314,6 +293,9 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 
 			// Copy data over from temp
 			memcpy(responseBuf, temp, bytesRead);
+
+			// clear temp
+			memset(&temp[0], 0, sizeof(temp));
 		}
 
 		//fprintf(fp, "%s", responseBuf);
@@ -337,7 +319,6 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
-	memset(&temp[0], 0, sizeof(temp));
 
 	printf("\t  Verifying header... ");
 	printf("status code %d\n", status);
