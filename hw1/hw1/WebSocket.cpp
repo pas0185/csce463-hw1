@@ -174,10 +174,11 @@ bool WebSocket::checkRobots(const char* hostname)
 
 	return false;
 }
-bool WebSocket::connectToPage(const char* hostname, const char* request)
+FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 {
 	clock_t start, end;
 	char* buffer;
+	FILE *file;
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	
 	printStatusBeginning("Connecting on page... ", '*');
@@ -189,10 +190,15 @@ bool WebSocket::connectToPage(const char* hostname, const char* request)
 	int status = ReadToBuffer(&buffer);
 	if (200 <= status && status < 300) {
 		// Successfully retrieved page
+		file = fopen(hostname, "w+");
+		fprintf(file, buffer);
+		fclose(file);
 
+		return file;
 	}
 
-	return false;
+	printf("")
+	return NULL;
 }
 
 void WebSocket::checkIPUniqueness(in_addr IP)
@@ -283,7 +289,7 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 	char *responseBuf, *temp;
 
 	// Receive data from socket
-	printf("\t  Loading... ");
+	printStatusBeginning("Loading... ");
 	start = clock();	// timing loading file
 	
 	responseBuf = new char[INITIAL_BUF_SIZE];

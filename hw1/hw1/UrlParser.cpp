@@ -118,7 +118,12 @@ void URLParser::parse(const char* url)
 	// Check robots.txt to see if crawling is allowed
 	if (webSocket.checkRobots(hostname)) {
 
-		webSocket.connectToPage(hostname, subrequest);
+		FILE* file = webSocket.downloadPage(hostname, subrequest);
+		if (file != NULL)
+		{
+			HtmlParser parser = HtmlParser();
+			parser.parse(file, (char*)url);
+		}
 	}
 }
 

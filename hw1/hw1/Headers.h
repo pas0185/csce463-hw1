@@ -29,7 +29,8 @@
 #include <istream>
 #include <fstream>
 #include "FileParser.h"
+#include "HtmlParser.h"
 
-#define TESTING 1 // 0
+#define TESTING 0 // 0
 
 using namespace std;

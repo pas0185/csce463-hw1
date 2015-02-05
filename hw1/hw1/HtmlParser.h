@@ -13,4 +13,8 @@ class HtmlParser
 {
 public:
 	void parse(char* filename, char* baseUrl);
+
+
+	void parse(FILE* file, char* baseUrl);
+
 };

@@ -36,7 +36,7 @@ public:
 
 	bool checkRobots(const char* hostname);
 	void checkIPUniqueness(in_addr IP);
-	bool connectToPage(const char* hostname, const char* request);
+	FILE* downloadPage(const char* hostname, const char* request);
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	void Send(const char* request);

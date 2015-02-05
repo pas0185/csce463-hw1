@@ -8,7 +8,7 @@
 #include "HtmlParser.h"
 
 void HtmlParser::parse(char* filename, char* baseUrl)
-{	
+{
 	// Taken from CPSC 463 homework handout
 
 	// open html file
@@ -50,7 +50,7 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	CloseHandle(hFile);
 
 	clock_t start, end, total;
-	printf("\t+ Parsing page... ");
+	printf("      + Parsing page... ");
 	start = clock();
 	// create new parser object
 	HTMLParserBase *parser = new HTMLParserBase;
@@ -76,4 +76,54 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	delete parser;		// this internally deletes linkBuffer
 	delete fileBuf;
 
+}
+
+
+void HtmlParser::parse(FILE* file, char* baseUrl)
+{
+	// Taken from CPSC 463 homework handout
+
+	// read file into a buffer
+	//int fileSize = file->_bufsiz; //(DWORD)li.QuadPart;			// assumes file size is below 2GB; otherwise, an __int64 is needed
+	//DWORD bytesRead;
+	//// allocate buffer
+	//char *fileBuf = new char[fileSize];
+	//// read into the buffer
+	//BOOL bRet = ReadFile(hFile, fileBuf, fileSize, &bytesRead, NULL);
+	//// process errors
+	//if (bRet == 0 || bytesRead != fileSize)
+	//{
+	//	printf("ReadFile failed with %d\n", GetLastError());
+	//	return;
+	//}
+
+	//// done with the file
+	//CloseHandle(hFile);
+
+	
+	clock_t start, end, total;
+	printf("      + Parsing page... ");
+	start = clock();
+	// create new parser object
+	HTMLParserBase *parser = new HTMLParserBase;
+
+	int nLinks;
+	char *linkBuffer = parser->Parse(file->_base, (int)strlen(file->_base), baseUrl, (int)strlen(baseUrl), &nLinks);
+
+	// check for errors indicated by negative values
+	if (nLinks < 0)
+		nLinks = 0;
+	end = clock();
+	total = (double)(end - start);
+
+	printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
+
+	// print each URL; these are NULL-separated C strings
+	for (int i = 0; i < nLinks; i++)
+	{
+		printf("%s\n", linkBuffer);
+		linkBuffer += strlen(linkBuffer) + 1;
+	}
+
+	delete parser;		// this internally deletes linkBuffer
 }
