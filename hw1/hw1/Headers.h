@@ -10,9 +10,14 @@
 #include <stdio.h>
 #include <time.h>
 #include <tchar.h>
-#include <windows.h>
-#include <stdio.h>
 #include <mmsystem.h>
+#include <stdio.h>
+#include <windows.h>
+
+#include <iostream>
+#include <sstream>
+#include <istream>
+#include <fstream>
 #include <queue>
 #include <map>
 #include <set>
@@ -22,12 +27,4 @@
 #include "WebSocket.h"
 #include "HTMLParserBase.h"
 #include "HtmlParser.h"
-
-// new in part 2
-#include <iostream>
-#include <sstream>
-#include <istream>
-#include <fstream>
 #include "HtmlParser.h"
-
-#define TESTING false // true - simplify some operations
