@@ -32,5 +32,3 @@
 #include "HtmlParser.h"
 
 #define TESTING false // true - simplify some operations
-
-using namespace std;
