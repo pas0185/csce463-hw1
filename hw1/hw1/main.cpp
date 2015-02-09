@@ -11,11 +11,61 @@
 
 #include "Headers.h"
 
+
 int HTMLParserTest();
 void parseURLsFromFile(char* fileName);
 void winsock_test(char* requestBuf);
 void htmlParserTest();
 
+// taken from 463-sample , main.cpp
+// this dedicated class is passed to all threads, acts as shared memory
+class Parameters {
+public:
+	HANDLE mutex;
+	HANDLE finished;
+	HANDLE eventQuit;
+	std::queue<std::string> urlQueue;
+	std::string inputFile;
+};
+
+UINT fileThreadFunction(LPVOID pParam)
+{		
+	Parameters *p = ((Parameters*)pParam);
+
+	WaitForSingleObject(p->mutex, INFINITE);
+	printf("File thread %d started\n", GetCurrentThread());
+	std::string fileName = std::string(p->inputFile);
+	ReleaseMutex(p->mutex);
+
+	std::ifstream infile(fileName, std::ifstream::ate | std::ifstream::binary);
+
+	int filesize = infile.tellg();
+	printf("File thread: read file with size %d\n", filesize);
+
+	infile = std::ifstream(fileName);
+	std::string url;
+
+	while (getline(infile, url)) {
+		WaitForSingleObject(p->mutex, INFINITE);
+		p->urlQueue.push(url);
+		ReleaseMutex(p->mutex);
+
+	}
+	ReleaseMutex(p->mutex);									// release critical section
+
+
+	return 0;
+}
+UINT statThreadFunction(LPVOID pParam)
+{
+	return 0;
+
+}
+UINT crawlerThreadFunction(LPVOID pParam)
+{
+
+	return 0;
+}
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// parse command line args
@@ -35,38 +85,33 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// initialize shared data structures & parameters sent to threads
-	ifstream infile(filename, std::ifstream::ate | std::ifstream::binary);
-	string url;
-	queue<string> urlQueue;
+	
+	// Referencing 463 Sample code
+	HANDLE *handles = new HANDLE[numThreads + 2];
 
-	int filesize = infile.tellg();
+	Parameters p;
 
-	printf("Main thread: read file with size %d\n", filesize);
-	infile = ifstream(filename);
-
-	// TODO faster: read file into one buffer and separate on '\n'
-
-	// Break down file into several URLs
-	while (getline(infile, url))
-	{
-		urlQueue
-			// Parse each URL
-			URLParser::parse(url.c_str());
-
-		if (TESTING)
-			return;
-	}
-
+	// create a mutex for accessing critical sections (including printf); initial state = not locked
+	p.mutex = CreateMutex(NULL, 0, NULL);
+	// create a semaphore that counts the number of active threads; initial value = 0, max = 2
+	p.finished = CreateSemaphore(NULL, 0, 2, NULL);
+	// create a quit event; manual reset, initial state = not signaled
+	p.eventQuit = CreateEvent(NULL, true, false, NULL);
+	// create a shared queue of URLs to be parsed
+	p.urlQueue = std::queue<std::string>();
+	
+	p.inputFile = inputFile;
 
 
 	// start file-reader thread
-
-	FileParser fileParser = FileParser();
-	fileParser.parse(inputFile, numThreads);
+	handles[FILE_READER_THREAD] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
 
 	// start stats thread
 
 	// start N crawling threads
+
+	URLParser::parse(url.c_str());
+
 
 	// wait for file-reader thread to quit
 
