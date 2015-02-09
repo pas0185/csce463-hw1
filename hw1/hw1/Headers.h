@@ -28,7 +28,6 @@
 #include <sstream>
 #include <istream>
 #include <fstream>
-#include "FileParser.h"
 #include "HtmlParser.h"
 
 #define TESTING false // true - simplify some operations
