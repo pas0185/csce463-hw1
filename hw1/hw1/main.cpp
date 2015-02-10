@@ -78,15 +78,15 @@ UINT fileThreadFunction(LPVOID pParam)
 	// safely add files to shared queue
 	char *url = strtok(fileBuf, "\r\n");
 	while (url) {
-
 		WaitForSingleObject(p->mutex, INFINITE);		// lock
-		printf("producing %s\n", url);
+		printf("<-Producing %s\n", url);
+
 		p->urlQueue.push(url);							// push url into queue
 		ReleaseMutex(p->mutex);							// unlock
 		ReleaseSemaphore(p->finished, 1, NULL);			// increment semaphore by 1
+
 		url = strtok(0, "\r\n");
 	}
-	
 
 	// print we're about to exit
 	WaitForSingleObject(p->mutex, INFINITE);
@@ -144,6 +144,7 @@ UINT crawlerThreadFunction(LPVOID pParam)
 {
 	// Consumer - removes URLs from shared queue for processing
 	Parameters *p = ((Parameters*)pParam);
+	char* url;
 
 	while (true) {
 		WaitForSingleObject(p->finished, INFINITE);		// wait for objects to be in shared queue
@@ -151,9 +152,15 @@ UINT crawlerThreadFunction(LPVOID pParam)
 		if (p->urlQueue.empty())
 			return 0;
 
-		std::cout << "Consuming " << p->urlQueue.front() << "\n";
-		std::string url = p->urlQueue.front();			// extract next URL
+		const char* tempURL = p->urlQueue.front().c_str();
+
+		int length = strlen(tempURL) + 1;
+		url = new char[length];
+		strncpy(url, tempURL, length);
+		url[length - 1] = '\0';
+
 		p->urlQueue.pop();
+		printf("->Consuming %s\n", url);
 
 		ReleaseMutex(p->mutex);							// unlock mutex
 
