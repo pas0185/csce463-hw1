@@ -43,11 +43,11 @@ public:
 	char* inputFile;
 	clock_t clock;
 
-	int numExtractedURLs;
-	int numURLsWithUniqueHost;		// TODO
-	int numSuccessfulDNSLookups;	// TODO
-	int numURLsWithUniqueIP;		// TODO
-	int numURLsPassedRobotCheck;
-	int numCrawledURLs;
-	int numLinks;
+	int numExtractedURLs = 0;
+	int numURLsWithUniqueHost = 0;		// TODO
+	int numSuccessfulDNSLookups = 0;	// TODO
+	int numURLsWithUniqueIP = 0;		// TODO
+	int numURLsPassedRobotCheck = 0;
+	int numCrawledURLs = 0;
+	int numLinks = 0;
 };

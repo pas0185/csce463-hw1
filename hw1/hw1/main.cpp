@@ -90,7 +90,7 @@ UINT statThreadFunction(LPVOID pParam)
 	float pagesPerSecond = 0;
 	float downloadRate = 0;
 
-	while (WaitForSingleObject(p->eventQuit, 2000) == WAIT_TIMEOUT)
+	while (WaitForSingleObject(p->eventQuit, 500) == WAIT_TIMEOUT)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);
 		clock_t now = clock();
@@ -100,14 +100,13 @@ UINT statThreadFunction(LPVOID pParam)
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
 			elapsedSeconds,
 			p->urlQueue.size(),
-			0,
+			p->numExtractedURLs,
 			0,
 			0,
 			0,
 			0,
 			0,
 			0
-			//p->numExtractedURLs,
 
 			//p->numURLsWithUniqueHost,
 			//p->numSuccessfulDNSLookups,
@@ -126,7 +125,6 @@ UINT statThreadFunction(LPVOID pParam)
 	}
 
 	return 0;
-
 }
 UINT crawlerThreadFunction(LPVOID pParam)
 {
