@@ -16,9 +16,12 @@ void URLParser::parse(const char* url, LPVOID pParam)
 
 	const char* hostname;
 	const char* subrequest;
-	int port, numLinks;
+	int port = 80;
+	int numLinks = 0;
 
-	bool extractedURL, robotSuccess, didCrawlUrl;
+	bool extractedURL = false;
+	bool robotSuccess = false;
+	bool didCrawlUrl = false;
 
 	if ((hostname = getHostname(url)) == NULL) {
 		//printf("failed to parse host\n");
@@ -83,20 +86,23 @@ const char* URLParser::getHostname(const char* url)
 
 const char* URLParser::getSubrequest(const char* url, const char* hostname)
 {
-	// TODO: safely parse the subrequest
+	const char* delim;
+	char* request;// = new char[strlen(url)];
 
-	char* scheme = strtok((char*)url, "://");
-
-	char* hostBegin;
-	char* subrequest = new char[strlen(url)];
-
-	if ((hostBegin = strstr((char*)url, hostname)) != NULL)
+	if ((delim = strstr(url, "://")) != NULL)
 	{
-		char* path = strtok(hostBegin, "/");
-		char* extra = strtok(path, "?#");
-		
-		path -= strlen(extra);
-		return path;
+		// Stripping the scheme
+		delim += 3;
+
+		if ((delim = strstr(delim, "/")) != NULL) {
+
+			size_t requestLength = strcspn(delim, "?#");
+			request = new char[requestLength + 1];
+
+			strncpy(request, delim, requestLength);
+			request[requestLength] = '\0';
+			return request;
+		}
 	}
 
 	return "/";
