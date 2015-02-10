@@ -76,13 +76,15 @@ UINT fileThreadFunction(LPVOID pParam)
 	CloseHandle(hFile);
 
 	// safely add files to shared queue
-	WaitForSingleObject(p->mutex, INFINITE);			// lock
 	char *url = strtok(fileBuf, "\r\n");
 	while (url) {
+
+		WaitForSingleObject(p->mutex, INFINITE);		// lock
 		p->urlQueue.push(url);							// push url into queue
+		ReleaseMutex(p->mutex);							// unlock
+		ReleaseSemaphore(p->finished);					// increment semaphore by 1
 		url = strtok(0, "\r\n");
 	}
-	ReleaseMutex(p->mutex);								// unlock
 	
 
 	// print we're about to exit
@@ -98,21 +100,21 @@ UINT statThreadFunction(LPVOID pParam)
 
 	Parameters *p = ((Parameters*)pParam);
 
-	while (WaitForSingleObject(p->eventQuit, 2000) != WAIT_OBJECT_0)
+	int elapsedSeconds = 0;
+	int queueSize = 0;
+	int numExtractedURLs = 0;
+	int numURLsWithUniqueHost = 0;
+	int numSuccessfulDNSLookups = 0;
+	int numURLsWithUniqueIP = 0;
+	int numURLsPassedRobotCheck = 0;
+	int numCrawledURLs = 0;
+	int numLinks = 0;
+
+	float pagesPerSecond = 0;
+	float downloadRate = 0;
+
+	while (WaitForSingleObject(p->eventQuit, 2000) == WAIT_TIMEOUT)
 	{
-		int elapsedSeconds = 0;
-		int queueSize = 0;
-		int numExtractedURLs = 0;
-		int numURLsWithUniqueHost = 0;
-		int numSuccessfulDNSLookups = 0;
-		int numURLsWithUniqueIP = 0;
-		int numURLsPassedRobotCheck = 0;
-		int numCrawledURLs = 0;
-		int numLinks = 0;
-
-		float pagesPerSecond = 0;
-		float downloadRate = 0;
-
 		WaitForSingleObject(p->mutex, INFINITE);
 		printf(
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
@@ -134,12 +136,21 @@ UINT statThreadFunction(LPVOID pParam)
 		ReleaseMutex(p->mutex);
 	}
 
-
 	return 0;
 
 }
 UINT crawlerThreadFunction(LPVOID pParam)
 {
+	// Consumer - removes URLs from shared queue for processing
+	Parameters *p = ((Parameters*)pParam);
+
+	WaitForSingleObject(p->finished, INFINITE);		// wait for objects to be in shared queue
+	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+	std::string url = p->urlQueue.front();			// extract next URL
+	p->urlQueue.pop();
+	ReleaseMutex(p->mutex);							// unlock mutex
+
+	URLParser::parse(url.c_str());
 
 	return 0;
 }
@@ -172,7 +183,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	p.mutex = CreateMutex(NULL, 0, NULL);
 
 	// create a semaphore that counts the number of active threads; initial value = 0, max = 2
-	p.finished = CreateSemaphore(NULL, 0, 2, NULL);
+	p.finished = CreateSemaphore(NULL, 0, numThreads, NULL);
 
 	// create a quit event; manual reset, initial state = not signaled
 	p.eventQuit = CreateEvent(NULL, true, false, NULL);
@@ -194,18 +205,16 @@ int _tmain(int argc, _TCHAR* argv[])
 		crawlerThreads[i] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)crawlerThreadFunction, &p, 0, NULL);
 	}
 
-	//URLParser::parse(url.c_str());
-
-
 	// wait for file-reader thread to quit
 	WaitForSingleObject(fileThread, INFINITE);
 
 	// wait for N crawling threads to finish
 	WaitForMultipleObjects(numThreads, crawlerThreads, TRUE, INFINITE);
+	// TODO: maybe need to wait and CloseHandle one by one
+
 
 	// signal stats thread to quit; wait for it to terminate
 	SetEvent(p.eventQuit);
-
 	WaitForSingleObject(statThread, INFINITE);
 
 	// cleanup
