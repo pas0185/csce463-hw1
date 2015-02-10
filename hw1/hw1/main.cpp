@@ -80,9 +80,10 @@ UINT fileThreadFunction(LPVOID pParam)
 	while (url) {
 
 		WaitForSingleObject(p->mutex, INFINITE);		// lock
+		printf("producing %s\n", url);
 		p->urlQueue.push(url);							// push url into queue
 		ReleaseMutex(p->mutex);							// unlock
-		ReleaseSemaphore(p->finished);					// increment semaphore by 1
+		ReleaseSemaphore(p->finished, 1, NULL);			// increment semaphore by 1
 		url = strtok(0, "\r\n");
 	}
 	
@@ -144,14 +145,20 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	// Consumer - removes URLs from shared queue for processing
 	Parameters *p = ((Parameters*)pParam);
 
-	WaitForSingleObject(p->finished, INFINITE);		// wait for objects to be in shared queue
-	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	std::string url = p->urlQueue.front();			// extract next URL
-	p->urlQueue.pop();
-	ReleaseMutex(p->mutex);							// unlock mutex
+	while (true) {
+		WaitForSingleObject(p->finished, INFINITE);		// wait for objects to be in shared queue
+		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+		if (p->urlQueue.empty())
+			return 0;
 
-	URLParser::parse(url.c_str());
+		std::cout << "Consuming " << p->urlQueue.front() << "\n";
+		std::string url = p->urlQueue.front();			// extract next URL
+		p->urlQueue.pop();
 
+		ReleaseMutex(p->mutex);							// unlock mutex
+
+		//URLParser::parse(url.c_str());
+	}
 	return 0;
 }
 int _tmain(int argc, _TCHAR* argv[])
@@ -198,7 +205,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
 
 	// start stats thread
-	statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
+	//statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
 	
 	// start N crawling threads
 	for (int i = 0; i < numThreads; i++) {
@@ -214,8 +221,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	// signal stats thread to quit; wait for it to terminate
-	SetEvent(p.eventQuit);
-	WaitForSingleObject(statThread, INFINITE);
+	//SetEvent(p.eventQuit);
+	//WaitForSingleObject(statThread, INFINITE);
 
 	// cleanup
 
