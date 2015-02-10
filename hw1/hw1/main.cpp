@@ -104,9 +104,37 @@ UINT statThreadFunction(LPVOID pParam)
 
 	while (WaitForSingleObject(p->eventQuit, 2000) != WAIT_OBJECT_0)
 	{
+		int elapsedSeconds = 0;
+		int queueSize = 0;
+		int numExtractedURLs = 0;
+		int numURLsWithUniqueHost = 0;
+		int numSuccessfulDNSLookups = 0;
+		int numURLsWithUniqueIP = 0;
+		int numURLsPassedRobotCheck = 0;
+		int numCrawledURLs = 0;
+		int numLinks = 0;
+
+		float pagesPerSecond = 0;
+		float downloadRate = 0;
+
 		WaitForSingleObject(p->mutex, INFINITE);
-		printf("[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n");
-		printf("\t *** crawling %.1f pps & %.1f Mbps\n");
+		printf(
+			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
+			elapsedSeconds,
+			queueSize,
+			numExtractedURLs,
+			numURLsWithUniqueHost,
+			numSuccessfulDNSLookups,
+			numURLsWithUniqueIP,
+			numURLsPassedRobotCheck,
+			numCrawledURLs,
+			numLinks);
+
+		printf(
+			"\t *** crawling %.1f pps & %.1f Mbps\n",
+			pagesPerSecond,
+			downloadRate);
+
 		ReleaseMutex(p->mutex);
 	}
 
@@ -175,7 +203,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// wait for N crawling threads to finish
 
 	// signal stats thread to quit; wait for it to terminate
-	SetEvent(p.eventQuit);
+	//SetEvent(p.eventQuit);
 
 	WaitForSingleObject(handles[STATS_THREAD], INFINITE);
 
