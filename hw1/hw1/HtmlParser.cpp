@@ -17,7 +17,7 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	// process errors
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
-		printf("CreateFile failed with %d\n", GetLastError());
+		//printf("CreateFile failed with %d\n", GetLastError());
 		return;
 	}
 
@@ -28,7 +28,7 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	// process errors
 	if (bRet == 0)
 	{
-		printf("GetFileSizeEx error %d\n", GetLastError());
+		//printf("GetFileSizeEx error %d\n", GetLastError());
 		return;
 	}
 
@@ -42,7 +42,7 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	// process errors
 	if (bRet == 0 || bytesRead != fileSize)
 	{
-		printf("ReadFile failed with %d\n", GetLastError());
+		//printf("ReadFile failed with %d\n", GetLastError());
 		return;
 	}
 
@@ -50,7 +50,7 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	CloseHandle(hFile);
 
 	clock_t start, end, total;
-	printf("      + Parsing page... ");
+	//printf("      + Parsing page... ");
 	start = clock();
 	// create new parser object
 	HTMLParserBase *parser = new HTMLParserBase;
@@ -64,12 +64,12 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 	end = clock();
 	total = (double)(end - start);
 
-	printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
+	//printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
 
 	// print each URL; these are NULL-separated C strings
 	for (int i = 0; i < nLinks; i++)
 	{
-		printf("%s\n", linkBuffer);
+		//printf("%s\n", linkBuffer);
 		linkBuffer += strlen(linkBuffer) + 1;
 	}
 
@@ -84,7 +84,7 @@ void HtmlParser::parse(FILE* file, char* baseUrl)
 	// Based off CPSC 463 homework handout
 
 	clock_t start, end, total;
-	printf("      + Parsing page... ");
+	//printf("      + Parsing page... ");
 	start = clock();
 	// create new parser object
 	HTMLParserBase *parser = new HTMLParserBase;
@@ -98,12 +98,12 @@ void HtmlParser::parse(FILE* file, char* baseUrl)
 	end = clock();
 	total = (double)(end - start);
 
-	printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
+	//printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
 
 	// print each URL; these are NULL-separated C strings
 	for (int i = 0; i < nLinks; i++)
 	{
-		printf("%s\n", linkBuffer);
+		//printf("%s\n", linkBuffer);
 		linkBuffer += strlen(linkBuffer) + 1;
 	}
 

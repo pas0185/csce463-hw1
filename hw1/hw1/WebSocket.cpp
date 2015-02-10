@@ -27,7 +27,7 @@ void WebSocket::Setup(char* hostname, int port)
 	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0) {
-		printf("WSAStartup error %d\n", WSAGetLastError());
+		//printf("WSAStartup error %d\n", WSAGetLastError());
 		WSACleanup();
 		return;
 	}
@@ -51,15 +51,15 @@ void WebSocket::Setup(char* hostname, int port)
 	if (got != hostnameMap.end()) {
 		// Found cached IP matching the host
 		IP = got->second;
-		printf("found existing\n");
+		//printf("found existing\n");
 	}
 	else {
-		printf("passed\n");
+		//printf("passed\n");
 		if ((remote = DNSLookup(hostname)) != NULL) {
 			memcpy((char *)&(IP), remote->h_addr, remote->h_length);
 		}
 		else {
-			printf("failed\n");
+			//printf("failed\n");
 			return;
 		}
 	}
@@ -74,7 +74,7 @@ void WebSocket::Setup(char* hostname, int port)
 	// Connect socket to server on correct port
 	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
 	{
-		printf("Connection error: %d\n", WSAGetLastError());
+		//printf("Connection error: %d\n", WSAGetLastError());
 		return;
 	}
 }
@@ -87,7 +87,7 @@ void WebSocket::DownloadFunction(char* connectingOn, char* request)
 	int ms, byteCount, statusCode;
 
 	// ******** CONNECTION ******** //
-	printf("Connecting on %s... ", connectingOn);	// robots, page, etc
+	//printf("Connecting on %s... ", connectingOn);	// robots, page, etc
 	start = clock();
 
 	// TODO
@@ -96,26 +96,26 @@ void WebSocket::DownloadFunction(char* connectingOn, char* request)
 
 	end = clock();
 	ms = msTime(start, end);
-	printf("done in %d ms\n", ms);
+	//printf("done in %d ms\n", ms);
 	// ***************************** //
 
 	// ******** DOWNLOADING ******** //
-	printf("Loading... ");
+	//printf("Loading... ");
 	start = clock();
 
 	// TODO
 
 	end = clock();
 	ms = msTime(start, end);
-	printf("done in %d ms with %d bytes\n", ms, byteCount);
+	//printf("done in %d ms with %d bytes\n", ms, byteCount);
 	// *************************** //
 
 	// ******** VERIFYING ******** //
-	printf("Verifying header... ");
+	//printf("Verifying header... ");
 
 	// TODO
 
-	printf("status code %d", statusCode);
+	//printf("status code %d", statusCode);
 	// *************************** //
 
 }
@@ -133,10 +133,10 @@ hostent* WebSocket::DNSLookup(char* hostname)
 		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
 		end = clock();	// timing DNS lookup
 		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
-		printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
+		//printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
 	}
 	else {
-		printf("failed\n");
+		//printf("failed\n");
 	}
 	
 	return remote;
@@ -152,7 +152,7 @@ bool WebSocket::checkRobots(const char* hostname)
 	start = clock();
 	Send(robotRequest);
 	end = clock();
-	printf("done in %d ms\n", msTime(start, end));
+	//printf("done in %d ms\n", msTime(start, end));
 
 	int status = ReadToBuffer(&buffer);
 
@@ -176,7 +176,7 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 	start = clock();
 	Send(pageRequest);
 	end = clock();
-	printf("done in %d ms\n", msTime(start, end));
+	//printf("done in %d ms\n", msTime(start, end));
 
 	int status = ReadToBuffer(&buffer);
 	if (200 <= status && status < 300) {
@@ -189,14 +189,14 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 	}
 
 	// TODO: explain detail reason
-	printf("failed");
+	//printf("failed");
 	return NULL;
 }
 
 void WebSocket::checkIPUniqueness(in_addr IP)
 {
 	printStatusBeginning("Checking IP uniqueness... ");
-	printf("TODO\n");
+	//printf("TODO\n");
 }
 
 void WebSocket::Send(const char* request)
@@ -204,7 +204,7 @@ void WebSocket::Send(const char* request)
 	// send HTTP request
 	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
 	{
-		printf("Send error: %d\n", WSAGetLastError());
+		//printf("Send error: %d\n", WSAGetLastError());
 	}
 }
 
@@ -254,13 +254,13 @@ int WebSocket::ReadToBuffer(char** buffer)
 
 	end = clock();	// timing for loading the file
 	double total = (double)(end - start);
-	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
+	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
 
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
 	printStatusBeginning("Verifying header... ");
-	printf("status code %d\n", status);
+	//printf("status code %d\n", status);
 
 	return status;
 }
@@ -269,7 +269,7 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 {
 	if (filename == NULL)
 	{
-		printf("An NULL file name was passed to Websocket for writing to");
+		//printf("An NULL file name was passed to Websocket for writing to");
 		return -1;
 	}
 
@@ -320,7 +320,7 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 
 	end = clock();	// timing for loading the file
 	total = (double)(end - start);
-	printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
+	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
 
 	// Write buffer to file
 	fprintf(fp, "%s", responseBuf);
@@ -329,8 +329,8 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
-	printf("\t  Verifying header... ");
-	printf("status code %d\n", status);
+	//printf("\t  Verifying header... ");
+	//printf("status code %d\n", status);
 
 	return status;
 }
@@ -339,12 +339,12 @@ int WebSocket::ReadAndWriteToFile(char* filename)
 
 void WebSocket::printStatusBeginning(const char* format, char special)
 {
-	printf("      %c %s", special, format);
+	//printf("      %c %s", special, format);
 }
 
 void WebSocket::printStatusBeginning(const char* format)
 {
-	printf("        %s", format);
+	//printf("        %s", format);
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)
@@ -357,7 +357,7 @@ const char* WebSocket::buildRequest(const char* type, const char* host, const ch
 {
 	// Hostname is crucial
 	if (host == NULL) {
-		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		//printf("Failed to create a GET request. Expected char* for hostname, received NULL");
 		return NULL;
 	}
 

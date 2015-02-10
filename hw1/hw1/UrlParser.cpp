@@ -26,7 +26,7 @@ const char* URLParser::getHostname(const char* url)
 
 		hostname[hostLength /* + 1 */] = '\0';
 
-		printf("host: %s, ", hostname);
+		//printf("host: %s, ", hostname);
 
 		return hostname;
 	}
@@ -88,14 +88,14 @@ int getPort(const char* url)
 		}
 	}
 
-	printf("port: %d", port);
+	//printf("port: %d", port);
 	return port;
 }
 
 void URLParser::parse(const char* url)
 {
-	printf("\nURL: %s\n", url);
-	printf("        Parsing URL... ");
+	//printf("\nURL: %s\n", url);
+	//printf("        Parsing URL... ");
 
 	// extract host name from URL
 	const char* hostname;
@@ -103,14 +103,14 @@ void URLParser::parse(const char* url)
 	int port;
 
 	if ((hostname = getHostname(url)) == NULL) {
-		printf("failed to retrieve host, exiting now\n\n");
+		//printf("failed to retrieve host, exiting now\n\n");
 		return;
 	}
 
 	subrequest = getSubrequest(url, hostname);
 	port = getPort(url);
 
-	printf("\n");
+	//printf("\n");
 
 	// Create WebSocket
 	WebSocket webSocket = WebSocket(hostname, port, subrequest);
@@ -132,7 +132,7 @@ char* URLParser::buildGETRequest(char* host, char* port, char* request)
 	// Can't do anything without the host name
 	if (host == NULL)
 	{
-		printf("Failed to create a GET request. Expected char* for hostname, received NULL");
+		//printf("Failed to create a GET request. Expected char* for hostname, received NULL");
 		return NULL;
 	}
 
@@ -154,10 +154,10 @@ char* URLParser::buildGETRequest(char* host, char* port, char* request)
 char* URLParser::parseURLString(char* url)
 {
 
-	printf("        Parsing URL...");
+	//printf("        Parsing URL...");
 	if (url == NULL)
 	{
-		printf("url == NULL, aborting.\n");
+		//printf("url == NULL, aborting.\n");
 		return NULL;
 	}
 
@@ -225,9 +225,9 @@ char* URLParser::parseURLString(char* url)
 		}
 	}
 
-	printf("host: %s, ", host);
-	printf("port: %s, ", port);
-	printf("request: %s\n", request);
+	//printf("host: %s, ", host);
+	//printf("port: %s, ", port);
+	//printf("request: %s\n", request);
 
 	return buildGETRequest(host, port, request);
 }
