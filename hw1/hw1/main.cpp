@@ -98,6 +98,19 @@ UINT fileThreadFunction(LPVOID pParam)
 }
 UINT statThreadFunction(LPVOID pParam)
 {
+	// Output stats every 2 seconds. 
+
+	Parameters *p = ((Parameters*)pParam);
+
+	while (WaitForSingleObject(p->eventQuit, 2000) != WAIT_OBJECT_0)
+	{
+		WaitForSingleObject(p->mutex, INFINITE);
+		printf("[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n");
+		printf("\t *** crawling %.1f pps & %.1f Mbps\n");
+		ReleaseMutex(p->mutex);
+	}
+
+
 	return 0;
 
 }
@@ -132,10 +145,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// create a mutex for accessing critical sections (including printf); initial state = not locked
 	p.mutex = CreateMutex(NULL, 0, NULL);
+
 	// create a semaphore that counts the number of active threads; initial value = 0, max = 2
 	p.finished = CreateSemaphore(NULL, 0, 2, NULL);
+
 	// create a quit event; manual reset, initial state = not signaled
 	p.eventQuit = CreateEvent(NULL, true, false, NULL);
+
 	// create a shared queue of URLs to be parsed
 	p.urlQueue = std::queue<std::string>();
 	// assign input file that contains URLs
@@ -160,6 +176,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// signal stats thread to quit; wait for it to terminate
 	SetEvent(p.eventQuit);
+
 	WaitForSingleObject(handles[STATS_THREAD], INFINITE);
 
 	// cleanup
