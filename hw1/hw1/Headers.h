@@ -10,9 +10,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <tchar.h>
-#include <mmsystem.h>
-#include <stdio.h>
 #include <windows.h>
+#include <mmsystem.h>
 
 #include <iostream>
 #include <sstream>
@@ -29,7 +28,3 @@
 #include "HtmlParser.h"
 #include "HtmlParser.h"
 
-
-#define FILE_READER_THREAD 0
-#define STATS_THREAD 1
-#define FIRST_CRAWLER_THREAD 2

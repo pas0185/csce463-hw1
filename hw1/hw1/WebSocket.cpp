@@ -47,7 +47,7 @@ void WebSocket::Setup(char* hostname, int port)
 	struct hostent *remote;
 
 	// Check for a cached IP address
-	std::map<string, in_addr>::const_iterator got = hostnameMap.find(hostname);
+	std::map<std::string, in_addr>::const_iterator got = hostnameMap.find(hostname);
 	if (got != hostnameMap.end()) {
 		// Found cached IP matching the host
 		IP = got->second;

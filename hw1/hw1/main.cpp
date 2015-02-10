@@ -7,10 +7,14 @@
 *   http://www.cplusplus.com/reference/cstdio/fread/
 *   http://stackoverflow.com/questions/16867372/splitting-strings-by-newline-character-in-c
 *   http://stackoverflow.com/questions/7868936/read-file-line-by-line
+*   http://stackoverflow.com/questions/2029103/correct-way-to-read-a-text-file-into-a-buffer-in-c
 */
 
 #include "Headers.h"
 
+#define FILE_READER_THREAD 0
+#define STATS_THREAD 1
+#define FIRST_CRAWLER_THREAD 2
 
 int HTMLParserTest();
 void parseURLsFromFile(char* fileName);
@@ -25,34 +29,70 @@ public:
 	HANDLE finished;
 	HANDLE eventQuit;
 	std::queue<std::string> urlQueue;
-	std::string inputFile;
+	char* inputFile;
 };
 
 UINT fileThreadFunction(LPVOID pParam)
-{		
+{	
+	// Producer - adds URLs to a queue shared among threads
+	
 	Parameters *p = ((Parameters*)pParam);
 
-	WaitForSingleObject(p->mutex, INFINITE);
-	printf("File thread %d started\n", GetCurrentThread());
-	std::string fileName = std::string(p->inputFile);
-	ReleaseMutex(p->mutex);
+	// safely get file name from shared parameters
+	WaitForSingleObject(p->mutex, INFINITE);				// lock mutex
+	printf("File thread started\n");						// critical section
+	HANDLE hFile = CreateFile(p->inputFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL, NULL);
+	ReleaseMutex(p->mutex);									// unlock mutex
 
-	std::ifstream infile(fileName, std::ifstream::ate | std::ifstream::binary);
 
-	int filesize = infile.tellg();
-	printf("File thread: read file with size %d\n", filesize);
-
-	infile = std::ifstream(fileName);
-	std::string url;
-
-	while (getline(infile, url)) {
-		WaitForSingleObject(p->mutex, INFINITE);
-		p->urlQueue.push(url);
-		ReleaseMutex(p->mutex);
-
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		printf("CreateFile failed with %d\n", GetLastError());
+		return 0;
 	}
-	ReleaseMutex(p->mutex);									// release critical section
 
+	// get file size
+	LARGE_INTEGER li;
+	BOOL bRet = GetFileSizeEx(hFile, &li);
+	// process errors
+	if (bRet == 0)
+	{
+		printf("GetFileSizeEx error %d\n", GetLastError());
+		return 0;
+	}
+
+	// read file into a buffer
+	int fileSize = (DWORD)li.QuadPart;			// assumes file size is below 2GB; otherwise, an __int64 is needed
+	DWORD bytesRead;
+	// allocate buffer
+	char *fileBuf = new char[fileSize];
+	// read into the buffer
+	bRet = ReadFile(hFile, fileBuf, fileSize, &bytesRead, NULL);
+	// process errors
+	if (bRet == 0 || bytesRead != fileSize)
+	{
+		printf("ReadFile failed with %d\n", GetLastError());
+		return 0;
+	}
+
+	// done with the file
+	CloseHandle(hFile);
+
+	// safely add files to shared queue
+	WaitForSingleObject(p->mutex, INFINITE);			// lock
+	char *url = strtok(fileBuf, "\r\n");
+	while (url) {
+		p->urlQueue.push(url);							// push url into queue
+		url = strtok(0, "\r\n");
+	}
+	ReleaseMutex(p->mutex);								// unlock
+	
+
+	// print we're about to exit
+	WaitForSingleObject(p->mutex, INFINITE);
+	printf("File Thread finishing execution\n");
+	ReleaseMutex(p->mutex);
 
 	return 0;
 }
@@ -69,8 +109,14 @@ UINT crawlerThreadFunction(LPVOID pParam)
 int _tmain(int argc, _TCHAR* argv[])
 {
 	// parse command line args
+	if (argc != 3) {
+		printf("Invalid number of command line args provided\n");
+		printf("Usage:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>");
+		return 0;
+	}
+
 	int numThreads;
-	std::string inputFile;
+	std::string fileName;
 
 	if (sscanf(argv[1], "%d", &numThreads) != 1) {
 		printf("Error parsing number of threads, assuming 1\n");
@@ -78,11 +124,12 @@ int _tmain(int argc, _TCHAR* argv[])
 		numThreads = 1;
 	}
 
-	if (sscanf(argv[2], "%s", &inputFile) != 1) {
+	fileName = argv[2];
+	/*if (sscanf(argv[2], "%s", &fileName) != 1) {
 		printf("Error parsing input file name\n");
 		printf("Usage:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>");
 		return 0;
-	}
+	}*/
 
 	// initialize shared data structures & parameters sent to threads
 	
@@ -99,8 +146,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	p.eventQuit = CreateEvent(NULL, true, false, NULL);
 	// create a shared queue of URLs to be parsed
 	p.urlQueue = std::queue<std::string>();
-	
-	p.inputFile = inputFile;
+	// assign input file that contains URLs
+	p.inputFile = (char *)fileName.c_str();
 
 
 	// start file-reader thread
@@ -110,13 +157,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// start N crawling threads
 
-	URLParser::parse(url.c_str());
+	//URLParser::parse(url.c_str());
 
 
 	// wait for file-reader thread to quit
+	WaitForSingleObject(handles[FILE_READER_THREAD], INFINITE);
 
 	// wait for N crawling threads to finish
+	//WaitForMultipleObjects(numThreads, handles + 2, ... )
+	//int i = FIRST_CRAWLER_THREAD; 
+	//while (i < numThreads + 2)
+	//{
 
+	//	i++;
+	//}
 	// signal stats thread to quit; wait for it to terminate
 
 	// cleanup
@@ -124,6 +178,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 
-	system("pause");
+	//system("pause");
 	return 0;
 }
