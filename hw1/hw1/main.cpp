@@ -8,6 +8,7 @@
 *   http://stackoverflow.com/questions/16867372/splitting-strings-by-newline-character-in-c
 *   http://stackoverflow.com/questions/7868936/read-file-line-by-line
 *   http://stackoverflow.com/questions/2029103/correct-way-to-read-a-text-file-into-a-buffer-in-c
+*   CSCE 463 Sample Code by Dimitri Loguinov
 */
 
 #include "Headers.h"
@@ -44,8 +45,7 @@ UINT fileThreadFunction(LPVOID pParam)
 	HANDLE hFile = CreateFile(p->inputFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 	ReleaseMutex(p->mutex);									// unlock mutex
-
-
+	
 	if (hFile == INVALID_HANDLE_VALUE)
 	{
 		printf("CreateFile failed with %d\n", GetLastError());
@@ -125,17 +125,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	fileName = argv[2];
-	/*if (sscanf(argv[2], "%s", &fileName) != 1) {
-		printf("Error parsing input file name\n");
-		printf("Usage:\n\t> hw1.exe <NUM-THREADS> <URL-INPUT.TXT>");
-		return 0;
-	}*/
 
 	// initialize shared data structures & parameters sent to threads
-	
-	// Referencing 463 Sample code
 	HANDLE *handles = new HANDLE[numThreads + 2];
-
 	Parameters p;
 
 	// create a mutex for accessing critical sections (including printf); initial state = not locked
@@ -154,7 +146,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	handles[FILE_READER_THREAD] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
 
 	// start stats thread
-
+	handles[STATS_THREAD] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
+	
 	// start N crawling threads
 
 	//URLParser::parse(url.c_str());
@@ -164,20 +157,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	WaitForSingleObject(handles[FILE_READER_THREAD], INFINITE);
 
 	// wait for N crawling threads to finish
-	//WaitForMultipleObjects(numThreads, handles + 2, ... )
-	//int i = FIRST_CRAWLER_THREAD; 
-	//while (i < numThreads + 2)
-	//{
 
-	//	i++;
-	//}
 	// signal stats thread to quit; wait for it to terminate
+	SetEvent(p.eventQuit);
+	WaitForSingleObject(handles[STATS_THREAD], INFINITE);
 
 	// cleanup
 
-
-
-
-	//system("pause");
+	system("pause");
 	return 0;
 }
