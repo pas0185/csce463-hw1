@@ -17,6 +17,6 @@ public:
 	char* buildGETRequest(char* host, char* port, char* request);
 	static const char* getHostname(const char* url);
 	char* parseURLString(char* url);
-	static const char* getSubrequest(const char* url, const char* hostname);
+	static const char* getSubrequest(const char* url);// , const char* hostname);
 	static int getPort(const char* url);
 };

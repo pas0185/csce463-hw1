@@ -67,10 +67,12 @@ UINT fileThreadFunction(LPVOID pParam)
 
 		p->urlQueue.push(url);							// push url into queue
 		ReleaseMutex(p->mutex);							// unlock
-		ReleaseSemaphore(p->finished, 1, NULL);			// increment semaphore by 1
+		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// increment semaphore by 1
 
 		url = strtok(0, "\r\n");
 	}
+
+	SetEvent(p->eventFileReadFinished);
 
 	// print we're about to exit
 	WaitForSingleObject(p->mutex, INFINITE);
@@ -132,11 +134,16 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	Parameters *p = ((Parameters*)pParam);
 	char* url;
 
-	while (true) {
-		WaitForSingleObject(p->finished, INFINITE);		// wait for objects to be in shared queue
+	HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
+	int size = sizeof(arr) / sizeof(HANDLE);
+
+	//while (WaitForSingleObject(p->semaphoreCrawlers, INFINITE) == WAIT_OBJECT_0)
+	while (WaitForMultipleObjects(size, arr, false, INFINITE) == WAIT_OBJECT_0)
+	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+
 		if (p->urlQueue.empty())
-			return 0;
+			break;
 
 		const char* tempURL = p->urlQueue.front().c_str();
 
@@ -148,9 +155,17 @@ UINT crawlerThreadFunction(LPVOID pParam)
 		p->urlQueue.pop();
 
 		ReleaseMutex(p->mutex);							// unlock mutex
+
 		URLParser parser = URLParser();
 		parser.parse((const char*)url, pParam);
+
+		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
+
 	}
+
+	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+	SetEvent(p->eventQuit);
+	ReleaseMutex(p->mutex);							// unlock mutex
 
 	return 0;
 }
@@ -185,21 +200,25 @@ int _tmain(int argc, _TCHAR* argv[])
 	// create a mutex for accessing critical sections (including printf); initial state = not locked
 	p.mutex = CreateMutex(NULL, 0, NULL);
 
-	// create a semaphore that counts the number of active threads; initial value = 0, max = 2
-	p.finished = CreateSemaphore(NULL, 0, numThreads, NULL);
+	// create a semaphore that counts the number of active threads; initial value = 0, max = numThreads
+	p.semaphoreCrawlers = CreateSemaphore(NULL, 0, numThreads, NULL);
 
 	// create a quit event; manual reset, initial state = not signaled
 	p.eventQuit = CreateEvent(NULL, true, false, NULL);
 
+	// set to true once file is finished being read
+	p.eventFileReadFinished = CreateEvent(NULL, true, false, NULL);
+
 	// create a shared queue of URLs to be parsed
 	p.urlQueue = std::queue<std::string>();
+
 	// assign input file that contains URLs
 	p.inputFile = (char *)fileName.c_str();
 
 
 	// start file-reader thread
 	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
-
+	
 	// start stats thread
 	statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
 	
@@ -209,7 +228,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// wait for file-reader thread to quit
-	WaitForSingleObject(fileThread, INFINITE);
+	WaitForSingleObject(p.eventFileReadFinished, INFINITE);
 
 	// wait for N crawling threads to finish
 	WaitForMultipleObjects(numThreads, crawlerThreads, TRUE, INFINITE);
@@ -218,6 +237,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// signal stats thread to quit; wait for it to terminate
 	SetEvent(p.eventQuit);
+
 	WaitForSingleObject(statThread, INFINITE);
 
 	// cleanup

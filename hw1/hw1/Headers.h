@@ -35,8 +35,10 @@ class Parameters {
 	// this dedicated class is passed to all threads, acts as shared memory
 public:
 	HANDLE mutex;
-	HANDLE finished;
+	HANDLE semaphoreCrawlers;
 	HANDLE eventQuit;
+	HANDLE eventFileReadFinished;
+
 	std::queue<std::string> urlQueue;
 	char* inputFile;
 	clock_t clock;

@@ -29,7 +29,7 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	}
 	extractedURL = true;
 
-	subrequest = getSubrequest(url, hostname);
+	subrequest = getSubrequest(url);
 	port = getPort(url);
 
 	// Create WebSocket
@@ -84,7 +84,7 @@ const char* URLParser::getHostname(const char* url)
 	return NULL;
 }
 
-const char* URLParser::getSubrequest(const char* url, const char* hostname)
+const char* URLParser::getSubrequest(const char* url)//, const char* hostname)
 {
 	const char* delim;
 	char* request;
@@ -110,22 +110,29 @@ const char* URLParser::getSubrequest(const char* url, const char* hostname)
 int URLParser::getPort(const char* url)
 {
 	const char* colon;
+	const char* delim;
 
 	char* portString;
 	int port = 80;
 
-	if ((colon = strrchr(url, ':')) != NULL)
+	if ((delim = strstr(url, "://")) != NULL)
 	{
-		for (int len = 0; len < strlen(colon); len++)
+		// Stripping the scheme
+		delim += 3;
+
+		if ((colon = strstr(delim, ":")) != NULL)
 		{
-			if (!isdigit(colon[len]))
+			for (int len = 0; len < strlen(colon); len++)
 			{
-				portString = new char[len];
-				strncpy(portString, colon + 1, len);
-				istringstream in(portString);
-				if (in >> port && in.eof())
+				if (!isdigit(colon[len]))
 				{
-					break;
+					portString = new char[len];
+					strncpy(portString, colon + 1, len);
+					istringstream in(portString);
+					if (in >> port && in.eof())
+					{
+						break;
+					}
 				}
 			}
 		}
