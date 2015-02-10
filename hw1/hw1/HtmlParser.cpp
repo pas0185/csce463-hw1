@@ -78,8 +78,8 @@ void HtmlParser::parse(char* filename, char* baseUrl)
 
 }
 
-
-void HtmlParser::parse(FILE* file, char* baseUrl)
+// Return number of links found
+int HtmlParser::parse(FILE* file, char* baseUrl)
 {
 	// Based off CPSC 463 homework handout
 
@@ -98,6 +98,10 @@ void HtmlParser::parse(FILE* file, char* baseUrl)
 	end = clock();
 	total = (double)(end - start);
 
+	//
+	// *numLinks += nLinks
+	//
+
 	//printf("done in %d ms with %d links\n", (1000 * total / CLOCKS_PER_SEC), nLinks);
 
 	// print each URL; these are NULL-separated C strings
@@ -108,4 +112,6 @@ void HtmlParser::parse(FILE* file, char* baseUrl)
 	}
 
 	delete parser;		// this internally deletes linkBuffer
+
+	return nLinks;
 }

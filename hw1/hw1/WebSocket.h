@@ -20,7 +20,10 @@ private:
 	int allocatedSize;
 	int curPos;
 
+	// MAP HOSTNAME STRINGS TO IP ADDRESSES
 	std::map<std::string, in_addr> hostnameMap;
+
+	// MAP IP ADDRESSES TO 
 
 	int msTime(clock_t start, clock_t end);
 	
@@ -29,8 +32,8 @@ public:
 
 
 	WebSocket();
-	WebSocket(const char* hostname, int port, const char* subrequest);
-	void Setup(char* hostname, int port);	// Called by constructor
+	//WebSocket(const char* hostname, int port, const char* subrequest);
+	void Setup(char* hostname, int port, LPVOID pParam);	// Called by constructor
 	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
 	hostent* DNSLookup(char* hostname);		// Called if needed
 

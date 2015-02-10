@@ -6,10 +6,57 @@
  */
 
 #include "URLParser.h"
-#include "WebSocket.h"
-#include "HtmlParser.h"
 
 using namespace std;
+
+void URLParser::parse(const char* url, LPVOID pParam)
+{
+	//printf("\nParsing URL: %s\n", url);
+	Parameters *p = ((Parameters*)pParam);
+
+	const char* hostname;
+	const char* subrequest;
+	int port, numLinks;
+
+	bool extractedURL, robotSuccess, didCrawlUrl;
+
+	if ((hostname = getHostname(url)) == NULL) {
+		//printf("failed to parse host\n");
+		return;
+	}
+	extractedURL = true;
+
+	subrequest = getSubrequest(url, hostname);
+	port = getPort(url);
+
+	// Create WebSocket
+	WebSocket webSocket = WebSocket();
+	webSocket.Setup((char*)hostname, port, pParam);
+
+	// Check robots.txt to see if crawling is allowed
+	if (webSocket.checkRobots(hostname)) {
+		robotSuccess = true;
+
+		FILE* file = webSocket.downloadPage(hostname, subrequest);
+		if (file != NULL) {
+			didCrawlUrl = true;
+			HtmlParser parser = HtmlParser();
+			numLinks = parser.parse(file, (char*)url);
+		}
+	}
+
+	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+	if (extractedURL)
+		(p->numExtractedURLs)++;
+	if (robotSuccess)
+		(p->numURLsPassedRobotCheck)++;
+	if (didCrawlUrl)
+		(p->numCrawledURLs)++;
+	if (numLinks > 0)
+		(p->numLinks) += numLinks;
+	ReleaseMutex(p->mutex);							// unlock mutex
+
+}
 
 const char* URLParser::getHostname(const char* url)
 {
@@ -24,7 +71,7 @@ const char* URLParser::getHostname(const char* url)
 		const char* delimiters = ":/?#";
 		size_t hostLength = strcspn(hostname, delimiters);
 
-		hostname[hostLength /* + 1 */] = '\0';
+		hostname[hostLength] = '\0';
 
 		//printf("host: %s, ", hostname);
 
@@ -34,37 +81,28 @@ const char* URLParser::getHostname(const char* url)
 	return NULL;
 }
 
-const char* getSubrequest(const char* url, const char* hostname)
+const char* URLParser::getSubrequest(const char* url, const char* hostname)
 {
 	// TODO: safely parse the subrequest
 
+	char* scheme = strtok((char*)url, "://");
+
+	char* hostBegin;
+	char* subrequest = new char[strlen(url)];
+
+	if ((hostBegin = strstr((char*)url, hostname)) != NULL)
+	{
+		char* path = strtok(hostBegin, "/");
+		char* extra = strtok(path, "?#");
+		
+		path -= strlen(extra);
+		return path;
+	}
+
 	return "/";
-
-	//char* delim;
-	//char* subrequest = new char[strlen(url)];
-
-	//if ((delim = strstr(url, hostname)) != NULL)
-	//{
-	//	strcpy(subrequest, delim + strlen(hostname));
-
-	//	char* end;
-	//	if ((end = strstr(url, "/")) != NULL)
-	//	{
-
-	//	}
-	//	else
-	//	{
-	//		subrequest = "/";
-	//	}
-
-
-	//	return subrequest;
-	//}
-
-	//return NULL;
 }
 
-int getPort(const char* url)
+int URLParser::getPort(const char* url)
 {
 	const char* colon;
 
@@ -90,41 +128,6 @@ int getPort(const char* url)
 
 	//printf("port: %d", port);
 	return port;
-}
-
-void URLParser::parse(const char* url)
-{
-	//printf("\nURL: %s\n", url);
-	//printf("        Parsing URL... ");
-
-	// extract host name from URL
-	const char* hostname;
-	const char* subrequest;
-	int port;
-
-	if ((hostname = getHostname(url)) == NULL) {
-		//printf("failed to retrieve host, exiting now\n\n");
-		return;
-	}
-
-	subrequest = getSubrequest(url, hostname);
-	port = getPort(url);
-
-	//printf("\n");
-
-	// Create WebSocket
-	WebSocket webSocket = WebSocket(hostname, port, subrequest);
-
-	// Check robots.txt to see if crawling is allowed
-	if (webSocket.checkRobots(hostname)) {
-
-		FILE* file = webSocket.downloadPage(hostname, subrequest);
-		if (file != NULL)
-		{
-			HtmlParser parser = HtmlParser();
-			parser.parse(file, (char*)url);
-		}
-	}
 }
 
 char* URLParser::buildGETRequest(char* host, char* port, char* request)

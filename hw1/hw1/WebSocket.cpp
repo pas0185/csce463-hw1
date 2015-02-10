@@ -13,16 +13,18 @@ WebSocket::WebSocket()
 	buf = new char[INITIAL_BUF_SIZE];
 }
 
-WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
-{
-	buf = new char[INITIAL_BUF_SIZE];
+//WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
+//{
+//	buf = new char[INITIAL_BUF_SIZE];
+//
+//	Setup((char*)hostname, port);
+//}
 
-	Setup((char*)hostname, port);
-}
-
-void WebSocket::Setup(char* hostname, int port)
+void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 {
 	WSADATA wsaData;
+	bool didPerformDNS, isHostUnique;
+
 
 	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
@@ -36,12 +38,12 @@ void WebSocket::Setup(char* hostname, int port)
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock == INVALID_SOCKET)
 	{
-		printf("socket() generated error %d\n", WSAGetLastError());
+		//printf("socket() generated error %d\n", WSAGetLastError());
 		WSACleanup();
 		return;
 	}
 
-	printStatusBeginning("Checking host uniqueness... ");
+	//printStatusBeginning("Checking host uniqueness... ");
 
 	in_addr IP;
 	struct hostent *remote;
@@ -55,7 +57,10 @@ void WebSocket::Setup(char* hostname, int port)
 	}
 	else {
 		//printf("passed\n");
+		isHostUnique = true;
+
 		if ((remote = DNSLookup(hostname)) != NULL) {
+			didPerformDNS = true;
 			memcpy((char *)&(IP), remote->h_addr, remote->h_length);
 		}
 		else {
@@ -63,6 +68,8 @@ void WebSocket::Setup(char* hostname, int port)
 			return;
 		}
 	}
+
+
 
 	// structure for connecting to server
 	struct sockaddr_in server;

@@ -13,22 +13,6 @@
 
 #include "Headers.h"
 
-//int HTMLParserTest();
-//void parseURLsFromFile(char* fileName);
-//void winsock_test(char* requestBuf);
-//void htmlParserTest();
-
-// taken from 463-sample , main.cpp
-// this dedicated class is passed to all threads, acts as shared memory
-class Parameters {
-public:
-	HANDLE mutex;
-	HANDLE finished;
-	HANDLE eventQuit;
-	std::queue<std::string> urlQueue;
-	char* inputFile;
-};
-
 UINT fileThreadFunction(LPVOID pParam)
 {	
 	// Producer - adds URLs to a queue shared among threads
@@ -79,7 +63,7 @@ UINT fileThreadFunction(LPVOID pParam)
 	char *url = strtok(fileBuf, "\r\n");
 	while (url) {
 		WaitForSingleObject(p->mutex, INFINITE);		// lock
-		printf("<-Producing %s\n", url);
+		//printf("<-Producing %s\n", url);
 
 		p->urlQueue.push(url);							// push url into queue
 		ReleaseMutex(p->mutex);							// unlock
@@ -101,15 +85,9 @@ UINT statThreadFunction(LPVOID pParam)
 
 	Parameters *p = ((Parameters*)pParam);
 
-	int elapsedSeconds = 0;
-	int queueSize = 0;
-	int numExtractedURLs = 0;
-	int numURLsWithUniqueHost = 0;
-	int numSuccessfulDNSLookups = 0;
-	int numURLsWithUniqueIP = 0;
-	int numURLsPassedRobotCheck = 0;
-	int numCrawledURLs = 0;
-	int numLinks = 0;
+	clock_t now = clock();
+
+	int elapsedSeconds = (now - p->clock) / CLOCKS_PER_SEC;
 
 	float pagesPerSecond = 0;
 	float downloadRate = 0;
@@ -120,19 +98,20 @@ UINT statThreadFunction(LPVOID pParam)
 		printf(
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
 			elapsedSeconds,
-			queueSize,
-			numExtractedURLs,
-			numURLsWithUniqueHost,
-			numSuccessfulDNSLookups,
-			numURLsWithUniqueIP,
-			numURLsPassedRobotCheck,
-			numCrawledURLs,
-			numLinks);
+			p->urlQueue.size(),
+			p->numExtractedURLs,
+			p->numURLsWithUniqueHost,
+			p->numSuccessfulDNSLookups,
+			p->numURLsWithUniqueIP,
+			p->numURLsPassedRobotCheck,
+			p->numCrawledURLs,
+			p->numLinks
+			);
 
-		printf(
-			"\t *** crawling %.1f pps & %.1f Mbps\n",
-			pagesPerSecond,
-			downloadRate);
+		//printf(
+		//	"\t *** crawling %.1f pps & %.1f Mbps\n",
+		//	pagesPerSecond,
+		//	downloadRate);
 
 		ReleaseMutex(p->mutex);
 	}
@@ -160,12 +139,12 @@ UINT crawlerThreadFunction(LPVOID pParam)
 		url[length - 1] = '\0';
 
 		p->urlQueue.pop();
-		printf("->Consuming %s\n", url);
 
 		ReleaseMutex(p->mutex);							// unlock mutex
-
-		//URLParser::parse(url.c_str());
+		URLParser parser = URLParser();
+		parser.parse((const char*)url, pParam);
 	}
+
 	return 0;
 }
 int _tmain(int argc, _TCHAR* argv[])
@@ -193,6 +172,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	HANDLE *crawlerThreads = new HANDLE[numThreads];
 	Parameters p;
 
+	// assign the time this thread is starting
+	p.clock = clock();
+
 	// create a mutex for accessing critical sections (including printf); initial state = not locked
 	p.mutex = CreateMutex(NULL, 0, NULL);
 
@@ -212,7 +194,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
 
 	// start stats thread
-	//statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
+	statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
 	
 	// start N crawling threads
 	for (int i = 0; i < numThreads; i++) {
@@ -228,8 +210,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	// signal stats thread to quit; wait for it to terminate
-	//SetEvent(p.eventQuit);
-	//WaitForSingleObject(statThread, INFINITE);
+	SetEvent(p.eventQuit);
+	WaitForSingleObject(statThread, INFINITE);
 
 	// cleanup
 
