@@ -32,7 +32,6 @@ public:
 
 
 	WebSocket();
-	//WebSocket(const char* hostname, int port, const char* subrequest);
 	void Setup(char* hostname, int port, LPVOID pParam);	// Called by constructor
 	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
 	hostent* DNSLookup(char* hostname);		// Called if needed

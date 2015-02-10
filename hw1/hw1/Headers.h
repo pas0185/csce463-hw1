@@ -29,13 +29,6 @@
 #include "HtmlParser.h"
 	
 #define useragent "snailCrawlerPatrick/1.3"
-//#define INDEX_NUM_EXTRACTED_URLS 0
-//#define INDEX_NUM_URLS_UNIQUE_HOST 1
-//#define INDEX_NUM_DNS_LOOKUPS 2
-//#define INDEX_NUM_UNIQUE_IP 3
-//#define INDEX_NUM_ROBOT_SUCCESSES 4
-//#define INDEX_NUM_URLS_CRAWLED 5
-//#define INDEX_NUM_LINKS 6
 
 class Parameters {
 	// taken from 463-sample , main.cpp
@@ -56,8 +49,3 @@ public:
 	int numCrawledURLs;
 	int numLinks;
 };
-//TODO: GET NUMBER OF URLS FROM UNIQUE HOSTS
-
-//TODO: GET NUMBER OF DNS LOOKUPS
-
-//TODO: GET NUMBER OF UNIQUE IP ADDRESSES

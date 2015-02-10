@@ -87,13 +87,12 @@ const char* URLParser::getHostname(const char* url)
 const char* URLParser::getSubrequest(const char* url, const char* hostname)
 {
 	const char* delim;
-	char* request;// = new char[strlen(url)];
+	char* request;
 
 	if ((delim = strstr(url, "://")) != NULL)
 	{
 		// Stripping the scheme
 		delim += 3;
-
 		if ((delim = strstr(delim, "/")) != NULL) {
 
 			size_t requestLength = strcspn(delim, "?#");
