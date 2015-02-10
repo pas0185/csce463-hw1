@@ -13,14 +13,10 @@
 
 #include "Headers.h"
 
-#define FILE_READER_THREAD 0
-#define STATS_THREAD 1
-#define FIRST_CRAWLER_THREAD 2
-
-int HTMLParserTest();
-void parseURLsFromFile(char* fileName);
-void winsock_test(char* requestBuf);
-void htmlParserTest();
+//int HTMLParserTest();
+//void parseURLsFromFile(char* fileName);
+//void winsock_test(char* requestBuf);
+//void htmlParserTest();
 
 // taken from 463-sample , main.cpp
 // this dedicated class is passed to all threads, acts as shared memory
@@ -168,7 +164,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	fileName = argv[2];
 
 	// initialize shared data structures & parameters sent to threads
-	HANDLE *handles = new HANDLE[numThreads + 2];
+	HANDLE fileThread, statThread;
+	HANDLE *crawlerThreads = new HANDLE[numThreads];
 	Parameters p;
 
 	// create a mutex for accessing critical sections (including printf); initial state = not locked
@@ -187,25 +184,29 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	// start file-reader thread
-	handles[FILE_READER_THREAD] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
+	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
 
 	// start stats thread
-	handles[STATS_THREAD] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
+	statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
 	
 	// start N crawling threads
+	for (int i = 0; i < numThreads; i++) {
+		crawlerThreads[i] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)crawlerThreadFunction, &p, 0, NULL);
+	}
 
 	//URLParser::parse(url.c_str());
 
 
 	// wait for file-reader thread to quit
-	WaitForSingleObject(handles[FILE_READER_THREAD], INFINITE);
+	WaitForSingleObject(fileThread, INFINITE);
 
 	// wait for N crawling threads to finish
+	WaitForMultipleObjects(numThreads, crawlerThreads, TRUE, INFINITE);
 
 	// signal stats thread to quit; wait for it to terminate
-	//SetEvent(p.eventQuit);
+	SetEvent(p.eventQuit);
 
-	WaitForSingleObject(handles[STATS_THREAD], INFINITE);
+	WaitForSingleObject(statThread, INFINITE);
 
 	// cleanup
 
