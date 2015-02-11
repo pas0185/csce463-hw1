@@ -69,9 +69,7 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 				server.sin_port = htons(port);
 
 				// Connect socket to server on correct port
-				if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR) {
-					return;
-				}
+				connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in));
 			}
 		}
 	}
@@ -81,27 +79,35 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 
 bool WebSocket::checkRobots(const char* hostname, LPVOID pParam)
 {
+	if (hostname == NULL)
+		return false;
+
 	Parameters *p = ((Parameters*)pParam);
 
 	int status;
+	int bytesRead;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
-	char* buffer = new char[INITIAL_BUF_SIZE];
+	//char* buffer = new char[INITIAL_BUF_SIZE];
+	std::string buffer;
 
 	Send(robotRequest);
 
-	if (ReadToBuffer(status, buffer) > -1) {
-		memset(&buffer[0], 0, sizeof(buffer));
+	//if (ReadToBuffer(status, buffer) > -1) {
 
-		updateHttpCodeCount(status, pParam);
+	ReadToBuffer(status, bytesRead);
+	
+		//memset(&buffer[0], 0, sizeof(buffer));
 
-		if (status >= 400) {
-			// Only 4xx status (robots file not found) allows unrestricted crawling
-			WaitForSingleObject(p->mutex, INFINITE);
-			(p->numURLsPassedRobotCheck) += 1;			// update number of successful robot checks
-			ReleaseMutex(p->mutex);
+	updateHttpCodeCount(status, pParam);
 
-			return true;
-		}
+	if (status >= 400) {
+		// Only 4xx status (robots file not found) allows unrestricted crawling
+		WaitForSingleObject(p->mutex, INFINITE);
+		(p->numBytesDownloaded) += bytesRead;		// update number of bytes downloaded
+		(p->numURLsPassedRobotCheck) += 1;			// update number of successful robot checks
+		ReleaseMutex(p->mutex);
+
+		return true;
 	}
 
 	return false;
@@ -111,31 +117,36 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 {
 	Parameters *p = ((Parameters*)pParam);
 
-	char* buffer = new char[INITIAL_BUF_SIZE];
+	//char* buffer = new char[INITIAL_BUF_SIZE];
+	std::string buffer;
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	int status;
 	int bytesRead;
 
 	if (Send(pageRequest) > -1) {
 
-		if ((bytesRead = ReadToBuffer(status, buffer)) > 0) {
+		//if ((bytesRead = ReadToBuffer(status, buffer)) > 0) {
 
-			updateHttpCodeCount(status, pParam);
+		
+		buffer = ReadToBuffer(status, bytesRead);
+		updateHttpCodeCount(status, pParam);
 
-			if (200 <= status && status < 300) {
-				// 2xx status code; proceed with parsing the html
-				HTMLParserBase *parser = new HTMLParserBase;
-				int nLinks;
-				parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
+		if (200 <= status && status < 300) {
+			// 2xx status code; proceed with parsing the html
+			HTMLParserBase *parser = new HTMLParserBase;
+			int nLinks;
+			//parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
+			parser->Parse((char*)buffer.c_str(), buffer.length(), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 
-				WaitForSingleObject(p->mutex, INFINITE);
-				(p->numLinks) += max(nLinks, 0);			// update number of links found
-				(p->numBytesDownloaded) += bytesRead;		// update number of bytes read
-				ReleaseMutex(p->mutex);
+			WaitForSingleObject(p->mutex, INFINITE);
+			(p->numCrawledURLs) += 1;					// update number of pages successfully crawled
+			(p->numLinks) += max(nLinks, 0);			// update number of links found
+			(p->numBytesDownloaded) += bytesRead;		// update number of bytes read
+			ReleaseMutex(p->mutex);
 
-				return 0;
-			}
+			return 0;
 		}
+		
 	}
 	
 	// did not successfully parse http page
@@ -153,14 +164,16 @@ int WebSocket::Send(const char* request)
 	return 0;
 }
 
-int WebSocket::ReadToBuffer(int& status, char* buffer)
+std::string WebSocket::ReadToBuffer(int& status, int& bytesRead)// std::string& buffer)
 {
 	// Receive data from socket and write it to the buffer 
 
-	size_t bytesRead = 0;
+	bytesRead = 0;
+	status = 0;
 	int num = 0;
 	char *responseBuf = new char[INITIAL_BUF_SIZE];
 	char *temp;
+	std::string responseString;
 
 	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
 	{
@@ -183,7 +196,7 @@ int WebSocket::ReadToBuffer(int& status, char* buffer)
 			memset(&temp[0], 0, sizeof(temp));
 		}
 
-		if (status < 0)
+		if (status == 0)
 		{
 			int s, h;
 			sscanf(responseBuf, "HTTP/1.%d %d", &h, &s);
@@ -191,10 +204,9 @@ int WebSocket::ReadToBuffer(int& status, char* buffer)
 		}
 	}
 
-	strncpy(buffer, responseBuf, bytesRead);
+	responseString = responseBuf;
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
-
-	return (int)bytesRead;
+	return responseString;
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)

@@ -31,6 +31,7 @@ public:
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	int Send(const char* request);
-	int ReadToBuffer(int& status, char* buffer);
+	std::string ReadToBuffer(int& status, int& bytesRead);
+	//int ReadToBuffer(int& status, std::string& buffer);
 	void updateHttpCodeCount(int status, LPVOID pParam);
 };

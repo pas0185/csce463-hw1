@@ -15,36 +15,24 @@ void URLParser::parse(const char* url, LPVOID pParam)
 
 	const char* hostname;
 	const char* subrequest;
-	int port = 80;
-
-	bool robotSuccess = false;
-	bool didCrawlUrl = false;
+	int port;
 
 	if ((hostname = parseHostFromURL(url)) != NULL) {
 		// successfully parsed host
 		subrequest = getSubrequest(url);
 		port = getPort(url);
+
+		// Create WebSocket
+		WebSocket webSocket = WebSocket();
+		webSocket.Setup((char*)hostname, port, pParam);
+
+		// Check robots.txt to see if crawling is allowed
+		if (webSocket.checkRobots(hostname, pParam)) {
+
+			// download and parse the requested page
+			webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam);
+		}
 	}
-
-	// Create WebSocket
-	WebSocket webSocket = WebSocket();
-	webSocket.Setup((char*)hostname, port, pParam);
-
-	// Check robots.txt to see if crawling is allowed
-	if (webSocket.checkRobots(hostname, pParam)) {
-
-		// download and parse the requested page
-		webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam);
-	}
-
-
-	// **MOVE****
-	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	if (didCrawlUrl) {
-		//printf("crawled url");
-		(p->numCrawledURLs) += 1;
-	}
-	ReleaseMutex(p->mutex);							// unlock mutex
 }
 
 const char* URLParser::parseHostFromURL(const char* url)

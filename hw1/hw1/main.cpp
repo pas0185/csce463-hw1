@@ -62,20 +62,19 @@ UINT fileThreadFunction(LPVOID pParam)
 	// safely add files to shared queue
 	char *url = strtok(fileBuf, "\r\n");
 	while (url) {
-		WaitForSingleObject(p->mutex, INFINITE);		// lock
+		WaitForSingleObject(p->mutex, INFINITE);			// lock
 		//printf("<-Producing %s\n", url);
 
-		p->urlQueue.push(url);							// push url into queue
-		ReleaseMutex(p->mutex);							// unlock
+		p->urlQueue.push(url);								// push url into queue
 		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// increment semaphore by 1
+		ReleaseMutex(p->mutex);								// unlock
 
 		url = strtok(0, "\r\n");
 	}
 
-	SetEvent(p->eventFileReadFinished);
-
 	// print we're about to exit
 	WaitForSingleObject(p->mutex, INFINITE);
+	SetEvent(p->eventFileReadFinished);
 	printf("File Thread finishing execution\n");
 	ReleaseMutex(p->mutex);
 
@@ -89,7 +88,7 @@ UINT statThreadFunction(LPVOID pParam)
 
 	clock_t currClock, lastClock = clock();
 
-	while (WaitForSingleObject(p->eventQuit, 2000) == WAIT_TIMEOUT)
+	while (WaitForSingleObject(p->eventQuit, 1000) == WAIT_TIMEOUT)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);
 		currClock = clock();
@@ -113,7 +112,7 @@ UINT statThreadFunction(LPVOID pParam)
 			p->numLinks
 			);
 
-		printf("   *** crawling %.1f pps & %.1f Mbps\n", pps, mbps);
+		printf("   *** crawling %.1f pps @ %.1f Mbps\n", pps, mbps);
 
 		ReleaseMutex(p->mutex);
 	}
@@ -140,10 +139,9 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	Parameters *p = ((Parameters*)pParam);
 	std::string urlString;
 
-	//HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
-	//int size = sizeof(arr) / sizeof(HANDLE);
+	HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
 
-	while (WaitForSingleObject(p->semaphoreCrawlers, INFINITE) == WAIT_OBJECT_0)
+	while (WaitForMultipleObjects(2, arr, false, INFINITE) == WAIT_OBJECT_0)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
 
