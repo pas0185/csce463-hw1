@@ -32,6 +32,8 @@ void URLParser::parse(const char* url, LPVOID pParam)
 			// download and parse the requested page
 			webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam);
 		}
+
+		webSocket.cleanup();
 	}
 }
 

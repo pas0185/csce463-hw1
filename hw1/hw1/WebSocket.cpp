@@ -12,15 +12,25 @@ WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
 }
+
+WebSocket::~WebSocket()
+{
+	cleanup();
+}
+
+void WebSocket::cleanup()
+{
+	// close the socket to this server; open again for the next one
+	closesocket(sock);
+
+	// call cleanup when done with everything and ready to exit program
+	WSACleanup();
+}
+
 void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 {
-	WSADATA wsaData;
-
-	bool uniqueHost = false;
-	bool successfulDNS = false;
-	bool uniqueIP = false;
-
 	Parameters *p = ((Parameters*)pParam);
+	WSADATA wsaData;
 
 	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
