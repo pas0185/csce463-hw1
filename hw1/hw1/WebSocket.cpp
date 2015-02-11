@@ -96,40 +96,53 @@ bool WebSocket::checkRobots(const char* hostname)
 	return false;
 }
 
-FILE* WebSocket::downloadPage(const char* hostname, const char* request)
+//FILE* WebSocket::downloadPage(const char* hostname, const char* request)
+int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request)
 {
-	clock_t start, end;
 	char* buffer;
 	FILE *file;
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	
-	start = clock();
-	Send(pageRequest);
-	end = clock();
-	//printf("done in %d ms\n", msTime(start, end));
+	if (Send(pageRequest) > -1) {
+		int status = ReadToBuffer(&buffer);
+		if (200 <= status && status < 300) {
 
-	int status = ReadToBuffer(&buffer);
-	if (200 <= status && status < 300) {
-		// Successfully retrieved page
-		file = fopen(hostname, "w+");
-		fprintf(file, buffer);
-		fclose(file);
+			HTMLParserBase *parser = new HTMLParserBase;
+			int nLinks;
+			char *linkBuffer = parser->Parse(buffer, (int)strlen(buffer), baseUrl, (int)strlen(baseUrl), &nLinks);
+			
+			if (nLinks < 0)
+				nLinks = 0;
 
-		return file;
+			return nLinks;
+
+			//HtmlParser parser = HtmlParser();
+
+			//int numLinks = parser.parse(file, (char*)url, pParam);
+
+			//// Successfully retrieved page
+			//file = fopen(hostname, "w+");
+			//fprintf(file, buffer);
+			//fclose(file);
+
+			//return file;
+
+		}
 	}
-
-	// TODO: explain detail reason
-	//printf("failed");
-	return NULL;
+	
+	// did not successfully parse http page
+	return -1;
 }
 
-void WebSocket::Send(const char* request)
+int WebSocket::Send(const char* request)
 {
 	// send HTTP request
-	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR)
-	{
+	if (send(sock, request, strlen(request), 0) == SOCKET_ERROR) {
+		return -1;
 		//printf("Send error: %d\n", WSAGetLastError());
 	}
+
+	return 0;
 }
 
 int WebSocket::ReadToBuffer(char** buffer)
@@ -172,15 +185,8 @@ int WebSocket::ReadToBuffer(char** buffer)
 	// Truncate blank space
 	responseBuf[bytesRead] = '\0';
 
-	//end = clock();	// timing for loading the file
-	//double total = (double)(end - start);
-	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
-
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
-
-	//printStatusBeginning("Verifying header... ");
-	//printf("status code %d\n", status);
 
 	return status;
 }

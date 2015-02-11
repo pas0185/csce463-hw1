@@ -87,18 +87,21 @@ UINT statThreadFunction(LPVOID pParam)
 
 	Parameters *p = ((Parameters*)pParam);
 
-	float pagesPerSecond = 0;
-	float downloadRate = 0;
+	clock_t lastClock, currClock;
 
 	while (WaitForSingleObject(p->eventQuit, 500) == WAIT_TIMEOUT)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);
-		clock_t now = clock();
-		int elapsedSeconds = ((double)(now - p->clock)) / CLOCKS_PER_SEC;
+		currClock = clock();
+		double secondsSinceReport = ((double)(lastClock - currClock)) / CLOCKS_PER_SEC;
+		int totalSeconds = ((double)(lastClock - p->clock)) / CLOCKS_PER_SEC;
+		int numPages = p->numPagesDownloaded;
+		double numBytes = p->numBytesDownloaded;
+		lastClock = currClock;
 
 		printf(
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
-			elapsedSeconds,
+			totalSeconds,
 			p->urlQueue.size(),
 			p->numExtractedURLs,
 			p->numURLsWithUniqueHost,
@@ -109,10 +112,10 @@ UINT statThreadFunction(LPVOID pParam)
 			p->numLinks
 			);
 
-		//printf(
-		//	"\t *** crawling %.1f pps & %.1f Mbps\n",
-		//	pagesPerSecond,
-		//	downloadRate);
+		printf(
+			"\t *** crawling %.1f pps & %.1f Mbps\n",
+			numPages / secondsSinceReport,
+			(numBytes / 1000.0) / secondsSinceReport);
 
 		ReleaseMutex(p->mutex);
 	}

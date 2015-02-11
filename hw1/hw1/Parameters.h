@@ -16,17 +16,21 @@ public:
 	HANDLE eventFileReadFinished;
 
 	std::queue<std::string> urlQueue;
-
 	std::set<std::string> visitedHostSet;
 	std::set<std::string> visitedIPSet;
 
 	char* inputFile;
 	clock_t clock;
 
+	//*** TODO ***//
+	int numPagesDownloaded;
+	double numBytesDownloaded;
+	//*** TODO **//
+
 	int numExtractedURLs = 0;
-	int numURLsWithUniqueHost = 0;		// TODO
-	int numSuccessfulDNSLookups = 0;	// TODO
-	int numURLsWithUniqueIP = 0;		// TODO
+	int numURLsWithUniqueHost = 0;
+	int numSuccessfulDNSLookups = 0;
+	int numURLsWithUniqueIP = 0;
 	int numURLsPassedRobotCheck = 0;
 	int numCrawledURLs = 0;
 	int numLinks = 0;

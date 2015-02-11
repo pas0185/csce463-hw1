@@ -38,12 +38,16 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	if (webSocket.checkRobots(hostname)) {
 		robotSuccess = true;
 
-		FILE* file = webSocket.downloadPage(hostname, subrequest);
-		if (file != NULL) {
+		// download and parse the requested page
+		if ((numLinks = webSocket.downloadPageAndCountLinks(hostname, subrequest)) > -1) {
 			didCrawlUrl = true;
-			HtmlParser parser = HtmlParser();
-			numLinks = parser.parse(file, (char*)url, pParam);
 		}
+
+		//FILE* file = webSocket.downloadPage(hostname, subrequest);
+		//if (file != NULL) {
+		//	HtmlParser parser = HtmlParser();
+		//	numLinks = parser.parse(file, (char*)url, pParam);
+		//}
 	}
 
 	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
