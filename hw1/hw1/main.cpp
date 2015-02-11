@@ -138,34 +138,28 @@ UINT crawlerThreadFunction(LPVOID pParam)
 {
 	// Consumer - removes URLs from shared queue for processing
 	Parameters *p = ((Parameters*)pParam);
-	char* url;
+	std::string urlString;
 
-	HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
-	int size = sizeof(arr) / sizeof(HANDLE);
+	//HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
+	//int size = sizeof(arr) / sizeof(HANDLE);
 
-	//while (WaitForMultipleObjects(size, arr, false, INFINITE) == WAIT_OBJECT_0)
 	while (WaitForSingleObject(p->semaphoreCrawlers, INFINITE) == WAIT_OBJECT_0)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
 
+		// double check URL queue is not empty
 		if (!p->urlQueue.empty()){
-
-			const char* tempURL = p->urlQueue.front().c_str();
-
-			int length = strlen(tempURL) + 1;
-			url = new char[length];
-			strncpy(url, tempURL, length);
-			url[length - 1] = '\0';
-
+			urlString = p->urlQueue.front();
 			p->urlQueue.pop();
-
-			ReleaseMutex(p->mutex);							// unlock mutex
-
-			URLParser parser = URLParser();
-			parser.parse((const char*)url, pParam);
+			(p->numExtractedURLs) += 1;					// increment number of URLs extracted
 		}
+		ReleaseMutex(p->mutex);							// unlock mutex
 
-		////ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
+		URLParser parser = URLParser();
+		parser.parse(urlString.c_str(), pParam);
+
+		// TODO: does this need to be released?
+		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
 	}
 
 	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex

@@ -16,16 +16,12 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	const char* hostname;
 	const char* subrequest;
 	int port = 80;
-	int numLinks = 0;
 
-	bool extractedURL = false;
 	bool robotSuccess = false;
 	bool didCrawlUrl = false;
 
 	if ((hostname = parseHostFromURL(url)) != NULL) {
 		// successfully parsed host
-		extractedURL = true;
-
 		subrequest = getSubrequest(url);
 		port = getPort(url);
 	}
@@ -35,35 +31,18 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	webSocket.Setup((char*)hostname, port, pParam);
 
 	// Check robots.txt to see if crawling is allowed
-	if (webSocket.checkRobots(hostname)) {
-		robotSuccess = true;
+	if (webSocket.checkRobots(hostname, pParam)) {
 
 		// download and parse the requested page
-		if ((numLinks = webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam)) > -1) {
-			didCrawlUrl = true;
-		}
-
-		//FILE* file = webSocket.downloadPage(hostname, subrequest);
-		//if (file != NULL) {
-		//	HtmlParser parser = HtmlParser();
-		//	numLinks = parser.parse(file, (char*)url, pParam);
-		//}
+		webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam);
 	}
 
+
+	// **MOVE****
 	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	if (extractedURL) {
-		(p->numExtractedURLs) += 1;
-	}
-	if (robotSuccess) {
-		//printf("passed robots\n");
-		(p->numURLsPassedRobotCheck) += 1;
-	}
 	if (didCrawlUrl) {
 		//printf("crawled url");
 		(p->numCrawledURLs) += 1;
-	}
-	if (numLinks > 0) {
-		(p->numLinks) += numLinks;
 	}
 	ReleaseMutex(p->mutex);							// unlock mutex
 }

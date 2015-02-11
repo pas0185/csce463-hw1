@@ -79,8 +79,10 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	ReleaseMutex(p->mutex);						// unlock mutex
 }
 
-bool WebSocket::checkRobots(const char* hostname)
+bool WebSocket::checkRobots(const char* hostname, LPVOID pParam)
 {
+	Parameters *p = ((Parameters*)pParam);
+
 	int status;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
 	char* buffer = new char[INITIAL_BUF_SIZE];
@@ -90,8 +92,14 @@ bool WebSocket::checkRobots(const char* hostname)
 	if (ReadToBuffer(status, buffer) > -1) {
 		memset(&buffer[0], 0, sizeof(buffer));
 
+		updateHttpCodeCount(status, pParam);
+
 		if (status >= 400) {
 			// Only 4xx status (robots file not found) allows unrestricted crawling
+			WaitForSingleObject(p->mutex, INFINITE);
+			(p->numURLsPassedRobotCheck) += 1;			// update number of successful robot checks
+			ReleaseMutex(p->mutex);
+
 			return true;
 		}
 	}
@@ -106,42 +114,26 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 	char* buffer = new char[INITIAL_BUF_SIZE];
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	int status;
+	int bytesRead;
 
 	if (Send(pageRequest) > -1) {
 
-		if (ReadToBuffer(status, buffer) > -1) {
+		if ((bytesRead = ReadToBuffer(status, buffer)) > 0) {
 
-			WaitForSingleObject(p->mutex);
-			switch ((int)(status / 100))
-			{
-			case 2:
-				(p->code2xxCount) += 1;
-				break;
-			case 3:
-				(p->code3xxCount) += 1;
-				break;
-			case 4:
-				(p->code4xxCount) += 1;
-				break;
-			case 5:
-				(p->code5xxCount) += 1;
-				break;
-			default:
-				(p->codeOtherCount) += 1;
-				break;
-			}
-			ReleaseMutex(p->mutex);
+			updateHttpCodeCount(status, pParam);
 
 			if (200 <= status && status < 300) {
-
+				// 2xx status code; proceed with parsing the html
 				HTMLParserBase *parser = new HTMLParserBase;
 				int nLinks;
-				char *linkBuffer = parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
+				parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 
-				if (nLinks < 0)
-					nLinks = 0;
+				WaitForSingleObject(p->mutex, INFINITE);
+				(p->numLinks) += max(nLinks, 0);			// update number of links found
+				(p->numBytesDownloaded) += bytesRead;		// update number of bytes read
+				ReleaseMutex(p->mutex);
 
-				return nLinks;
+				return 0;
 			}
 		}
 	}
@@ -199,17 +191,10 @@ int WebSocket::ReadToBuffer(int& status, char* buffer)
 		}
 	}
 
-	if (bytesRead <= 0) {
-		return -1;
-	}
-
 	strncpy(buffer, responseBuf, bytesRead);
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
-	return 0;
-
-	// on error 
-	// return -1;
+	return (int)bytesRead;
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)
@@ -242,4 +227,30 @@ const char* WebSocket::buildRequest(const char* type, const char* host, const ch
 		type, subrequest, host, useragent);
 
 	return FULLRequest;
+}
+
+void WebSocket::updateHttpCodeCount(int status, LPVOID pParam)
+{
+	Parameters *p = ((Parameters*)pParam);
+
+	WaitForSingleObject(p->mutex, INFINITE);
+	switch ((int)(status / 100))
+	{
+	case 2:
+		(p->code2xxCount) += 1;
+		break;
+	case 3:
+		(p->code3xxCount) += 1;
+		break;
+	case 4:
+		(p->code4xxCount) += 1;
+		break;
+	case 5:
+		(p->code5xxCount) += 1;
+		break;
+	default:
+		(p->codeOtherCount) += 1;
+		break;
+	}
+	ReleaseMutex(p->mutex);
 }

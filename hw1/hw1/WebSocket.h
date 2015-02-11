@@ -25,10 +25,12 @@ public:
 	WebSocket();
 	void Setup(char* hostname, int port, LPVOID pParam);
 
-	bool checkRobots(const char* hostname);
+	bool checkRobots(const char* hostname, LPVOID pParam);
+
 	int downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl, LPVOID pParam);
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	int Send(const char* request);
 	int ReadToBuffer(int& status, char* buffer);
+	void updateHttpCodeCount(int status, LPVOID pParam);
 };
