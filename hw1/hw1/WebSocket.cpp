@@ -54,7 +54,8 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 		struct hostent *remote = gethostbyname(hostname);
 		if (remote != NULL) {
 			memcpy(&IP, remote->h_addr_list[0], sizeof(struct in_addr));
-			//memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+			(p->numSuccessfulDNSLookups) += 1;
+
 			std::string ipString = inet_ntoa(IP);
 			p->visitedIPSet.insert(ipString);
 
