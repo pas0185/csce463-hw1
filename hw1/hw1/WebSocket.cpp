@@ -83,62 +83,66 @@ bool WebSocket::checkRobots(const char* hostname)
 {
 	int status;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
-	//const char* buffer;
+	char* buffer = new char[INITIAL_BUF_SIZE];
 
 	Send(robotRequest);
 
-	ReadToBuffer(status);
+	if (ReadToBuffer(status, buffer) > -1) {
+		memset(&buffer[0], 0, sizeof(buffer));
 
-	if (status >= 400) {
-		// Only 4xx status (robots file not found) allows unrestricted crawling
-		return true;
+		if (status >= 400) {
+			// Only 4xx status (robots file not found) allows unrestricted crawling
+			return true;
+		}
 	}
 
 	return false;
 }
 
-//FILE* WebSocket::downloadPage(const char* hostname, const char* request)
-int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl)
+int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl, LPVOID pParam)
 {
-	const char* buffer;
-	//FILE *file;
+	Parameters *p = ((Parameters*)pParam);
+
+	char* buffer = new char[INITIAL_BUF_SIZE];
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	int status;
 
 	if (Send(pageRequest) > -1) {
 
-		buffer = ReadToBuffer(status);
-		
-		
-		//
-		//
-		//
-		// TODO: Counter for 2xx, 3xx, etc
-		//
-		//
-		//
-		if (200 <= status && status < 300) {
+		if (ReadToBuffer(status, buffer) > -1) {
 
-			HTMLParserBase *parser = new HTMLParserBase;
-			int nLinks;
-			char *linkBuffer = parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
-			
-			if (nLinks < 0)
-				nLinks = 0;
+			WaitForSingleObject(p->mutex);
+			switch ((int)(status / 100))
+			{
+			case 2:
+				(p->code2xxCount) += 1;
+				break;
+			case 3:
+				(p->code3xxCount) += 1;
+				break;
+			case 4:
+				(p->code4xxCount) += 1;
+				break;
+			case 5:
+				(p->code5xxCount) += 1;
+				break;
+			default:
+				(p->codeOtherCount) += 1;
+				break;
+			}
+			ReleaseMutex(p->mutex);
 
-			return nLinks;
+			if (200 <= status && status < 300) {
 
-			//HtmlParser parser = HtmlParser();
+				HTMLParserBase *parser = new HTMLParserBase;
+				int nLinks;
+				char *linkBuffer = parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 
-			//int numLinks = parser.parse(file, (char*)url, pParam);
+				if (nLinks < 0)
+					nLinks = 0;
 
-			//// Successfully retrieved page
-			//file = fopen(hostname, "w+");
-			//fprintf(file, buffer);
-			//fclose(file);
-
-			//return file;
-
+				return nLinks;
+			}
 		}
 	}
 	
@@ -157,17 +161,15 @@ int WebSocket::Send(const char* request)
 	return 0;
 }
 
-const char* WebSocket::ReadToBuffer(int& status)//char* buffer)
+int WebSocket::ReadToBuffer(int& status, char* buffer)
 {
 	// Receive data from socket and write it to the buffer 
 
 	size_t bytesRead = 0;
-	//int status = -1;
 	int num = 0;
-	char *responseBuf;
+	char *responseBuf = new char[INITIAL_BUF_SIZE];
 	char *temp;
 
-	responseBuf = new char[INITIAL_BUF_SIZE];
 	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
 	{
 		bytesRead += num;
@@ -197,15 +199,17 @@ const char* WebSocket::ReadToBuffer(int& status)//char* buffer)
 		}
 	}
 
-	// Truncate blank space
-	responseBuf[bytesRead] = '\0';
+	if (bytesRead <= 0) {
+		return -1;
+	}
 
-	return (const char*)responseBuf;
+	strncpy(buffer, responseBuf, bytesRead);
+	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
-	// Clean up resources
-	//memset(&responseBuf[0], 0, sizeof(responseBuf));
+	return 0;
 
-	//return status;
+	// on error 
+	// return -1;
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)

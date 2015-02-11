@@ -26,9 +26,9 @@ public:
 	void Setup(char* hostname, int port, LPVOID pParam);
 
 	bool checkRobots(const char* hostname);
-	int downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl);
+	int downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl, LPVOID pParam);
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	int Send(const char* request);
-	const char* ReadToBuffer(int& status);// char* buffer);
+	int ReadToBuffer(int& status, char* buffer);
 };
