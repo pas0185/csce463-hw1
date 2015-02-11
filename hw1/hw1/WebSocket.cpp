@@ -38,7 +38,7 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	}
 
 	struct in_addr IP;
-	std::map<std::string, in_addr>::const_iterator cachedHost;
+	struct sockaddr_in server;
 
 	WaitForSingleObject(p->mutex, INFINITE);	// lock mutex
 
@@ -55,44 +55,40 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 		if (remote != NULL) {
 			memcpy(&IP, remote->h_addr_list[0], sizeof(struct in_addr));
 			//memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+			std::string ipString = inet_ntoa(IP);
+			p->visitedIPSet.insert(ipString);
 
-			p->visitedIPSet.insert(IP);
 			if (p->visitedIPSet.size() > prevIPSetSize) {
 				// unique IP
 				(p->numURLsWithUniqueIP) += 1;
+
+				// structure for connecting to server
+				server.sin_addr = IP;
+				server.sin_family = AF_INET;
+				server.sin_port = htons(port);
+
+				// Connect socket to server on correct port
+				if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR) {
+					return;
+				}
 			}
 		}
 	}
+
 	ReleaseMutex(p->mutex);						// unlock mutex
-
-	// structure for connecting to server
-	struct sockaddr_in server;
-	server.sin_addr = IP;
-	server.sin_family = AF_INET;
-	server.sin_port = htons(port);
-
-	// Connect socket to server on correct port
-	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR) {
-		return;
-	}
 }
 
 bool WebSocket::checkRobots(const char* hostname)
 {
-	clock_t start, end;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
 	char* buffer;
 
-	start = clock();
 	Send(robotRequest);
-	end = clock();
-	//printf("done in %d ms\n", msTime(start, end));
 
 	int status = ReadToBuffer(&buffer);
 
 	if (status >= 400) {
-		// Assume (only) a 4xx status is a green light to start crawling
-
+		// Only 4xx status (robots file not found) allows unrestricted crawling
 		return true;
 	}
 

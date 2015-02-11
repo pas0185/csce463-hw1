@@ -5,6 +5,7 @@
 *
 */
 
+
 class Parameters {
 	// taken from 463-sample , main.cpp
 	// this dedicated class is passed to all threads, acts as shared memory
@@ -17,7 +18,7 @@ public:
 	std::queue<std::string> urlQueue;
 
 	std::set<std::string> visitedHostSet;
-	std::set<in_addr> visitedIPSet;
+	std::set<std::string> visitedIPSet;
 
 	char* inputFile;
 	clock_t clock;
