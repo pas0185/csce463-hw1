@@ -27,7 +27,6 @@ private:
 public:
 	WebSocket();
 	void Setup(char* hostname, int port, LPVOID pParam);
-	void DownloadFunction(char* connectingOn, char* request);
 
 	bool checkRobots(const char* hostname);
 	void checkIPUniqueness(in_addr IP);

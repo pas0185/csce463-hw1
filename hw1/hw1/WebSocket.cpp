@@ -77,47 +77,6 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	}
 }
 
-void WebSocket::DownloadFunction(char* connectingOn, char* request)
-{
-	// My plan is to finish this function to make usage more universal
-
-	clock_t start, end;
-	int ms, byteCount, statusCode;
-
-	// ******** CONNECTION ******** //
-	//printf("Connecting on %s... ", connectingOn);	// robots, page, etc
-	start = clock();
-
-	// TODO
-
-	Send(request);
-
-	end = clock();
-	ms = msTime(start, end);
-	//printf("done in %d ms\n", ms);
-	// ***************************** //
-
-	// ******** DOWNLOADING ******** //
-	//printf("Loading... ");
-	start = clock();
-
-	// TODO
-
-	end = clock();
-	ms = msTime(start, end);
-	//printf("done in %d ms with %d bytes\n", ms, byteCount);
-	// *************************** //
-
-	// ******** VERIFYING ******** //
-	//printf("Verifying header... ");
-
-	// TODO
-
-	//printf("status code %d", statusCode);
-	// *************************** //
-
-}
-
 //hostent* WebSocket::DNSLookup(char* hostname)
 //{
 //	// structure used in DNS lookups
