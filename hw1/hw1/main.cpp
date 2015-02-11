@@ -73,7 +73,7 @@ UINT fileThreadFunction(LPVOID pParam)
 	// print we're about to exit
 	WaitForSingleObject(p->mutex, INFINITE);
 	SetEvent(p->eventFileReadFinished);
-	printf("File Thread finishing execution\n");
+	printf("File thread finishing execution\n");
 	ReleaseMutex(p->mutex);
 
 	return 0;
@@ -110,8 +110,8 @@ UINT statThreadFunction(LPVOID pParam)
 			);
 
 		printf("   *** crawling %.1f pps @ %.1f Mbps\n", 
-			(float)(p->numCrawledURLs / totalSeconds),
-			(float)((p->numBytesDownloaded / 1000.0) / totalSeconds));
+			(float)(p->numCrawledURLs / secondsSinceReport),
+			(float)((p->numBytesDownloaded / 1000.0) / secondsSinceReport));
 
 		ReleaseMutex(p->mutex);										// unlock mutex
 
@@ -149,7 +149,7 @@ UINT statThreadFunction(LPVOID pParam)
 	printf("HTTP codes: 2xx = %d, 3xx = %d, 4xx = %d, 5xx = %d, other = %d\n", 
 		p->code2xxCount, p->code3xxCount, p->code4xxCount, p->code5xxCount, p->codeOtherCount);
 
-	printf("\n**************\n\n");
+	printf("**************\n\n");
 
 	ReleaseMutex(p->mutex);
 
