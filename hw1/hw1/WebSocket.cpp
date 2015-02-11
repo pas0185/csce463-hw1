@@ -10,21 +10,6 @@
 
 WebSocket::WebSocket()
 {
-	//buf = new char[INITIAL_BUF_SIZE];
-}
-
-WebSocket::~WebSocket()
-{
-	cleanup();
-}
-
-void WebSocket::cleanup()
-{
-	// close the socket to this server; open again for the next one
-	//closesocket(sock);
-
-	//// call cleanup when done with everything and ready to exit program
-	//WSACleanup();
 }
 
 void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
@@ -68,6 +53,11 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 			std::string ipString = inet_ntoa(IP);
 			p->visitedIPSet.insert(ipString);
 
+			// TAMU host checking
+			if (ipString.compare(p->tamuIPString) == 0) {
+				(p->numTAMUHostFound) += 1;
+			}
+
 			if (p->visitedIPSet.size() > prevIPSetSize) {
 				// unique IP
 				(p->numURLsWithUniqueIP) += 1;
@@ -96,18 +86,11 @@ bool WebSocket::checkRobots(const char* hostname, LPVOID pParam)
 	int status;
 	int bytesRead;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
-	//char* buffer = new char[INITIAL_BUF_SIZE];
 	std::string buffer;
 
 	Send(robotRequest);
 
-	//if (ReadToBuffer(status, buffer) > -1) {
-
 	ReadToBuffer(status, bytesRead);
-	
-		//memset(&buffer[0], 0, sizeof(buffer));
-
-	updateHttpCodeCount(status, pParam);
 
 	if (status >= 400) {
 		// Only 4xx status (robots file not found) allows unrestricted crawling
@@ -126,16 +109,12 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 {
 	Parameters *p = ((Parameters*)pParam);
 
-	//char* buffer = new char[INITIAL_BUF_SIZE];
 	std::string buffer;
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	int status;
 	int bytesRead;
 
 	if (Send(pageRequest) > -1) {
-
-		//if ((bytesRead = ReadToBuffer(status, buffer)) > 0) {
-
 		
 		buffer = ReadToBuffer(status, bytesRead);
 		updateHttpCodeCount(status, pParam);
@@ -144,7 +123,6 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 			// 2xx status code; proceed with parsing the html
 			HTMLParserBase *parser = new HTMLParserBase;
 			int nLinks;
-			//parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 			parser->Parse((char*)buffer.c_str(), buffer.length(), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 
 			WaitForSingleObject(p->mutex, INFINITE);
@@ -155,7 +133,6 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 
 			return 0;
 		}
-		
 	}
 	
 	// did not successfully parse http page

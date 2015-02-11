@@ -135,10 +135,10 @@ UINT statThreadFunction(LPVOID pParam)
 		p->numURLsPassedRobotCheck, 
 		(int)(p->numURLsPassedRobotCheck / totalSeconds));
 
-	printf("Crawled %d pages @ %d/s (%.2f GB)\n", 
+	printf("Crawled %d pages @ %d/s (%.2f MB)\n", 
 		p->numCrawledURLs, 
 		(int)(p->numCrawledURLs / totalSeconds), 
-		(float)(p->numBytesDownloaded / 1000000.0));
+		(float)(p->numBytesDownloaded / 1000.0));
 
 	printf("Parsed %d links @ %d/s\n", 
 		p->numLinks, 
@@ -208,6 +208,14 @@ void initializeParams(LPVOID pParam, int numThreads, std::string inputFile)
 
 	// assign input file that contains URLs
 	p->inputFile = inputFile;
+	
+	// Save IP of tamu.edu host
+	struct hostent *remote = gethostbyname("tamu.edu");
+	if (remote != NULL) {
+		struct in_addr IP;
+		memcpy(&IP, remote->h_addr_list[0], sizeof(struct in_addr));
+		p->tamuIPString = inet_ntoa(IP);
+	}
 }
 int _tmain(int argc, _TCHAR* argv[])
 {

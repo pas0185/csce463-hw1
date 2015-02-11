@@ -19,8 +19,8 @@ public:
 	std::set<std::string> visitedHostSet;
 	std::set<std::string> visitedIPSet;
 
+	std::string tamuIPString;
 	std::string inputFile;
-	//char* inputFile;
 	clock_t clock;
 
 	int numTAMUHostFound = 0;

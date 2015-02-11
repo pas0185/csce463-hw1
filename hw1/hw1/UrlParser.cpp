@@ -32,8 +32,6 @@ void URLParser::parse(const char* url, LPVOID pParam)
 			// download and parse the requested page
 			webSocket.downloadPageAndCountLinks(hostname, subrequest, url, pParam);
 		}
-
-		webSocket.cleanup();
 	}
 }
 
@@ -51,8 +49,6 @@ const char* URLParser::parseHostFromURL(const char* url)
 		size_t hostLength = strcspn(hostname, delimiters);
 
 		hostname[hostLength] = '\0';
-
-		//printf("host: %s, ", hostname);
 
 		return hostname;
 	}

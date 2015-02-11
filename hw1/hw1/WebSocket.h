@@ -16,25 +16,22 @@ class WebSocket
 
 private:
 	SOCKET sock;
-	//char* buf;
 	int allocatedSize;
 	int curPos;
 	int msTime(clock_t start, clock_t end);
 	
 public:
 	WebSocket();
-	~WebSocket();
 
 	void Setup(char* hostname, int port, LPVOID pParam);
-
 	bool checkRobots(const char* hostname, LPVOID pParam);
 	int downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl, LPVOID pParam);
+
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	int Send(const char* request);
 	std::string ReadToBuffer(int& status, int& bytesRead);
-	//int ReadToBuffer(int& status, std::string& buffer);
 	void updateHttpCodeCount(int status, LPVOID pParam);
 
-	void cleanup();
+	//int ReadToBuffer(int& status, std::string& buffer);
 };
