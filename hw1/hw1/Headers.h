@@ -25,8 +25,6 @@
 #include "URLParser.h"
 #include "WebSocket.h"
 #include "HTMLParserBase.h"
-#include "HtmlParser.h"
-#include "HtmlParser.h"
 #include "Parameters.h"
 
 #define useragent "snailCrawlerPatrick/1.3"

@@ -33,9 +33,6 @@
     <ClInclude Include="HTMLParserBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HtmlParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Parameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HTMLParserTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HtmlParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

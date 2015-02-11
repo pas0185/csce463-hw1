@@ -39,7 +39,7 @@ void URLParser::parse(const char* url, LPVOID pParam)
 		robotSuccess = true;
 
 		// download and parse the requested page
-		if ((numLinks = webSocket.downloadPageAndCountLinks(hostname, subrequest)) > -1) {
+		if ((numLinks = webSocket.downloadPageAndCountLinks(hostname, subrequest, url)) > -1) {
 			didCrawlUrl = true;
 		}
 

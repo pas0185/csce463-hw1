@@ -87,7 +87,7 @@ UINT statThreadFunction(LPVOID pParam)
 
 	Parameters *p = ((Parameters*)pParam);
 
-	clock_t lastClock, currClock;
+	clock_t currClock, lastClock = clock();
 
 	while (WaitForSingleObject(p->eventQuit, 500) == WAIT_TIMEOUT)
 	{
@@ -95,8 +95,9 @@ UINT statThreadFunction(LPVOID pParam)
 		currClock = clock();
 		double secondsSinceReport = ((double)(lastClock - currClock)) / CLOCKS_PER_SEC;
 		int totalSeconds = ((double)(lastClock - p->clock)) / CLOCKS_PER_SEC;
-		int numPages = p->numPagesDownloaded;
-		double numBytes = p->numBytesDownloaded;
+
+		double pps = p->numCrawledURLs / secondsSinceReport;
+		double mbps = (p->numBytesDownloaded / 1000.0) / secondsSinceReport;
 		lastClock = currClock;
 
 		printf(
@@ -112,14 +113,25 @@ UINT statThreadFunction(LPVOID pParam)
 			p->numLinks
 			);
 
-		printf(
-			"\t *** crawling %.1f pps & %.1f Mbps\n",
-			numPages / secondsSinceReport,
-			(numBytes / 1000.0) / secondsSinceReport);
+		printf("   *** crawling %.1f pps & %.1f Mbps\n", pps, mbps);
 
 		ReleaseMutex(p->mutex);
 	}
 
+	WaitForSingleObject(p->mutex, INFINITE);
+	// print final results
+	double totalSeconds = ((double)(clock() - p->clock)) / CLOCKS_PER_SEC;
+
+	printf("\nRESULTS\n");
+	printf("Extracted %d URLs @ %d/s\n", p->numExtractedURLs, p->numBytesDownloaded / totalSeconds);
+	printf("Looked up %d DNS names @ %d/s\n", p->numSuccessfulDNSLookups, (int)(p->numSuccessfulDNSLookups / totalSeconds));
+	printf("Downloaded %d robots @ %d/s\n", p->numURLsPassedRobotCheck, (int)(p->numURLsPassedRobotCheck / totalSeconds));
+	printf("Crawled %d pages @ %d/s (%.2f GB)\n", p->numCrawledURLs, p->numCrawledURLs / totalSeconds, p->numBytesDownloaded / 1000000.0);
+	printf("Parsed %d links @ %d/s\n", p->numLinks, p->numLinks / totalSeconds);
+	printf("HTTP codes: 2xx = %d, 3xx = %d, 4xx = %d, 5xx = %d, other = %d\n", 
+		p->code2xxCount, p->code3xxCount, p->code4xxCount, p->code5xxCount, p->codeOtherCount);
+
+	ReleaseMutex(p->mutex);
 	return 0;
 }
 UINT crawlerThreadFunction(LPVOID pParam)

@@ -97,7 +97,7 @@ bool WebSocket::checkRobots(const char* hostname)
 }
 
 //FILE* WebSocket::downloadPage(const char* hostname, const char* request)
-int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request)
+int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl)
 {
 	char* buffer;
 	FILE *file;
@@ -109,7 +109,7 @@ int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* reque
 
 			HTMLParserBase *parser = new HTMLParserBase;
 			int nLinks;
-			char *linkBuffer = parser->Parse(buffer, (int)strlen(buffer), baseUrl, (int)strlen(baseUrl), &nLinks);
+			char *linkBuffer = parser->Parse(buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 			
 			if (nLinks < 0)
 				nLinks = 0;

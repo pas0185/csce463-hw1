@@ -23,8 +23,12 @@ public:
 	clock_t clock;
 
 	//*** TODO ***//
-	int numPagesDownloaded;
-	double numBytesDownloaded;
+	double numBytesDownloaded = 0;
+	int code2xxCount = 0;
+	int code3xxCount = 0;
+	int code4xxCount = 0;
+	int code5xxCount = 0;
+	int codeOtherCount = 0;
 	//*** TODO **//
 
 	int numExtractedURLs = 0;
