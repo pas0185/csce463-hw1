@@ -77,28 +77,6 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	}
 }
 
-//hostent* WebSocket::DNSLookup(char* hostname)
-//{
-//	// structure used in DNS lookups
-//	struct hostent *remote;
-//	clock_t start, end;
-//	in_addr IP;
-//	//printStatusBeginning("Doing DNS... ");
-//
-//	start = clock();	// timing DNS lookup
-//	if ((remote = gethostbyname(hostname)) != NULL) {
-//		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
-//		end = clock();	// timing DNS lookup
-//		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
-//		//printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
-//	}
-//	else {
-//		return NULL;
-//	}
-//	
-//	return remote;
-//}
-
 bool WebSocket::checkRobots(const char* hostname)
 {
 	clock_t start, end;
