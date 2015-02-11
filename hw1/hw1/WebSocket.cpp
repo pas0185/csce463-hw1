@@ -12,76 +12,67 @@ WebSocket::WebSocket()
 {
 	buf = new char[INITIAL_BUF_SIZE];
 }
-
-//WebSocket::WebSocket(const char* hostname, int port, const char* subrequest)
-//{
-//	buf = new char[INITIAL_BUF_SIZE];
-//
-//	Setup((char*)hostname, port);
-//}
-
 void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 {
 	WSADATA wsaData;
-	bool didPerformDNS, isHostUnique;
 
+	bool uniqueHost = false;
+	bool successfulDNS = false;
+	bool uniqueIP = false;
+
+	Parameters *p = ((Parameters*)pParam);
 
 	// Initialize WinSock; once per program run
 	WORD wVersionRequested = MAKEWORD(2, 2);
 	if (WSAStartup(wVersionRequested, &wsaData) != 0) {
-		//printf("WSAStartup error %d\n", WSAGetLastError());
+		// WSA failure
 		WSACleanup();
 		return;
 	}
 
 	// open a TCP socket
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET)
-	{
-		//printf("socket() generated error %d\n", WSAGetLastError());
+	if (sock == INVALID_SOCKET) {
 		WSACleanup();
 		return;
 	}
 
-	//printStatusBeginning("Checking host uniqueness... ");
+	struct in_addr IP;
+	std::map<std::string, in_addr>::const_iterator cachedHost;
 
-	in_addr IP;
-	struct hostent *remote;
+	WaitForSingleObject(p->mutex);				// lock mutex
 
-	// Check for a cached IP address
-	std::map<std::string, in_addr>::const_iterator got = hostnameMap.find(hostname);
-	if (got != hostnameMap.end()) {
-		// Found cached IP matching the host
-		IP = got->second;
-		//printf("found existing\n");
-	}
-	else {
-		//printf("passed\n");
-		isHostUnique = true;
+	int prevHostSetSize = p->visitedHostSet.size();
+	int prevIPSetSize = p->visitedIPSet.size();
 
-		if ((remote = DNSLookup(hostname)) != NULL) {
-			didPerformDNS = true;
-			memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+	p->visitedHostSet.insert(hostname);
+	if (p->visitedHostSet.size() > prevHostSetSize) {
+		// unique host
+		(p->numURLsWithUniqueHost) += 1;
+
+		// DNS lookup
+		struct hostent *remote = gethostbyname(hostname);
+		if (remote != NULL) {
+			memcpy(&IP, remote->h_addr_list[0], sizeof(struct in_addr));
+			//memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+
+			p->visitedIPSet.insert(IP);
+			if (p->visitedIPSet.size() > prevIPSetSize) {
+				// unique IP
+				(p->numURLsWithUniqueIP) += 1;
+			}
 		}
-		else {
-			//printf("failed\n");
-			return;
-		}
 	}
-
-
+	ReleaseMutex(p->mutex);						// unlock mutex
 
 	// structure for connecting to server
 	struct sockaddr_in server;
-
 	server.sin_addr = IP;
 	server.sin_family = AF_INET;
 	server.sin_port = htons(port);
 
 	// Connect socket to server on correct port
-	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR)
-	{
-		//printf("Connection error: %d\n", WSAGetLastError());
+	if (connect(sock, (struct sockaddr*) &server, sizeof(struct sockaddr_in)) == SOCKET_ERROR) {
 		return;
 	}
 }
@@ -127,27 +118,27 @@ void WebSocket::DownloadFunction(char* connectingOn, char* request)
 
 }
 
-hostent* WebSocket::DNSLookup(char* hostname)
-{
-	// structure used in DNS lookups
-	struct hostent *remote;
-	clock_t start, end;
-	in_addr IP;
-	printStatusBeginning("Doing DNS... ");
-
-	start = clock();	// timing DNS lookup
-	if ((remote = gethostbyname(hostname)) != NULL) {
-		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
-		end = clock();	// timing DNS lookup
-		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
-		//printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
-	}
-	else {
-		//printf("failed\n");
-	}
-	
-	return remote;
-}
+//hostent* WebSocket::DNSLookup(char* hostname)
+//{
+//	// structure used in DNS lookups
+//	struct hostent *remote;
+//	clock_t start, end;
+//	in_addr IP;
+//	//printStatusBeginning("Doing DNS... ");
+//
+//	start = clock();	// timing DNS lookup
+//	if ((remote = gethostbyname(hostname)) != NULL) {
+//		memcpy((char *)&(IP), remote->h_addr, remote->h_length);
+//		end = clock();	// timing DNS lookup
+//		int total = 1000 * (end - start) / CLOCKS_PER_SEC;
+//		//printf("done in %d ms, found %s\n", msTime(start, end), inet_ntoa(IP));
+//	}
+//	else {
+//		return NULL;
+//	}
+//	
+//	return remote;
+//}
 
 bool WebSocket::checkRobots(const char* hostname)
 {
@@ -219,14 +210,14 @@ int WebSocket::ReadToBuffer(char** buffer)
 {
 	// Receive data from socket and write it to the buffer 
 
-	clock_t start, end;
+	//clock_t start, end;
 
 	int bytesRead = 0, status = -1, num = 0;
 	char *responseBuf;
 	char *temp;
 
-	printStatusBeginning("Loading... ");
-	start = clock();	// timing loading file
+	//printStatusBeginning("Loading... ");
+	//start = clock();	// timing loading file
 
 	responseBuf = new char[INITIAL_BUF_SIZE];
 	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
@@ -252,21 +243,21 @@ int WebSocket::ReadToBuffer(char** buffer)
 
 		if (status < 0)
 		{
-			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
+			sscanf(responseBuf, "HTTP/1.0 %d", &status);
 		}
 	}
 
 	// Truncate blank space
 	responseBuf[bytesRead] = '\0';
 
-	end = clock();	// timing for loading the file
-	double total = (double)(end - start);
+	//end = clock();	// timing for loading the file
+	//double total = (double)(end - start);
 	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
 
 	// Clean up resources
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
-	printStatusBeginning("Verifying header... ");
+	//printStatusBeginning("Verifying header... ");
 	//printf("status code %d\n", status);
 
 	return status;

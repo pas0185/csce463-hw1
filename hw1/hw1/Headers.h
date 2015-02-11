@@ -21,6 +21,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <unordered_set>
 
 #include "URLParser.h"
 #include "WebSocket.h"
@@ -40,6 +41,12 @@ public:
 	HANDLE eventFileReadFinished;
 
 	std::queue<std::string> urlQueue;
+
+	//std::map<std::string, in_addr> hostnameMap;
+	
+	unordered_set<std::string> visitedHostSet;
+	unordered_set<in_addr> visitedIPSet;
+
 	char* inputFile;
 	clock_t clock;
 

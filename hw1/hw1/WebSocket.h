@@ -20,21 +20,14 @@ private:
 	int allocatedSize;
 	int curPos;
 
-	// MAP HOSTNAME STRINGS TO IP ADDRESSES
-	std::map<std::string, in_addr> hostnameMap;
-
-	// MAP IP ADDRESSES TO 
+	//std::map<std::string, in_addr> hostnameMap;
 
 	int msTime(clock_t start, clock_t end);
 	
 public:
-	void DownloadFunction(char* connectingOn, char* request);
-
-
 	WebSocket();
-	void Setup(char* hostname, int port, LPVOID pParam);	// Called by constructor
-	in_addr getIPAddress(char* hostname);	// Checks for cached host->IP
-	hostent* DNSLookup(char* hostname);		// Called if needed
+	void Setup(char* hostname, int port, LPVOID pParam);
+	void DownloadFunction(char* connectingOn, char* request);
 
 	bool checkRobots(const char* hostname);
 	void checkIPUniqueness(in_addr IP);

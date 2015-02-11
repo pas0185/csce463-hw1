@@ -101,19 +101,12 @@ UINT statThreadFunction(LPVOID pParam)
 			elapsedSeconds,
 			p->urlQueue.size(),
 			p->numExtractedURLs,
-			0,
-			0,
-			0,
-			0,
-			0,
-			0
-
-			//p->numURLsWithUniqueHost,
-			//p->numSuccessfulDNSLookups,
-			//p->numURLsWithUniqueIP,
-			//p->numURLsPassedRobotCheck,
-			//p->numCrawledURLs,
-			//p->numLinks
+			p->numURLsWithUniqueHost,
+			p->numSuccessfulDNSLookups,
+			p->numURLsWithUniqueIP,
+			p->numURLsPassedRobotCheck,
+			p->numCrawledURLs,
+			p->numLinks
 			);
 
 		//printf(
@@ -135,7 +128,6 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
 	int size = sizeof(arr) / sizeof(HANDLE);
 
-	//while (WaitForSingleObject(p->semaphoreCrawlers, INFINITE) == WAIT_OBJECT_0)
 	while (WaitForMultipleObjects(size, arr, false, INFINITE) == WAIT_OBJECT_0)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
@@ -212,7 +204,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// assign input file that contains URLs
 	p.inputFile = (char *)fileName.c_str();
-
 
 	// start file-reader thread
 	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);

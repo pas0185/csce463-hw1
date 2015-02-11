@@ -15,8 +15,8 @@ class URLParser
 public:
 	void parse(const char* url, LPVOID pParam);
 	char* buildGETRequest(char* host, char* port, char* request);
-	static const char* getHostname(const char* url);
+	static const char* parseHostFromURL(const char* url);
 	char* parseURLString(char* url);
-	static const char* getSubrequest(const char* url);// , const char* hostname);
+	static const char* getSubrequest(const char* url);
 	static int getPort(const char* url);
 };

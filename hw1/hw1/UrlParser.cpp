@@ -11,7 +11,6 @@ using namespace std;
 
 void URLParser::parse(const char* url, LPVOID pParam)
 {
-	//printf("\nParsing URL: %s\n", url);
 	Parameters *p = ((Parameters*)pParam);
 
 	const char* hostname;
@@ -23,14 +22,13 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	bool robotSuccess = false;
 	bool didCrawlUrl = false;
 
-	if ((hostname = getHostname(url)) == NULL) {
-		//printf("failed to parse host\n");
-		return;
-	}
-	extractedURL = true;
+	if ((hostname = parseHostFromURL(url)) != NULL) {
+		// successfully parsed host
+		extractedURL = true;
 
-	subrequest = getSubrequest(url);
-	port = getPort(url);
+		subrequest = getSubrequest(url);
+		port = getPort(url);
+	}
 
 	// Create WebSocket
 	WebSocket webSocket = WebSocket();
@@ -44,24 +42,30 @@ void URLParser::parse(const char* url, LPVOID pParam)
 		if (file != NULL) {
 			didCrawlUrl = true;
 			HtmlParser parser = HtmlParser();
-			numLinks = parser.parse(file, (char*)url);
+			numLinks = parser.parse(file, (char*)url, pParam);
 		}
 	}
 
 	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	if (extractedURL)
-		(p->numExtractedURLs)++;
-	if (robotSuccess)
-		(p->numURLsPassedRobotCheck)++;
-	if (didCrawlUrl)
-		(p->numCrawledURLs)++;
-	if (numLinks > 0)
+	if (extractedURL) {
+		(p->numExtractedURLs) += 1;
+	}
+	if (robotSuccess) {
+		//printf("passed robots\n");
+		(p->numURLsPassedRobotCheck) += 1;
+	}
+	if (didCrawlUrl) {
+		//printf("crawled url");
+		(p->numCrawledURLs) += 1;
+	}
+	if (numLinks > 0) {
 		(p->numLinks) += numLinks;
-	ReleaseMutex(p->mutex);							// unlock mutex
+	}
 
+	ReleaseMutex(p->mutex);							// unlock mutex
 }
 
-const char* URLParser::getHostname(const char* url)
+const char* URLParser::parseHostFromURL(const char* url)
 {
 	const char* delim;
 	char* hostname = new char[strlen(url)];
