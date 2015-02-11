@@ -81,12 +81,13 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 
 bool WebSocket::checkRobots(const char* hostname)
 {
+	int status;
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
-	char* buffer;
+	//const char* buffer;
 
 	Send(robotRequest);
 
-	int status = ReadToBuffer(&buffer);
+	ReadToBuffer(status);
 
 	if (status >= 400) {
 		// Only 4xx status (robots file not found) allows unrestricted crawling
@@ -99,17 +100,28 @@ bool WebSocket::checkRobots(const char* hostname)
 //FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 int WebSocket::downloadPageAndCountLinks(const char* hostname, const char* request, const char* baseUrl)
 {
-	char* buffer;
-	FILE *file;
+	const char* buffer;
+	//FILE *file;
 	const char* pageRequest = buildRequest("GET", hostname, request);
-	
+	int status;
+
 	if (Send(pageRequest) > -1) {
-		int status = ReadToBuffer(&buffer);
+
+		buffer = ReadToBuffer(status);
+		
+		
+		//
+		//
+		//
+		// TODO: Counter for 2xx, 3xx, etc
+		//
+		//
+		//
 		if (200 <= status && status < 300) {
 
 			HTMLParserBase *parser = new HTMLParserBase;
 			int nLinks;
-			char *linkBuffer = parser->Parse(buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
+			char *linkBuffer = parser->Parse((char*)buffer, (int)strlen(buffer), (char*)baseUrl, (int)strlen(baseUrl), &nLinks);
 			
 			if (nLinks < 0)
 				nLinks = 0;
@@ -145,12 +157,13 @@ int WebSocket::Send(const char* request)
 	return 0;
 }
 
-int WebSocket::ReadToBuffer(char** buffer)
+const char* WebSocket::ReadToBuffer(int& status)//char* buffer)
 {
 	// Receive data from socket and write it to the buffer 
 
 	size_t bytesRead = 0;
-	int status = -1, num = 0;
+	//int status = -1;
+	int num = 0;
 	char *responseBuf;
 	char *temp;
 
@@ -178,17 +191,21 @@ int WebSocket::ReadToBuffer(char** buffer)
 
 		if (status < 0)
 		{
-			sscanf(responseBuf, "HTTP/1.0 %d", &status);
+			int s, h;
+			sscanf(responseBuf, "HTTP/1.%d %d", &h, &s);
+			status = s;
 		}
 	}
 
 	// Truncate blank space
 	responseBuf[bytesRead] = '\0';
 
-	// Clean up resources
-	memset(&responseBuf[0], 0, sizeof(responseBuf));
+	return (const char*)responseBuf;
 
-	return status;
+	// Clean up resources
+	//memset(&responseBuf[0], 0, sizeof(responseBuf));
+
+	//return status;
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)

@@ -30,5 +30,5 @@ public:
 	const char* buildRequest(const char* type, const char* host, const char* subrequest);
 
 	int Send(const char* request);
-	int ReadToBuffer(char** buffer);
+	const char* ReadToBuffer(int& status);// char* buffer);
 };

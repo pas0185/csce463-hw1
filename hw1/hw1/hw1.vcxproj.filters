@@ -19,6 +19,9 @@
     <Text Include="URL-input-100.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="URL-input-1M.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WebSocket.h">

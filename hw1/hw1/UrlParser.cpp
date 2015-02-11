@@ -65,7 +65,6 @@ void URLParser::parse(const char* url, LPVOID pParam)
 	if (numLinks > 0) {
 		(p->numLinks) += numLinks;
 	}
-
 	ReleaseMutex(p->mutex);							// unlock mutex
 }
 
