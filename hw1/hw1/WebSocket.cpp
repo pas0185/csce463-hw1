@@ -40,10 +40,10 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	struct in_addr IP;
 	std::map<std::string, in_addr>::const_iterator cachedHost;
 
-	WaitForSingleObject(p->mutex);				// lock mutex
+	WaitForSingleObject(p->mutex, INFINITE);	// lock mutex
 
-	int prevHostSetSize = p->visitedHostSet.size();
-	int prevIPSetSize = p->visitedIPSet.size();
+	size_t prevHostSetSize = p->visitedHostSet.size();
+	size_t prevIPSetSize = p->visitedIPSet.size();
 
 	p->visitedHostSet.insert(hostname);
 	if (p->visitedHostSet.size() > prevHostSetSize) {
@@ -258,76 +258,6 @@ int WebSocket::ReadToBuffer(char** buffer)
 	memset(&responseBuf[0], 0, sizeof(responseBuf));
 
 	//printStatusBeginning("Verifying header... ");
-	//printf("status code %d\n", status);
-
-	return status;
-}
-
-int WebSocket::ReadAndWriteToFile(char* filename)
-{
-	if (filename == NULL)
-	{
-		//printf("An NULL file name was passed to Websocket for writing to");
-		return -1;
-	}
-
-	clock_t start, end, total;
-
-	// Write everything to the file, including header (TODO)
-	FILE *fp = fopen(filename, "w+");
-	int bytesRead = 0, status = -1, num = 0;
-	char *responseBuf, *temp;
-
-	// Receive data from socket
-	printStatusBeginning("Loading... ");
-	start = clock();	// timing loading file
-	
-	responseBuf = new char[INITIAL_BUF_SIZE];
-	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
-	{
-		bytesRead += num;
-
-		// if need to resize buffer
-		if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
-		{
-			// Move old array to temp storage
-			temp = new char[bytesRead];
-			memcpy(temp, responseBuf, bytesRead);
-
-			// Double size of buffer
-			//responseBuf = new char[strlen(responseBuf) + INITIAL_BUF_SIZE];
-			responseBuf = new char[2 * bytesRead];
-
-			// Copy data over from temp
-			memcpy(responseBuf, temp, bytesRead);
-
-			// clear temp
-			memset(&temp[0], 0, sizeof(temp));
-		}
-
-		//fprintf(fp, "%s", responseBuf);
-
-		if (status < 0)
-		{
-			sscanf(responseBuf, "HTTP/1.0 %d \r\n", &status);
-		}
-	}
-
-	// Truncate blank space
-	responseBuf[bytesRead] = '\0';
-
-	end = clock();	// timing for loading the file
-	total = (double)(end - start);
-	//printf("done in %d ms with %d bytes\n", (1000 * total / CLOCKS_PER_SEC), bytesRead);
-
-	// Write buffer to file
-	fprintf(fp, "%s", responseBuf);
-	fclose(fp);
-
-	// Clean up resources
-	memset(&responseBuf[0], 0, sizeof(responseBuf));
-
-	//printf("\t  Verifying header... ");
 	//printf("status code %d\n", status);
 
 	return status;

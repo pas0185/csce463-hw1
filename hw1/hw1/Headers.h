@@ -44,8 +44,8 @@ public:
 
 	//std::map<std::string, in_addr> hostnameMap;
 	
-	unordered_set<std::string> visitedHostSet;
-	unordered_set<in_addr> visitedIPSet;
+	std::set<std::string> visitedHostSet;
+	std::set<in_addr> visitedIPSet;
 
 	char* inputFile;
 	clock_t clock;

@@ -37,8 +37,6 @@ public:
 	void Send(const char* request);
 	int ReadToBuffer(char** buffer);
 
-	int ReadAndWriteToFile(char* filename);
-
 	void printStatusBeginning(const char* format);
 	void printStatusBeginning(const char* format, char special);
 };
