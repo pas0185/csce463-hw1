@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="HtmlParser.h" />
     <ClInclude Include="HTMLParserBase.h" />
+    <ClInclude Include="Parameters.h" />
     <ClInclude Include="UrlParser.h" />
     <ClInclude Include="WebSocket.h" />
     <ClInclude Include="Headers.h" />

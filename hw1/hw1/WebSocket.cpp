@@ -83,7 +83,6 @@ bool WebSocket::checkRobots(const char* hostname)
 	const char* robotRequest = buildRequest("HEAD", hostname, "/robots.txt");
 	char* buffer;
 
-	printStatusBeginning("Connecting on robots...");
 	start = clock();
 	Send(robotRequest);
 	end = clock();
@@ -107,7 +106,6 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 	FILE *file;
 	const char* pageRequest = buildRequest("GET", hostname, request);
 	
-	printStatusBeginning("Connecting on page... ", '*');
 	start = clock();
 	Send(pageRequest);
 	end = clock();
@@ -128,12 +126,6 @@ FILE* WebSocket::downloadPage(const char* hostname, const char* request)
 	return NULL;
 }
 
-void WebSocket::checkIPUniqueness(in_addr IP)
-{
-	printStatusBeginning("Checking IP uniqueness... ");
-	//printf("TODO\n");
-}
-
 void WebSocket::Send(const char* request)
 {
 	// send HTTP request
@@ -147,14 +139,10 @@ int WebSocket::ReadToBuffer(char** buffer)
 {
 	// Receive data from socket and write it to the buffer 
 
-	//clock_t start, end;
-
-	int bytesRead = 0, status = -1, num = 0;
+	size_t bytesRead = 0;
+	int status = -1, num = 0;
 	char *responseBuf;
 	char *temp;
-
-	//printStatusBeginning("Loading... ");
-	//start = clock();	// timing loading file
 
 	responseBuf = new char[INITIAL_BUF_SIZE];
 	while ((num = recv(sock, responseBuf, INITIAL_BUF_SIZE, 0)) > 0)
@@ -162,7 +150,7 @@ int WebSocket::ReadToBuffer(char** buffer)
 		bytesRead += num;
 
 		// if need to resize buffer
-		if (bytesRead + INITIAL_BUF_SIZE > strlen(responseBuf))
+		if ((bytesRead + INITIAL_BUF_SIZE) > strlen(responseBuf))
 		{
 			// Move old array to temp storage
 			temp = new char[bytesRead];
@@ -198,18 +186,6 @@ int WebSocket::ReadToBuffer(char** buffer)
 	//printf("status code %d\n", status);
 
 	return status;
-}
-
-// Helper Methods
-
-void WebSocket::printStatusBeginning(const char* format, char special)
-{
-	//printf("      %c %s", special, format);
-}
-
-void WebSocket::printStatusBeginning(const char* format)
-{
-	//printf("        %s", format);
 }
 
 int WebSocket::msTime(clock_t start, clock_t end)
