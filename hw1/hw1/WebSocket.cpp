@@ -21,10 +21,10 @@ WebSocket::~WebSocket()
 void WebSocket::cleanup()
 {
 	// close the socket to this server; open again for the next one
-	closesocket(sock);
+	//closesocket(sock);
 
-	// call cleanup when done with everything and ready to exit program
-	WSACleanup();
+	//// call cleanup when done with everything and ready to exit program
+	//WSACleanup();
 }
 
 void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
@@ -41,8 +41,7 @@ void WebSocket::Setup(char* hostname, int port, LPVOID pParam)
 	}
 
 	// open a TCP socket
-	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock == INVALID_SOCKET) {
+	if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET) {
 		WSACleanup();
 		return;
 	}

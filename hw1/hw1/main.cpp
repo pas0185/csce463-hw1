@@ -22,7 +22,7 @@ UINT fileThreadFunction(LPVOID pParam)
 	// safely get file name from shared parameters
 	WaitForSingleObject(p->mutex, INFINITE);				// lock mutex
 	printf("File thread started\n");						// critical section
-	HANDLE hFile = CreateFile(p->inputFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
+	HANDLE hFile = CreateFile(p->inputFile.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL, NULL);
 	ReleaseMutex(p->mutex);									// unlock mutex
 	
@@ -63,8 +63,6 @@ UINT fileThreadFunction(LPVOID pParam)
 	char *url = strtok(fileBuf, "\r\n");
 	while (url) {
 		WaitForSingleObject(p->mutex, INFINITE);			// lock
-		//printf("<-Producing %s\n", url);
-
 		p->urlQueue.push(url);								// push url into queue
 		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// increment semaphore by 1
 		ReleaseMutex(p->mutex);								// unlock
@@ -88,16 +86,17 @@ UINT statThreadFunction(LPVOID pParam)
 
 	clock_t currClock, lastClock = clock();
 
-	while (WaitForSingleObject(p->eventQuit, 1000) == WAIT_TIMEOUT)
+	while (WaitForSingleObject(p->eventQuit, 2000) == WAIT_TIMEOUT)
 	{
-		WaitForSingleObject(p->mutex, INFINITE);
 		currClock = clock();
 		double secondsSinceReport = ((double)(lastClock - currClock)) / CLOCKS_PER_SEC;
-		int totalSeconds = ((double)(lastClock - p->clock)) / CLOCKS_PER_SEC;
+		
+		
+		WaitForSingleObject(p->mutex, INFINITE);					// lock mutex
 
+		int totalSeconds = ((double)(lastClock - p->clock)) / CLOCKS_PER_SEC;
 		double pps = p->numCrawledURLs / secondsSinceReport;
 		double mbps = (p->numBytesDownloaded / 1000.0) / secondsSinceReport;
-		lastClock = currClock;
 
 		printf(
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
@@ -114,7 +113,9 @@ UINT statThreadFunction(LPVOID pParam)
 
 		printf("   *** crawling %.1f pps @ %.1f Mbps\n", pps, mbps);
 
-		ReleaseMutex(p->mutex);
+		ReleaseMutex(p->mutex);										// unlock mutex
+
+		lastClock = currClock;
 	}
 
 	WaitForSingleObject(p->mutex, INFINITE);
@@ -127,10 +128,12 @@ UINT statThreadFunction(LPVOID pParam)
 	printf("Downloaded %d robots @ %d/s\n", p->numURLsPassedRobotCheck, (int)(p->numURLsPassedRobotCheck / totalSeconds));
 	printf("Crawled %d pages @ %d/s (%.2f GB)\n", p->numCrawledURLs, p->numCrawledURLs / totalSeconds, p->numBytesDownloaded / 1000000.0);
 	printf("Parsed %d links @ %d/s\n", p->numLinks, p->numLinks / totalSeconds);
+	printf("Connected to tamu.edu domain %d times\n", p->numTAMUHostFound);
 	printf("HTTP codes: 2xx = %d, 3xx = %d, 4xx = %d, 5xx = %d, other = %d\n", 
 		p->code2xxCount, p->code3xxCount, p->code4xxCount, p->code5xxCount, p->codeOtherCount);
 
 	ReleaseMutex(p->mutex);
+
 	return 0;
 }
 UINT crawlerThreadFunction(LPVOID pParam)
@@ -145,26 +148,51 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
 
-		// double check URL queue is not empty
+		// extract URL from queue
 		if (!p->urlQueue.empty()){
 			urlString = p->urlQueue.front();
 			p->urlQueue.pop();
 			(p->numExtractedURLs) += 1;					// increment number of URLs extracted
 		}
+
 		ReleaseMutex(p->mutex);							// unlock mutex
+
+		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// release crawlers' semaphore
 
 		URLParser parser = URLParser();
 		parser.parse(urlString.c_str(), pParam);
-
-		// TODO: does this need to be released?
-		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
 	}
 
-	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	SetEvent(p->eventQuit);
-	ReleaseMutex(p->mutex);							// unlock mutex
+	//WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
+	//SetEvent(p->eventQuit);
+	//ReleaseMutex(p->mutex);							// unlock mutex
 
 	return 0;
+}
+void initializeParams(LPVOID pParam, int numThreads, std::string inputFile)
+{
+	Parameters *p = ((Parameters*)pParam);
+
+	// assign the time this thread is starting
+	p->clock = clock();
+
+	// create a mutex for accessing critical sections (including printf); initial state = not locked
+	p->mutex = CreateMutex(NULL, 0, NULL);
+
+	// create a semaphore that counts the number of active threads; initial value = 0, max = numThreads
+	p->semaphoreCrawlers = CreateSemaphore(NULL, 0, numThreads, NULL);
+
+	// create a quit event; manual reset, initial state = not signaled
+	p->eventQuit = CreateEvent(NULL, true, false, NULL);
+
+	// set to true once file is finished being read
+	p->eventFileReadFinished = CreateEvent(NULL, true, false, NULL);
+
+	// create a shared queue of URLs to be parsed
+	p->urlQueue = std::queue<std::string>();
+
+	// assign input file that contains URLs
+	p->inputFile = inputFile;
 }
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -191,30 +219,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	HANDLE *crawlerThreads = new HANDLE[numThreads];
 	Parameters p;
 
-	// assign the time this thread is starting
-	p.clock = clock();
+	initializeParams(&p, numThreads, fileName);
 
-	// create a mutex for accessing critical sections (including printf); initial state = not locked
-	p.mutex = CreateMutex(NULL, 0, NULL);
-
-	// create a semaphore that counts the number of active threads; initial value = 0, max = numThreads
-	p.semaphoreCrawlers = CreateSemaphore(NULL, 0, numThreads, NULL);
-
-	// create a quit event; manual reset, initial state = not signaled
-	p.eventQuit = CreateEvent(NULL, true, false, NULL);
-
-	// set to true once file is finished being read
-	p.eventFileReadFinished = CreateEvent(NULL, true, false, NULL);
-
-	// create a shared queue of URLs to be parsed
-	p.urlQueue = std::queue<std::string>();
-
-	// assign input file that contains URLs
-	p.inputFile = (char *)fileName.c_str();
 
 	// start file-reader thread
+	// sets p.eventFileReadFinished on completion
 	fileThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)fileThreadFunction, &p, 0, NULL);
-	
+
 	// start stats thread
 	statThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)statThreadFunction, &p, 0, NULL);
 	
@@ -224,19 +235,23 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	// wait for file-reader thread to quit
-	WaitForSingleObject(p.eventFileReadFinished, INFINITE);
+	WaitForSingleObject(fileThread, INFINITE);
+	CloseHandle(fileThread);
 
 	// wait for N crawling threads to finish
-	//for (int i = 0; i < numThreads; i++) {
-	//	WaitForSingleObject(crawlerThreads[i], INFINITE);
-	//}
+	for (int i = 0; i < numThreads; i++) {
+		WaitForSingleObject(crawlerThreads[i], INFINITE);
+		CloseHandle(crawlerThreads[i]);
+	}
 
 	// signal stats thread to quit; wait for it to terminate
-	//SetEvent(p.eventQuit);
+	SetEvent(p.eventQuit);
 
 	WaitForSingleObject(statThread, INFINITE);
+	CloseHandle(statThread);
 
 	// cleanup
+	WSACleanup();
 
 	system("pause");
 	return 0;

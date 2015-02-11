@@ -19,17 +19,18 @@ public:
 	std::set<std::string> visitedHostSet;
 	std::set<std::string> visitedIPSet;
 
-	char* inputFile;
+	std::string inputFile;
+	//char* inputFile;
 	clock_t clock;
 
-	//*** TODO ***//
+	int numTAMUHostFound = 0;
+
 	double numBytesDownloaded = 0;
 	int code2xxCount = 0;
 	int code3xxCount = 0;
 	int code4xxCount = 0;
 	int code5xxCount = 0;
 	int codeOtherCount = 0;
-	//*** TODO **//
 
 	int numExtractedURLs = 0;
 	int numURLsWithUniqueHost = 0;
