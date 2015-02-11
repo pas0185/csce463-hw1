@@ -89,7 +89,7 @@ UINT statThreadFunction(LPVOID pParam)
 
 	clock_t currClock, lastClock = clock();
 
-	while (WaitForSingleObject(p->eventQuit, 500) == WAIT_TIMEOUT)
+	while (WaitForSingleObject(p->eventQuit, 2000) == WAIT_TIMEOUT)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);
 		currClock = clock();
@@ -143,29 +143,29 @@ UINT crawlerThreadFunction(LPVOID pParam)
 	HANDLE arr[] = { p->semaphoreCrawlers, p->eventFileReadFinished };
 	int size = sizeof(arr) / sizeof(HANDLE);
 
-	while (WaitForMultipleObjects(size, arr, false, INFINITE) == WAIT_OBJECT_0)
+	//while (WaitForMultipleObjects(size, arr, false, INFINITE) == WAIT_OBJECT_0)
+	while (WaitForSingleObject(p->semaphoreCrawlers, INFINITE) == WAIT_OBJECT_0)
 	{
 		WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
 
-		if (p->urlQueue.empty())
-			break;
+		if (!p->urlQueue.empty()){
 
-		const char* tempURL = p->urlQueue.front().c_str();
+			const char* tempURL = p->urlQueue.front().c_str();
 
-		int length = strlen(tempURL) + 1;
-		url = new char[length];
-		strncpy(url, tempURL, length);
-		url[length - 1] = '\0';
+			int length = strlen(tempURL) + 1;
+			url = new char[length];
+			strncpy(url, tempURL, length);
+			url[length - 1] = '\0';
 
-		p->urlQueue.pop();
+			p->urlQueue.pop();
 
-		ReleaseMutex(p->mutex);							// unlock mutex
+			ReleaseMutex(p->mutex);							// unlock mutex
 
-		URLParser parser = URLParser();
-		parser.parse((const char*)url, pParam);
+			URLParser parser = URLParser();
+			parser.parse((const char*)url, pParam);
+		}
 
-		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
-
+		////ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);
 	}
 
 	WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
@@ -235,12 +235,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	WaitForSingleObject(p.eventFileReadFinished, INFINITE);
 
 	// wait for N crawling threads to finish
-	WaitForMultipleObjects(numThreads, crawlerThreads, TRUE, INFINITE);
-	// TODO: maybe need to wait and CloseHandle one by one
-
+	//for (int i = 0; i < numThreads; i++) {
+	//	WaitForSingleObject(crawlerThreads[i], INFINITE);
+	//}
 
 	// signal stats thread to quit; wait for it to terminate
-	SetEvent(p.eventQuit);
+	//SetEvent(p.eventQuit);
 
 	WaitForSingleObject(statThread, INFINITE);
 
