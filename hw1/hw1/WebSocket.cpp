@@ -10,7 +10,7 @@
 
 WebSocket::WebSocket()
 {
-	buf = new char[INITIAL_BUF_SIZE];
+	//buf = new char[INITIAL_BUF_SIZE];
 }
 
 WebSocket::~WebSocket()

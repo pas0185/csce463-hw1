@@ -95,8 +95,6 @@ UINT statThreadFunction(LPVOID pParam)
 		WaitForSingleObject(p->mutex, INFINITE);					// lock mutex
 
 		int totalSeconds = ((double)(lastClock - p->clock)) / CLOCKS_PER_SEC;
-		double pps = p->numCrawledURLs / secondsSinceReport;
-		double mbps = (p->numBytesDownloaded / 1000.0) / secondsSinceReport;
 
 		printf(
 			"[%3d] %6d Q %7d E %6d H %6d D %5d I %5d R %5d C %4d L\n",
@@ -111,7 +109,9 @@ UINT statThreadFunction(LPVOID pParam)
 			p->numLinks
 			);
 
-		printf("   *** crawling %.1f pps @ %.1f Mbps\n", pps, mbps);
+		printf("   *** crawling %.1f pps @ %.1f Mbps\n", 
+			(float)(p->numCrawledURLs / totalSeconds),
+			(float)((p->numBytesDownloaded / 1000.0) / totalSeconds));
 
 		ReleaseMutex(p->mutex);										// unlock mutex
 
@@ -122,15 +122,34 @@ UINT statThreadFunction(LPVOID pParam)
 	// print final results
 	double totalSeconds = ((double)(clock() - p->clock)) / CLOCKS_PER_SEC;
 
-	printf("\nRESULTS\n");
-	printf("Extracted %d URLs @ %d/s\n", p->numExtractedURLs, p->numBytesDownloaded / totalSeconds);
-	printf("Looked up %d DNS names @ %d/s\n", p->numSuccessfulDNSLookups, (int)(p->numSuccessfulDNSLookups / totalSeconds));
-	printf("Downloaded %d robots @ %d/s\n", p->numURLsPassedRobotCheck, (int)(p->numURLsPassedRobotCheck / totalSeconds));
-	printf("Crawled %d pages @ %d/s (%.2f GB)\n", p->numCrawledURLs, p->numCrawledURLs / totalSeconds, p->numBytesDownloaded / 1000000.0);
-	printf("Parsed %d links @ %d/s\n", p->numLinks, p->numLinks / totalSeconds);
+	printf("\n**************\n");
+	printf("Extracted %d URLs @ %d/s\n", 
+		p->numExtractedURLs, 
+		(int)(p->numExtractedURLs / totalSeconds));
+
+	printf("Looked up %d DNS names @ %d/s\n", 
+		p->numSuccessfulDNSLookups, 
+		(int)(p->numSuccessfulDNSLookups / totalSeconds));
+
+	printf("Downloaded %d robots @ %d/s\n", 
+		p->numURLsPassedRobotCheck, 
+		(int)(p->numURLsPassedRobotCheck / totalSeconds));
+
+	printf("Crawled %d pages @ %d/s (%.2f GB)\n", 
+		p->numCrawledURLs, 
+		(int)(p->numCrawledURLs / totalSeconds), 
+		(float)(p->numBytesDownloaded / 1000000.0));
+
+	printf("Parsed %d links @ %d/s\n", 
+		p->numLinks, 
+		(int)(p->numLinks / totalSeconds));
+
 	printf("Connected to tamu.edu domain %d times\n", p->numTAMUHostFound);
+
 	printf("HTTP codes: 2xx = %d, 3xx = %d, 4xx = %d, 5xx = %d, other = %d\n", 
 		p->code2xxCount, p->code3xxCount, p->code4xxCount, p->code5xxCount, p->codeOtherCount);
+
+	printf("\n**************\n\n");
 
 	ReleaseMutex(p->mutex);
 
@@ -157,15 +176,11 @@ UINT crawlerThreadFunction(LPVOID pParam)
 
 		ReleaseMutex(p->mutex);							// unlock mutex
 
-		ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// release crawlers' semaphore
+		//ReleaseSemaphore(p->semaphoreCrawlers, 1, NULL);	// release crawlers' semaphore
 
 		URLParser parser = URLParser();
 		parser.parse(urlString.c_str(), pParam);
 	}
-
-	//WaitForSingleObject(p->mutex, INFINITE);		// lock mutex
-	//SetEvent(p->eventQuit);
-	//ReleaseMutex(p->mutex);							// unlock mutex
 
 	return 0;
 }

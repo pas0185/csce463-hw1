@@ -16,7 +16,7 @@ class WebSocket
 
 private:
 	SOCKET sock;
-	char* buf;
+	//char* buf;
 	int allocatedSize;
 	int curPos;
 	int msTime(clock_t start, clock_t end);
